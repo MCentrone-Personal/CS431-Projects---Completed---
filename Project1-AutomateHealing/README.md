@@ -9,3 +9,4 @@ This is the folder for the first project. This is an MacroQuest macro that autom
 - Conditions and You: https://www.redguides.com/community/threads/conditions-and-you-coding-tutorial-information.65300/
 - Getting Started - MacroQuest: https://docs.macroquest.org/macros/getting-started/
 - MacroQuest Reference: https://docs.macroquest.org/macros/
+- MacroQuest Subroutines: https://docs.macroquest.org/macros/subroutines/
