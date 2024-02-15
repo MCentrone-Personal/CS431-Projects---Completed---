@@ -10,6 +10,7 @@ sub Main
 |Use /call to go to sub function.
 |To send values the sub has to look like this Sub Ex(x,y)
 |/call Ex 1 2
+|/return ${solution}
 
 |Function that will find / select tank
 Sub FindSelect
