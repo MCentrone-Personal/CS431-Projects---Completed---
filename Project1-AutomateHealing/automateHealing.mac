@@ -8,8 +8,45 @@ sub Main
 /return
 
 |Use /call to go to sub function.
+|To send values the sub has to look like this Sub Ex(x,y)
+|/call Ex 1 2
+
+|Function that will find / select tank
+Sub FindSelect
+
+/return
+
+|Function to Memorize spells
+Sub MemSpells
+
+/return
 
 |Function that will move character to tank
 Sub Move
+
+/return
+
+|Function to see if tank in combat
+Sub CombatCheck
+
+/return
+
+|Function to check the mana of healer
+Sub ManaCheck
+
+/return
+
+|Function to check tank hp
+Sub HpCheck
+
+/return
+
+|Function to check if buff active and applying it
+Sub Buff
+
+/reutrn
+
+|Function to meditate
+Sub Medi
 
 /return
