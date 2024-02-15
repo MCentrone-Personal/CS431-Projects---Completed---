@@ -37,7 +37,7 @@ Sub ManaCheck
 /return
 
 |Function to check tank hp
-Sub HpChecl
+Sub HpCheck
 
 /return
 
