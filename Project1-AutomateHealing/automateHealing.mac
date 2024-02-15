@@ -6,3 +6,10 @@ sub Main
     
   }
 /return
+
+|Use /call to go to sub function.
+
+|Function that will move character to tank
+Sub Move
+
+/return
