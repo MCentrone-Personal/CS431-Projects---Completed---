@@ -19,7 +19,12 @@ Sub FindSelect
 
 |Function to Memorize spells
 Sub MemSpells
-
+/memspell 3 "Healing"
+|To give time to memorize the spell
+/delay 10s
+/memspell 4 "Center"
+/delay 6s
+|insert any other spells needed/wanted
 /return
 
 |Function that will move character to tank
