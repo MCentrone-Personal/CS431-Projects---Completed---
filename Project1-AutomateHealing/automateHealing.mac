@@ -41,11 +41,6 @@ Sub Move
 /moveto 5
 /return
 
-|Function to see if tank in combat
-Sub CombatCheck
-
-/return
-
 |Function to check the mana of healer
 Sub ManaCheck
 
