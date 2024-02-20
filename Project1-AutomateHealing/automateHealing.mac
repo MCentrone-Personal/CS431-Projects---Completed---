@@ -18,7 +18,7 @@ sub Main
 /declare x int local 0
 /while (x == 0){
 |Loop will always run until macro is terminated or x is turned 1
-
+/call HpCheck
 }
 
 /return
