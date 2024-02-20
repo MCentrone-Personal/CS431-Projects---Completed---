@@ -10,50 +10,73 @@ sub Main
   /next i
 
   /target tankName
-
   }
+
+|Targets the tank for move to, healing, buffing, ect.
+|Replace varname with actual identifier
+/tar $TANK CLASS
+
+|Forever loop
+/declare x int local 0
+/while (x == 0){
+|Loop will always run until macro is terminated or x is turned 1
+
+}
+
 /return
 
 |Use /call to go to sub function.
 |To send values the sub has to look like this Sub Ex(x,y)
 |/call Ex 1 2
-
-|Function that will find / select tank
-Sub FindSelect
-
-/return
+|/return ${solution}
 
 |Function to Memorize spells
 Sub MemSpells
-
+/memspell 3 "Healing"
+|To give time to memorize the spell
+/delay 10s
+/memspell 4 "Center"
+/delay 6s
+|insert any other spells needed/wanted
 /return
 
 |Function that will move character to tank
 Sub Move
-
-/return
-
-|Function to see if tank in combat
-Sub CombatCheck
-
+|Find actual good distance and replace 5
+/moveto 5
 /return
 
 |Function to check the mana of healer
 Sub ManaCheck
+/if (${ME.MinPctMana}<10){
+/call Medi
+}
 
 /return
 
 |Function to check tank hp
 Sub HpCheck
+/if (${Target.PctHPs} < 99){
+/call ManaCheck
+/call Move
+/call Heal
+}
+/return
 
+|Function to caste healing
+Sub Heal
+/cast 3
+/delay 6s
 /return
 
 |Function to check if buff active and applying it
 Sub Buff
-
+/cast 4
+/delay 6s
 /reutrn
 
 |Function to meditate
 Sub Medi
-
+/sit
+/delay 5s
 /return
