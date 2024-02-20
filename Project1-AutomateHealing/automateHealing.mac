@@ -70,5 +70,6 @@ Sub Buff
 
 |Function to meditate
 Sub Medi
-
+/sit
+/delay 5
 /return
