@@ -9,7 +9,6 @@ sub Main
       /break
   /next i
 
-
   |Targets the tank for move to, healing, buffing, ect.
   |Replace varname with actual identifier
   /target ${tankName}
@@ -19,7 +18,7 @@ sub Main
 /declare x int local 0
 /while (x == 0){
 |Loop will always run until macro is terminated or x is turned 1
-
+/call HpCheck
 }
 
 /return
