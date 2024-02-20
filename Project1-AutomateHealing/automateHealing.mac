@@ -1,13 +1,16 @@
 sub Main
   /declare i int outer
-  /declare tankID int local
+  /declare tankName string local
 
   /for i 1 to ${Group} {
-      /target group i
-      if (${Target.Class} == "Warrior" || ${Target.Class} == "Bezerker" || ${Target.Class} == "Paladin")
-        /varset tankID ${Target.ID}
-        /break
-    /next i
+    /target group i
+    if (${Target.Class} == "Warrior" || ${Target.Class} == "Bezerker" || ${Target.Class} == "Paladin")
+      /varset tankName ${Target.CleanName}
+      /break
+  /next i
+
+  /target tankName
+
   }
 /return
 
