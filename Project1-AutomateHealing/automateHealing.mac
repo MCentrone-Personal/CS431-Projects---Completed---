@@ -37,7 +37,11 @@ Sub MemSpells
 
 |Function that will move character to tank
 Sub Move
-
+|Targets the tank for move to
+|Replace varname with actual identifier
+/tar $TANK CLASS
+|Find actual good distance and replace 5
+/moveto 5
 /return
 
 |Function to see if tank in combat
