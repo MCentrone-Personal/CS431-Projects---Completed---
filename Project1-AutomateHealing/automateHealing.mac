@@ -1,9 +1,16 @@
 sub Main
   /declare i int outer
-  /declare tankFound bool
+  /declare tankName string local
 
   /for i 1 to ${Group} {
-    
+    /target group i
+    if (${Target.Class} == "Warrior" || ${Target.Class} == "Bezerker" || ${Target.Class} == "Paladin")
+      /varset tankName ${Target.CleanName}
+      /break
+  /next i
+
+  /target tankName
+
   }
 /return
 
