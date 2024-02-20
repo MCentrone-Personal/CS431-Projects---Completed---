@@ -60,12 +60,12 @@ Sub HpCheck
 
 |Function to caste healing
 Sub Heal
-
+/cast 3
 /return
 
 |Function to check if buff active and applying it
 Sub Buff
-
+/cast 4
 /reutrn
 
 |Function to meditate
