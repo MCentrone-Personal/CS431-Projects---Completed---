@@ -3,7 +3,8 @@ sub Main
   /declare tankFound bool
 
   /for i 1 to ${Group} {
-    
+
+    /next i
   }
 |Forever loop
 /declare x int local 0
