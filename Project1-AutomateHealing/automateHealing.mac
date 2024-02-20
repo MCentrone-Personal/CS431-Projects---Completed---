@@ -3,10 +3,11 @@ sub Main
   /declare tankName string local
 
   /for i 1 to ${Group} {
-    /target group i
-    if (${Target.Class.Equals[Warrior]} || ${Target.Class.Equals[Berserker]} || ${Target.Class.Equals[Paladin]})
+    /target ${Group.Member[${i}].CleanName}
+    /if (${Target.Class.ShortName.Equals[WAR]} || ${Target.Class.ShortName.Equals[BER]} || ${Target.Class.ShortName.Equals[PAL]}) {
       /varset tankName ${Target.CleanName}
       /break
+    }
   /next i
 
 |Targets the tank for move to, healing, buffing, ect.
@@ -20,6 +21,8 @@ sub Main
 {
 |Loop will always run until macro is terminated or x is turned 1
 /call HpCheck
+/delay 1s
+/continue
 }
 
 /return
