@@ -5,6 +5,13 @@ sub Main
   /for i 1 to ${Group} {
     
   }
+|Forever loop
+/declare x int local 0
+/while (x == 0){
+|Loop will always run until macro is terminated or x is turned 1
+
+}
+
 /return
 
 |Use /call to go to sub function.
