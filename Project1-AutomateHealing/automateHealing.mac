@@ -6,6 +6,11 @@ sub Main
 
     /next i
   }
+
+|Targets the tank for move to, healing, buffing, ect.
+|Replace varname with actual identifier
+/tar $TANK CLASS
+
 |Forever loop
 /declare x int local 0
 /while (x == 0){
@@ -20,11 +25,6 @@ sub Main
 |/call Ex 1 2
 |/return ${solution}
 
-|Function that will find / select tank
-Sub FindSelect
-
-/return
-
 |Function to Memorize spells
 Sub MemSpells
 /memspell 3 "Healing"
@@ -37,9 +37,6 @@ Sub MemSpells
 
 |Function that will move character to tank
 Sub Move
-|Targets the tank for move to
-|Replace varname with actual identifier
-/tar $TANK CLASS
 |Find actual good distance and replace 5
 /moveto 5
 /return
