@@ -9,8 +9,8 @@ sub Main
       /break
   /next i
 
-  |Targets the tank for move to, healing, buffing, ect.
-  |Replace varname with actual identifier
+|Targets the tank for move to, healing, buffing, ect.
+|Replace varname with actual identifier
   /target ${tankName}
   }
 
