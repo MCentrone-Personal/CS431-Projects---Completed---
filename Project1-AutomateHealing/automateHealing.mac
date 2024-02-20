@@ -9,12 +9,10 @@ sub Main
       /break
   /next i
 
-  /target tankName
-  }
-
 |Targets the tank for move to, healing, buffing, ect.
 |Replace varname with actual identifier
-/tar $TANK CLASS
+  /target ${tankName}
+  }
 
 |Forever loop
 /declare x int local 0
