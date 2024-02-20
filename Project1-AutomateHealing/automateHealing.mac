@@ -43,6 +43,9 @@ Sub Move
 
 |Function to check the mana of healer
 Sub ManaCheck
+/if (${ME.MinPctMana}<10){
+/call Medi
+}
 
 /return
 
@@ -51,8 +54,7 @@ Sub HpCheck
 /if (${Target.PctHPs} < 99){
 /call ManaCheck
 /call Move
-
-
+/call Heal
 }
 /return
 
