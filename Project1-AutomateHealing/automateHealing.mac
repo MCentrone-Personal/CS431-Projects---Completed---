@@ -56,6 +56,11 @@ Sub HpCheck
 }
 /return
 
+|Function to caste healing
+Sub Heal
+
+/return
+
 |Function to check if buff active and applying it
 Sub Buff
 
