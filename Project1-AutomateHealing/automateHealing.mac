@@ -4,11 +4,10 @@ sub Main
 
   /for i 1 to ${Group} {
     /target group i
-    if (${Target.Class} == "Warrior" || ${Target.Class} == "Bezerker" || ${Target.Class} == "Paladin")
+    if (${Target.Class} == "Warrior" || ${Target.Class} == "Berserker" || ${Target.Class} == "Paladin")
       /varset tankName ${Target.CleanName}
       /break
   /next i
-
 
   |Targets the tank for move to, healing, buffing, ect.
   |Replace varname with actual identifier
@@ -19,7 +18,7 @@ sub Main
 /declare x int local 0
 /while (x == 0){
 |Loop will always run until macro is terminated or x is turned 1
-
+/call HpCheck
 }
 
 /return
