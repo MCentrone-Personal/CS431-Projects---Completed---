@@ -4,9 +4,10 @@ sub Main
 
   /for i 1 to ${Group} {
     /target group i
-    if (${Target.Class.Equals[Warrior]} || ${Target.Class.Equals[Berserker]} || ${Target.Class.Equals[Paladin]})
+    /if (${Target.Class.Equals[Warrior]} || ${Target.Class.Equals[Berserker]} || ${Target.Class.Equals[Paladin]}) {
       /varset tankName ${Target.CleanName}
       /break
+    }
   /next i
 
 |Targets the tank for move to, healing, buffing, ect.
