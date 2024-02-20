@@ -48,7 +48,9 @@ Sub ManaCheck
 
 |Function to check tank hp
 Sub HpCheck
+/if (${Target.PctHPs} > 80){
 
+}
 /return
 
 |Function to check if buff active and applying it
