@@ -9,7 +9,7 @@ sub Main
       /break
   /next i
 
-  /target tankName
+  /target ${tankName}
 
   }
 /return
