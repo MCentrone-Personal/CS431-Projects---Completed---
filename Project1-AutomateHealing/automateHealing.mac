@@ -13,19 +13,17 @@ sub Main
            /target ${Group.Member[${i}].CleanName}
 		   /varset s ${Target.Class}
 
-		|These are the tank classes
+|These are the tank classes
 		   /if (${s.Equal[Berserker]}) /varset b true			
 		   /if (${s.Equal[Paladin]}) /varset b true			
 		   /if (${s.Equal[Warrior]}) /varset b true
-		   
-		 |  /if (${b.Equal[true]}) /varset tankpos i
+	
+|  /if (${b.Equal[true]}) /varset tankpos i
 		   
 		   /break
 
   /next i
   }
-
-
 
 |Forever loop
 /declare x int local 0
