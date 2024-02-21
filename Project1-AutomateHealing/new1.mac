@@ -1,0 +1,44 @@
+Sub Main
+
+| setting a variable as global (would use local instead of outer for local variables)
+/declare j int outer
+/declare b boolean outer
+/declare s outer
+
+/varset b false
+
+| mem spell IVU to slot 8
+/memspell 8 "Strengthen"
+/delay 3s
+/memspell 7 "Light Healing"
+
+ /if (${Group} < 1) /endmac
+ 
+ 
+| tries to find a tank in the party
+/for j 0 to ${Group} {  
+
+    | delay for spell refresh
+          | /delay 10s
+
+    | target the j'th group member
+           /target ${Group.Member[${j}].CleanName}
+		   /varset s ${Target.Class}
+		   
+		   /if (${s.Equal[Berserker]}) /varset b true			
+		   /if (${s.Equal[Paladin]}) /varset b true			
+		   /if (${s.Equal[Warrior]}) /varset b true
+		   
+		| advance j in loop   
+		   /next j			
+       } 
+
+	
+	/if (${b.Equal[true]}) /echo A Tank was found
+	/if (${b.Equal[false]}) /endmac
+	
+
+| target myself
+/target ${Me.Name}
+
+/return

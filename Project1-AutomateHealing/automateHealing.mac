@@ -2,25 +2,50 @@ sub Main
   /declare i int outer
   /declare tankName string local
 
+  /declare b boolean outer
+  /declare s outer
+  /declare tankpos int outer
+
+/varset b false
+
   /for i 1 to ${Group} {
-    /target ${Group.Member[${i}].CleanName}
-    /if (${Target.Class.ShortName.Equals[WAR]} || ${Target.Class.ShortName.Equals[BER]} || ${Target.Class.ShortName.Equals[PAL]}) {
-      /varset tankName ${Target.CleanName}
-      /break
-    }
+    | target the i'th group member
+           /target ${Group.Member[${i}].CleanName}
+		   /varset s ${Target.Class}
+		   
+		   /if (${s.Equal[Berserker]}) /varset b true			
+		   /if (${s.Equal[Paladin]}) /varset b true			
+		   /if (${s.Equal[Warrior]}) /varset b true
+		   
+		 |  /if (${b.Equal[true]}) /varset tankpos i
+		   
+		   /break
+
   /next i
 
-  |Targets the tank for move to, healing, buffing, ect.
-  |Replace varname with actual identifier
-  /target ${tankName}
+|Targets the tank for move to, healing, buffing, ect.
+|Replace varname with actual identifier
+
+| /target ${tankName}
   }
 
-|Forever loop
-/declare x int local 0
-/while (x == 0){
-|Loop will always run until macro is terminated or x is turned 1
-/call HpCheck
+
+/declare x int 0
+/while (${x} == 0 ) {
+  /echo ${varname}
 }
+
+
+
+
+|Forever loop
+|/declare x int local 0
+|/while (${x} == 0){
+|Loop will always run until macro is terminated or x is turned 1
+|/call HpCheck
+|/continue
+|}
+
 
 /return
 
@@ -53,6 +78,7 @@ Sub ManaCheck
 
 /return
 
+
 |Function to check tank hp
 Sub HpCheck
 /if (${Target.PctHPs} < 99){
@@ -60,6 +86,7 @@ Sub HpCheck
 /call Move
 /call Heal
 }
+
 /return
 
 |Function to caste healing
