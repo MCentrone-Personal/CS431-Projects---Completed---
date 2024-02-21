@@ -6,34 +6,41 @@ sub Main
   /declare s outer
   /declare tankpos int outer
 
-/varset b false
+     /if (${Group} < 1) /endmac
+     /if (${Group} < 1) /endmac
+    /varset b false
 
-  /for i 1 to ${Group} {
-    | target the i'th group member
-           /target ${Group.Member[${i}].CleanName}
-		   /varset s ${Target.Class}
-		   
-		   /if (${s.Equal[Berserker]}) /varset b true			
-		   /if (${s.Equal[Paladin]}) /varset b true			
-		   /if (${s.Equal[Warrior]}) /varset b true
-		   
-		 |  /if (${b.Equal[true]}) /varset tankpos i
-		   
-		   /break
+      /for i 1 to ${Group} {
+        | target the i'th group member
+               /target ${Group.Member[${i}].CleanName}
+    		   /varset s ${Target.Class}
+
+    		   /if (${s.Equal[Berserker]}) /varset b true
+    		   /if (${s.Equal[Paladin]}) /varset b true
+    		   /if (${s.Equal[Warrior]}) /varset b true
+
+    		 |  /if (${b.Equal[true]}) /varset tankpos i
+
+    		   /break
+      }
 
   /next i
+
+  /if (${b.Equal[true]}) /echo A Tank was found
+  /if (${b.Equal[false]}) /endmac
 
 |Targets the tank for move to, healing, buffing, ect.
 |Replace varname with actual identifier
 
 | /target ${tankName}
-  }
+
 
 
 /declare x int 0
-/while (${x} == 0 ) {
-  /echo ${varname}
-}
+|/while (${x} == 0 ) {
+|  /next x
+|  |/echo ${varname}
+|}
 
 
 
