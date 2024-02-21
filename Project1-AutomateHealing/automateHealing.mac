@@ -25,6 +25,8 @@ sub Main
   /next i
   }
 
+/call MemSpells
+
 |Forever loop
 /declare x int local 0
 /while (${x} == 0){
