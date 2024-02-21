@@ -28,28 +28,20 @@ sub Main
   /if (${b.Equal[true]}) /echo A Tank was found
   /if (${b.Equal[false]}) /endmac
 
+  /call MemSpells
+
 |Targets the tank for move to, healing, buffing, ect.
 |Replace varname with actual identifier
 
 | /target ${tankName}
 
 
-
-/declare x int 0
-|/while (${x} == 0 ) {
-|  /next x
-|  |/echo ${varname}
-|}
-
-
-
-
 |Forever loop
-|/declare x int local 0
-|/while (${x} == 0){
-|Loop will always run until macro is terminated or x is turned 1
-|/call HpCheck
-|/continue
+/declare x int local 0
+/while (${x} == 0){
+  Loop will always run until macro is terminated or x is turned 1
+  /call HpCheck
+  /continue
 |}
 
 
@@ -62,10 +54,10 @@ sub Main
 
 |Function to Memorize spells
 Sub MemSpells
-  /memspell 3 "Minor Healing"
+  /memspell 3 "Light Healing"
   |To give time to memorize the spell
   /delay 10s
-  /memspell 4 "Strengthen"
+  /memspell 4 "Fleeting Fury"
   /delay 6s
   |insert any other spells needed/wanted
 /return
