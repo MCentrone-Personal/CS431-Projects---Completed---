@@ -35,6 +35,7 @@ sub Main
 
 /call HpCheck
 /delay 2s
+/call Move
 }
 
 
