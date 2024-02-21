@@ -1,6 +1,7 @@
 sub Main
   /declare i int outer
   /declare tankName string local
+
   /declare b boolean outer
   /declare s outer
   /declare tankpos int outer
@@ -19,10 +20,12 @@ sub Main
 		 |  /if (${b.Equal[true]}) /varset tankpos i
 		   
 		   /break
+
   /next i
 
 |Targets the tank for move to, healing, buffing, ect.
 |Replace varname with actual identifier
+
 | /target ${tankName}
   }
 
@@ -42,6 +45,7 @@ sub Main
 |/call HpCheck
 |/continue
 |}
+
 
 /return
 
@@ -74,6 +78,7 @@ Sub ManaCheck
 
 /return
 
+
 |Function to check tank hp
 Sub HpCheck
 /if (${Target.PctHPs} < 99){
@@ -81,6 +86,7 @@ Sub HpCheck
 /call Move
 /call Heal
 }
+
 /return
 
 |Function to caste healing
