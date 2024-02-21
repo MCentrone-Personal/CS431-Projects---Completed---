@@ -24,7 +24,7 @@ sub Main
 
   /next i
   }
-
+|Memorizes the spells since there is a tank
 /call MemSpells
 
 |Forever loop
