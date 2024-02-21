@@ -7,7 +7,6 @@ sub Main
   /declare tankpos int outer
 
      /if (${Group} < 1) /endmac
-     /if (${Group} < 1) /endmac
     /varset b false
 
       /for i 1 to ${Group} {
@@ -63,12 +62,12 @@ sub Main
 
 |Function to Memorize spells
 Sub MemSpells
-/memspell 3 "Healing"
-|To give time to memorize the spell
-/delay 10s
-/memspell 4 "Center"
-/delay 6s
-|insert any other spells needed/wanted
+  /memspell 3 "Minor Healing"
+  |To give time to memorize the spell
+  /delay 10s
+  /memspell 4 "Strengthen"
+  /delay 6s
+  |insert any other spells needed/wanted
 /return
 
 |Function that will move character to tank
