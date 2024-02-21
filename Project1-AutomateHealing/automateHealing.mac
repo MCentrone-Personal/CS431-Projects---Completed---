@@ -30,8 +30,6 @@ sub Main
 
   /call MemSpells
 
-  /plugin MQ2MoveUtils
-
 |Targets the tank for move to, healing, buffing, ect.
 |Replace varname with actual identifier
 
@@ -70,7 +68,7 @@ Sub MemSpells
 |Function that will move character to tank
 Sub Move
 |Find actual good distance and replace 5
-  /stick
+  /stick 5
 /return
 
 |Function to check the mana of healer
@@ -92,6 +90,7 @@ Sub HpCheck
 
   /if (${Target.PctHPs} == 100) {
     /call Buff
+    /call Move
   }
 
 /return
@@ -117,4 +116,5 @@ Sub Medi
   /sit
   /echo Meditating for 15 seconds
   /delay 15s
+  /call Move
 /return
