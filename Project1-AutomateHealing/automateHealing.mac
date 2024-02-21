@@ -26,6 +26,7 @@ sub Main
   }
 
 /call MemSpells
+/plugin MQ2MoveUtils
 
 |Forever loop
 /declare x int local 0
