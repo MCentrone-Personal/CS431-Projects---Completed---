@@ -104,11 +104,11 @@ Sub Heal
 
 |Function to check if buff active and applying it
 Sub Buff
-  if (!${Target.Buff[Strengthen].ID}) {
+  /if (!${Target.Buff[Strengthen].ID}) {
     /call ManaCheck
     /cast 4
     /echo Delaying 10 seconds to cast buff
-    /delay 10
+    /delay 10s
   }
 /return
 
