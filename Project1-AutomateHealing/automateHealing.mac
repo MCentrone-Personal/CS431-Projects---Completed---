@@ -30,6 +30,8 @@ sub Main
 
   /call MemSpells
 
+  /plugin MQ2MoveUtils
+
 |Targets the tank for move to, healing, buffing, ect.
 |Replace varname with actual identifier
 
@@ -60,7 +62,7 @@ Sub MemSpells
   /echo Delaying 10 seconds to memorize healing spell
   /delay 10s
   /memspell 4 "Fleeting Fury"
-  /echo delaying 6 secondsa to memorize buff spell
+  /echo Delaying 6 seconds to memorize buff spell
   /delay 6s
   |insert any other spells needed/wanted
 /return
@@ -68,12 +70,12 @@ Sub MemSpells
 |Function that will move character to tank
 Sub Move
 |Find actual good distance and replace 5
-  /moveto
+  /stick
 /return
 
 |Function to check the mana of healer
 Sub ManaCheck
-  /if (${ME.MinPctMana}<10) {
+  /if (${Me.PctMana}<20) {
     /call Medi
 }
 
@@ -105,5 +107,6 @@ Sub Buff
 |Function to meditate
 Sub Medi
   /sit
-  /delay 5s
+  /echo Meditating for 15 seconds
+  /delay 15s
 /return
