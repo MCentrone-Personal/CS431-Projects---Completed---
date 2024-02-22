@@ -61,6 +61,7 @@ Sub MemSpells
   /echo Delaying 10 seconds to memorize healing spell
   /delay 10s
   /memspell 4 "Strengthen"
+
   /echo Delaying 6 seconds to memorize buff spell
   /delay 6s
   |insert any other spells needed/wanted
@@ -69,6 +70,7 @@ Sub MemSpells
 |Function that will move character to tank
 Sub Move
 |Find actual good distance and replace 5
+
   /stick healer
 /return
 
@@ -100,6 +102,7 @@ Sub Heal
   /cast 3
   /delay 6s
   /stick unpause
+
 /return
 
 |Function to check if buff active and applying it
@@ -111,15 +114,18 @@ Sub Buff
     /echo Delaying 10 seconds to cast buff
     /delay 10s
     /stick unpause
+
   }
 /return
 
 |Function to meditate
 Sub Medi
+
   /stick pause
   /sit
   /echo Meditating for 15 seconds
   /delay 15s
   /stand
   /stick unpause
+
 /return
