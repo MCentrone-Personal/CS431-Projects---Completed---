@@ -30,6 +30,8 @@ sub Main
 
   /call MemSpells
 
+  /call Move
+
 |Targets the tank for move to, healing, buffing, ect.
 |Replace varname with actual identifier
 
@@ -43,7 +45,7 @@ sub Main
   |Loop will always run until macro is terminated or x is turned 1
   /call HpCheck
   /continue
-
+  }
 
 /return
 
@@ -67,7 +69,7 @@ Sub MemSpells
 |Function that will move character to tank
 Sub Move
 |Find actual good distance and replace 5
-  /stick 5
+  /stick healer
 /return
 
 |Function to check the mana of healer
@@ -83,37 +85,41 @@ Sub ManaCheck
 Sub HpCheck
   /if (${Target.PctHPs} < 99) {
     /call ManaCheck
-    /call Move
     /call Heal
   }
 
   /if (${Target.PctHPs} == 100) {
     /call Buff
-    /call Move
   }
 
 /return
 
 |Function to caste healing
 Sub Heal
+  /stick pause
   /cast 3
   /delay 6s
+  /stick unpause
 /return
 
 |Function to check if buff active and applying it
 Sub Buff
   /if (!${Target.Buff[Strengthen].ID}) {
     /call ManaCheck
+    /stick pause
     /cast 4
     /echo Delaying 10 seconds to cast buff
     /delay 10s
+    /stick unpause
   }
 /return
 
 |Function to meditate
 Sub Medi
+  /stick pause
   /sit
   /echo Meditating for 15 seconds
   /delay 15s
-  /call Move
+  /stand
+  /stick unpause
 /return
