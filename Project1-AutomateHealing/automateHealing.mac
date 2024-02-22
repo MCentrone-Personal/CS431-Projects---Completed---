@@ -90,12 +90,10 @@ Sub HpCheck
     /call Buff
   }
 
- /if ((${Target.PctHPs} == 100) && (${Target.Buff[Strengthen].ID}) && (${SpawnCount[pc radius 20]}>0))
+ /if ((${Target.PctHPs} == 100) && (${Target.Buff[Strengthen].ID}) && (${Target.Distance} <= 20))
 {
 /call MediLoop
 }
-
-
 /return
 
 |Function to caste healing
@@ -132,7 +130,7 @@ Sub Medi
 Sub MediLoop
 /stick pause
 /sit
-/while ((${Target.PctHPs} == 100) && (${Target.Buff[Strengthen].ID}) && (${SpawnCount[pc radius 20]}>0))
+/while ((${Target.PctHPs} == 100) && (${Target.Buff[Strengthen].ID}) && (${Target.Distance}<= 20))
 {
 }
 /stand
