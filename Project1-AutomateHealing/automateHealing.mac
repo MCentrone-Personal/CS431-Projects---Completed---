@@ -45,7 +45,7 @@ sub Main
   |Loop will always run until macro is terminated or x is turned 1
   /call HpCheck
   /continue
-
+  }
 
 /return
 
@@ -56,11 +56,12 @@ sub Main
 
 |Function to Memorize spells
 Sub MemSpells
-  /memspell 3 "Healing"
+  /memspell 3 "Light Healing"
   |To give time to memorize the spell
   /echo Delaying 10 seconds to memorize healing spell
   /delay 10s
-  /memspell 4 "Center"
+  /memspell 4 "Strengthen"
+
   /echo Delaying 6 seconds to memorize buff spell
   /delay 6s
   |insert any other spells needed/wanted
@@ -69,7 +70,8 @@ Sub MemSpells
 |Function that will move character to tank
 Sub Move
 |Find actual good distance and replace 5
-  /stick 5
+
+  /stick healer
 /return
 
 |Function to check the mana of healer
@@ -96,29 +98,34 @@ Sub HpCheck
 
 |Function to caste healing
 Sub Heal
- | /stick
+  /stick pause
   /cast 3
-|  /stick 5
   /delay 6s
+  /stick unpause
+
 /return
 
 |Function to check if buff active and applying it
 Sub Buff
   /if (!${Target.Buff[Strengthen].ID}) {
     /call ManaCheck
-|    /stick
+    /stick pause
     /cast 4
     /echo Delaying 10 seconds to cast buff
     /delay 10s
-  |  /stick 5
+    /stick unpause
+
   }
 /return
 
 |Function to meditate
 Sub Medi
-|  /stick
+
+  /stick pause
   /sit
   /echo Meditating for 15 seconds
   /delay 15s
-|  /stick 5
+  /stand
+  /stick unpause
+
 /return
