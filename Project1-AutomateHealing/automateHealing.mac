@@ -6,38 +6,45 @@ sub Main
   /declare s outer
   /declare tankpos int outer
 
-/varset b false
+     /if (${Group} < 1) /endmac
+    /varset b false
 
-  /for i 1 to ${Group} {
-    | target the i'th group member
-           /target ${Group.Member[${i}].CleanName}
-		   /varset s ${Target.Class}
+      /for i 1 to ${Group} {
+        | target the i'th group member
+               /target ${Group.Member[${i}].CleanName}
+    		   /varset s ${Target.Class}
 
-|These are the tank classes
-		   /if (${s.Equal[Berserker]}) /varset b true			
-		   /if (${s.Equal[Paladin]}) /varset b true			
-		   /if (${s.Equal[Warrior]}) /varset b true
-	
-|  /if (${b.Equal[true]}) /varset tankpos i
-		   
-		   /break
+    		   /if (${s.Equal[Berserker]}) /varset b true
+    		   /if (${s.Equal[Paladin]}) /varset b true
+    		   /if (${s.Equal[Warrior]}) /varset b true
+
+    		 |  /if (${b.Equal[true]}) /varset tankpos i
+
+    		   /break
+      }
 
   /next i
-  }
 
-/call MemSpells
-/plugin MQ2MoveUtils
+  /if (${b.Equal[true]}) /echo A Tank was found
+  /if (${b.Equal[false]}) /endmac
+
+  /call MemSpells
+
+  /call Move
+
+|Targets the tank for move to, healing, buffing, ect.
+|Replace varname with actual identifier
+
+| /target ${tankName}
+
 
 |Forever loop
-/declare x int local 0
-/while (${x} == 0){
-
-|Loop will always run until macro is terminated or x is turned 1
-
-/call HpCheck
-/delay 2s
-/call Move
-}
+/declare x int local
+/varset x 0
+/while (${x} == 0) {
+  |Loop will always run until macro is terminated or x is turned 1
+  /call HpCheck
+  /continue
 
 
 /return
@@ -49,24 +56,26 @@ sub Main
 
 |Function to Memorize spells
 Sub MemSpells
-/memspell 3 "Healing"
-|To give time to memorize the spell
-/delay 10s
-/memspell 4 "Center"
-/delay 6s
-|insert any other spells needed/wanted
+  /memspell 3 "Light Healing"
+  |To give time to memorize the spell
+  /echo Delaying 10 seconds to memorize healing spell
+  /delay 10s
+  /memspell 4 "Strengthen"
+  /echo Delaying 6 seconds to memorize buff spell
+  /delay 6s
+  |insert any other spells needed/wanted
 /return
 
 |Function that will move character to tank
 Sub Move
 |Find actual good distance and replace 5
-/moveto 5
+  /stick 5
 /return
 
 |Function to check the mana of healer
 Sub ManaCheck
-/if (${ME.MinPctMana}<10){
-/call Medi
+  /if (${Me.PctMana}<20) {
+    /call Medi
 }
 
 /return
@@ -74,28 +83,42 @@ Sub ManaCheck
 
 |Function to check tank hp
 Sub HpCheck
-/if (${Target.PctHPs} < 99){
-/call ManaCheck
-/call Move
-/call Heal
-}
+  /if (${Target.PctHPs} < 99) {
+    /call ManaCheck
+    /call Heal
+  }
+
+  /if (${Target.PctHPs} == 100) {
+    /call Buff
+  }
 
 /return
 
 |Function to caste healing
 Sub Heal
-/cast 3
-/delay 6s
+  /stick
+  /cast 3
+  /stick 5
+  /delay 6s
 /return
 
 |Function to check if buff active and applying it
 Sub Buff
-/cast 4
-/delay 6s
-/reutrn
+  /if (!${Target.Buff[Strengthen].ID}) {
+    /call ManaCheck
+    /stick
+    /cast 4
+    /echo Delaying 10 seconds to cast buff
+    /delay 10s
+    /stick 5
+  }
+/return
 
 |Function to meditate
 Sub Medi
-/sit
-/delay 5s
+  /stick
+  /sit
+  /echo Meditating for 15 seconds
+  /delay 15s
+  /stick 5
 /return
