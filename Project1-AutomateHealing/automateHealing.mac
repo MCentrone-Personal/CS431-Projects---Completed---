@@ -30,6 +30,8 @@ sub Main
 
   /call MemSpells
 
+  /call Move
+
 |Targets the tank for move to, healing, buffing, ect.
 |Replace varname with actual identifier
 
@@ -83,20 +85,20 @@ Sub ManaCheck
 Sub HpCheck
   /if (${Target.PctHPs} < 99) {
     /call ManaCheck
-    /call Move
     /call Heal
   }
 
   /if (${Target.PctHPs} == 100) {
     /call Buff
-    /call Move
   }
 
 /return
 
 |Function to caste healing
 Sub Heal
+  /stick
   /cast 3
+  /stick 5
   /delay 6s
 /return
 
@@ -104,16 +106,19 @@ Sub Heal
 Sub Buff
   /if (!${Target.Buff[Strengthen].ID}) {
     /call ManaCheck
+    /stick
     /cast 4
     /echo Delaying 10 seconds to cast buff
     /delay 10s
+    /stick 5
   }
 /return
 
 |Function to meditate
 Sub Medi
+  /stick
   /sit
   /echo Meditating for 15 seconds
   /delay 15s
-  /call Move
+  /stick 5
 /return
