@@ -6,6 +6,7 @@ sub Main
   /declare s outer
   /declare tankpos int outer
 
+|If there is no group end macro
      /if (${Group} < 1) /endmac
     /varset b false
 
@@ -13,8 +14,8 @@ sub Main
         | target the i'th group member
                /target ${Group.Member[${i}].CleanName}
     		   /varset s ${Target.Class}
-
-    		   /if (${s.Equal[Berserker]}) /varset b true
+|Checking for tank classes
+    		   /if (${s.Equal[Shadow Knight]}) /varset b true
     		   /if (${s.Equal[Paladin]}) /varset b true
     		   /if (${s.Equal[Warrior]}) /varset b true
 
@@ -24,19 +25,19 @@ sub Main
       }
 
   /next i
-
+|Tank found, Macro goes on
   /if (${b.Equal[true]}) /echo A Tank was found
+|No tank class in party, end macro
   /if (${b.Equal[false]}) /endmac
 
+|Adding alert for checking if tank play in range
+/alert add 1 pc ${Group.Member[$(i)].Name}
+
+|Will memorize the spells the healer needs
   /call MemSpells
 
+|Gets the movement code working
   /call Move
-
-|Targets the tank for move to, healing, buffing, ect.
-|Replace varname with actual identifier
-
-| /target ${tankName}
-
 
 |Forever loop
 /declare x int local
@@ -46,7 +47,6 @@ sub Main
   /call HpCheck
   /continue
   }
-
 /return
 
 |Use /call to go to sub function.
@@ -61,7 +61,6 @@ Sub MemSpells
   /echo Delaying 10 seconds to memorize healing spell
   /delay 10s
   /memspell 4 "Strengthen"
-
   /echo Delaying 6 seconds to memorize buff spell
   /delay 6s
   |insert any other spells needed/wanted
@@ -69,8 +68,7 @@ Sub MemSpells
 
 |Function that will move character to tank
 Sub Move
-|Find actual good distance and replace 5
-
+|Stick healer is premade comand for healer macros
   /stick healer
 /return
 
@@ -79,9 +77,7 @@ Sub ManaCheck
   /if (${Me.PctMana}<20) {
     /call Medi
 }
-
 /return
-
 
 |Function to check tank hp
 Sub HpCheck
@@ -94,6 +90,12 @@ Sub HpCheck
     /call Buff
   }
 
+ /if ((${Target.PctHPs} == 100) && (${Target.Buff[Strengthen].ID}) && (${SpawnCount[pc radius 20]}>0))
+{
+/call MediLoop
+}
+
+
 /return
 
 |Function to caste healing
@@ -102,7 +104,6 @@ Sub Heal
   /cast 3
   /delay 6s
   /stick unpause
-
 /return
 
 |Function to check if buff active and applying it
@@ -114,18 +115,26 @@ Sub Buff
     /echo Delaying 10 seconds to cast buff
     /delay 10s
     /stick unpause
-
+    /call ManaCheck
   }
 /return
 
 |Function to meditate
 Sub Medi
-
   /stick pause
   /sit
   /echo Meditating for 15 seconds
   /delay 15s
   /stand
   /stick unpause
+/return
 
+Sub MediLoop
+/stick pause
+/sit
+/while ((${Target.PctHPs} == 100) && (${Target.Buff[Strengthen].ID}) && (${SpawnCount[pc radius 20]}>0))
+{
+}
+/stand
+/stick unpause
 /return
