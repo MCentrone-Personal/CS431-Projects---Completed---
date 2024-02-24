@@ -90,7 +90,7 @@ Sub HpCheck
     /call Buff
   }
 
- /if ((${Target.PctHPs} == 100) && (${Target.Buff[Strengthen].ID}) && (${Target.Distance} <= 20))
+ /if ((${Target.PctHPs} == 100) && (${Target.Buff[Center].ID}) && (${Target.Distance} <= 20))
 {
 /call MediLoop
 }
@@ -130,7 +130,7 @@ Sub Medi
 Sub MediLoop
 /stick pause
 /sit
-/while ((${Target.PctHPs} == 100) && (${Target.Buff[Strengthen].ID}) && (${Target.Distance.Int} <= 20))
+/while ((${Target.PctHPs} == 100) && (${Target.Buff[Center].ID}) && (${Target.Distance.Int} <= 20))
 {
 }
 /stand
