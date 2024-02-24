@@ -135,6 +135,7 @@ Sub MediLoop
  /declare medCon int local
  /varset medCon 1
  /echo ${medCon}
+|Forever loop to keep meditating unless tank needs us
  /while (${medCon} == 1) {
    /if (${Target.PctHPs} < 99) /varset medCon 0
    /if (!${Target.Buff[Holy Armor].ID})	/varset medCon 0
