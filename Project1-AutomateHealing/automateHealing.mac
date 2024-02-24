@@ -91,10 +91,9 @@ Sub HpCheck
   /if (${Target.PctHPs} == 100) {
 	/call Buff
 	/delay .5s
-  /if (${Target.Distance.Int} <= 20){
-	/echo ${Target.Distance.Int}
-	|/call MediLoop
-	}
+  /if (${Target.Distance}<20) {
+    /call Mediloop
+   }
   }
 
 /return
@@ -133,23 +132,13 @@ Sub Medi
 Sub MediLoop
  /stick pause
  /sit
- /declare medCon boolean local
- /varset medCon true
- /while (${medCon})
-  {
-   /if (!${Target.PctHPs} == 100) 
-   {
-	/varset medCon false
-   }
-  /if (!${Target.Buff[Holy Armor].ID})
-	{
-	/vartset medCon false
-	}
-	/if (${Target.Distance.Int} <= 20)
-	{
-	/varset medCon false
-	}
-	/echo Working?
+ /declare medCon int local
+ /varset medCon 1
+ /echo ${medCon}
+ /while (${medCon} == 1) {
+   /if (${Target.PctHPs} < 99) /varset medCon 0
+   /if (!${Target.Buff[Holy Armor].ID})	/varset medCon 0
+   /if (${Target.Distance} > 20) /varset medCon 0
 /continue
   }
  /stand
