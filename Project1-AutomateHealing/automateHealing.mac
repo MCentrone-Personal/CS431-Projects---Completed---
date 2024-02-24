@@ -31,7 +31,7 @@ sub Main
   /if (${b.Equal[false]}) /endmac
 
 |Adding alert for checking if tank play in range
-/alert add 1 pc ${Group.Member[$(i)].Name}
+|/alert add 1 pc ${Group.Member[$(i)].Name}
 
 |Will memorize the spells the healer needs
   /call MemSpells
@@ -44,6 +44,8 @@ sub Main
 /varset x 0
 /while (${x} == 0) {
   |Loop will always run until macro is terminated or x is turned 1
+  /echo ${Target.Distance}
+  /echo ${Target.Distance.Int}
   /call HpCheck
   /continue
   }
@@ -59,10 +61,10 @@ Sub MemSpells
   /memspell 3 "Healing"
   |To give time to memorize the spell
   /echo Delaying 10 seconds to memorize healing spell
-  /delay 10s
-  /memspell 4 "Center"
-  /echo Delaying 6 seconds to memorize buff spell
-  /delay 6s
+  /delay 14s
+  /memspell 4 "Holy Armor"
+  /echo Delaying x seconds to memorize buff spell
+  /delay 14s
   |insert any other spells needed/wanted
 /return
 
@@ -87,13 +89,13 @@ Sub HpCheck
   }
 
   /if (${Target.PctHPs} == 100) {
-    /call Buff
+	/call Buff
+	/delay .5s
+  /if (${Target.Distance}<20) {
+    /call Mediloop
+   }
   }
 
- /if ((${Target.PctHPs} == 100) && (${Target.Buff[Center].ID}) && (${Target.Distance} <= 20))
-{
-/call MediLoop
-}
 /return
 
 |Function to caste healing
@@ -106,7 +108,7 @@ Sub Heal
 
 |Function to check if buff active and applying it
 Sub Buff
-  /if (!${Target.Buff[Strengthen].ID}) {
+  /if (!${Target.Buff[Holy Armor].ID}) {
     /call ManaCheck
     /stick pause
     /cast 4
@@ -128,11 +130,17 @@ Sub Medi
 /return
 
 Sub MediLoop
-/stick pause
-/sit
-/while ((${Target.PctHPs} == 100) && (${Target.Buff[Center].ID}) && (${Target.Distance.Int} <= 20))
-{
-}
-/stand
-/stick unpause
+ /stick pause
+ /sit
+ /declare medCon int local
+ /varset medCon 1
+ /echo ${medCon}
+ /while (${medCon} == 1) {
+   /if (${Target.PctHPs} < 99) /varset medCon 0
+   /if (!${Target.Buff[Holy Armor].ID})	/varset medCon 0
+   /if (${Target.Distance} > 20) /varset medCon 0
+/continue
+  }
+ /stand
+ /stick unpause
 /return
