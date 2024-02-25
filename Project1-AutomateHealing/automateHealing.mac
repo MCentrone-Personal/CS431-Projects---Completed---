@@ -25,13 +25,11 @@ sub Main
       }
 
   /next i
+
 |Tank found, Macro goes on
   /if (${b.Equal[true]}) /echo A Tank was found
 |No tank class in party, end macro
   /if (${b.Equal[false]}) /endmac
-
-|Adding alert for checking if tank play in range
-|/alert add 1 pc ${Group.Member[$(i)].Name}
 
 |Will memorize the spells the healer needs
   /call MemSpells
@@ -44,26 +42,20 @@ sub Main
 /varset x 0
 /while (${x} == 0) {
   |Loop will always run until macro is terminated or x is turned 1
-  /echo ${Target.Distance}
-  /echo ${Target.Distance.Int}
+  |Starts the checking for combat, buffs, act.
   /call HpCheck
   /continue
   }
 /return
 
-|Use /call to go to sub function.
-|To send values the sub has to look like this Sub Ex(x,y)
-|/call Ex 1 2
-|/return ${solution}
-
 |Function to Memorize spells
 Sub MemSpells
-  /memspell 3 "Healing"
+  /memspell 1 "Healing"
   |To give time to memorize the spell
-  /echo Delaying 10 seconds to memorize healing spell
+  /echo Delaying 14 seconds to memorize healing spell
   /delay 14s
-  /memspell 4 "Holy Armor"
-  /echo Delaying x seconds to memorize buff spell
+  /memspell 2 "Holy Armor"
+  /echo Delaying 14 seconds to memorize buff spell
   /delay 14s
   |insert any other spells needed/wanted
 /return
@@ -71,12 +63,14 @@ Sub MemSpells
 |Function that will move character to tank
 Sub Move
 |Stick healer is premade comand for healer macros
+|At every free oppurtunity the healer will face and move towards the target
   /stick healer
 /return
 
 |Function to check the mana of healer
 Sub ManaCheck
   /if (${Me.PctMana}<20) {
+|Will meditate for a short bit
     /call Medi
 }
 /return
@@ -84,63 +78,86 @@ Sub ManaCheck
 |Function to check tank hp
 Sub HpCheck
   /if (${Target.PctHPs} < 99) {
+|Combat is happening/ happened. Heal up the tank if possible
     /call ManaCheck
     /call Heal
   }
 
   /if (${Target.PctHPs} == 100) {
+|Combat over or going really well, buff
 	/call Buff
-	/delay .5s
   /if (${Target.Distance}<20) {
+|Nested if statement
+|If target isn't moving we can chill becuase they are buffed and full hp
     /call Mediloop
    }
   }
-
 /return
 
-|Function to caste healing
+|Function to cast healing
 Sub Heal
+|Pausing movement to heal and not cause error
   /stick pause
-  /cast 3
+  /cast 1
+ /echo delay 6s to cast heal
   /delay 6s
+|Delay to give spell timet to cast
   /stick unpause
+|Turns back on movement
 /return
 
 |Function to check if buff active and applying it
 Sub Buff
   /if (!${Target.Buff[Holy Armor].ID}) {
+|Buff not active
     /call ManaCheck
+|Do we have mana to cast a spell
     /stick pause
-    /cast 4
+|Pause movement
+    /cast 2
     /echo Delaying 10 seconds to cast buff
     /delay 10s
+|Delay to cast spell
     /stick unpause
-    /call ManaCheck
+|Movement back on
   }
 /return
 
 |Function to meditate
 Sub Medi
+|Pauses movement to sit
   /stick pause
+|Sit regains HP and Mana
   /sit
   /echo Meditating for 15 seconds
   /delay 15s
+|Gives us 15 seconds to quickly gain mana to start casting spells we need
   /stand
+|Break over time to get back to work
   /stick unpause
+|Movement is back
 /return
 
+|Nothing is happening and we can relax
 Sub MediLoop
  /stick pause
+|Movement paused
  /sit
+|Start meditating
  /declare medCon int local
  /varset medCon 1
- /echo ${medCon}
+|Loop to wait until we are needed
  /while (${medCon} == 1) {
    /if (${Target.PctHPs} < 99) /varset medCon 0
+|In combat, needs healing
    /if (!${Target.Buff[Holy Armor].ID})	/varset medCon 0
+|Needs buff
    /if (${Target.Distance} > 20) /varset medCon 0
+|Tank moving, need to be near them
 /continue
   }
+|Work needed
  /stand
  /stick unpause
+|Move
 /return
