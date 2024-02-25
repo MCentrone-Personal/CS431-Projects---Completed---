@@ -79,7 +79,6 @@ Sub ManaCheck
 Sub HpCheck
   /if (${Target.PctHPs} < 99) {
 |Combat is happening/ happened. Heal up the tank if possible
-    /call ManaCheck
     /call Heal
   }
 
@@ -96,6 +95,7 @@ Sub HpCheck
 
 |Function to cast healing
 Sub Heal
+   /call ManaCheck
 |Pausing movement to heal and not cause error
   /stick pause
   /cast 1
