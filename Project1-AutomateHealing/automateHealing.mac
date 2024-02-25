@@ -1,3 +1,6 @@
+|Macro 1
+|Team, Josh, Michael, Trevor
+|Macro that heals and buffs tank
 sub Main
   /declare i int outer
   /declare tankName string local
