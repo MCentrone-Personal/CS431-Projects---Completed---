@@ -50,6 +50,7 @@ sub Main
 
 |Function to Memorize spells
 Sub MemSpells
+/echo Please wait for program to get ready
   /memspell 1 "Healing"
   |To give time to memorize the spell
   /echo Delaying 14 seconds to memorize healing spell
@@ -58,6 +59,7 @@ Sub MemSpells
   /echo Delaying 14 seconds to memorize buff spell
   /delay 14s
   |insert any other spells needed/wanted
+/echo Support is ready!
 /return
 
 |Function that will move character to tank
