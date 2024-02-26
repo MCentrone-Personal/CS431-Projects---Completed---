@@ -1,3 +1,5 @@
+| Written by Joshua Bump, Michael Centrone, and Trevor Radez
+
 sub Main
   /declare i int outer
   /declare tankName string local
