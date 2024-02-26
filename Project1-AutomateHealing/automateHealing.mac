@@ -1,6 +1,7 @@
 |Macro 1
 |Team, Josh, Michael, Trevor
 |Macro that heals and buffs tank
+
 sub Main
   /declare i int outer
   /declare tankName string local
@@ -28,11 +29,12 @@ sub Main
       }
 
   /next i
-
+  
 |Tank found, Macro goes on
   /if (${b.Equal[true]}) /echo A Tank was found
 |No tank class in party, end macro
   /if (${b.Equal[false]}) /endmac
+
 
 |Will memorize the spells the healer needs
   /call MemSpells
@@ -53,6 +55,7 @@ sub Main
 
 |Function to Memorize spells
 Sub MemSpells
+
 /echo Please wait for program to get ready
   /memspell 1 "Healing"
   |To give time to memorize the spell
@@ -69,6 +72,7 @@ Sub MemSpells
 Sub Move
 |Stick healer is premade comand for healer macros
 |At every free oppurtunity the healer will face and move towards the target
+
   /stick healer
 /return
 
@@ -124,7 +128,6 @@ Sub Buff
     /delay 10s
 |Delay to cast spell
     /stick unpause
-|Movement back on
   }
 /return
 
@@ -165,4 +168,21 @@ Sub MediLoop
  /stand
  /stick unpause
 |Move
+/return
+
+Sub MediLoop
+ /stick pause
+ /sit
+ /declare medCon int local
+ /varset medCon 1
+ /echo ${medCon}
+|Forever loop to keep meditating unless tank needs us
+ /while (${medCon} == 1) {
+   /if (${Target.PctHPs} < 99) /varset medCon 0
+   /if (!${Target.Buff[Holy Armor].ID})	/varset medCon 0
+   /if (${Target.Distance} > 20) /varset medCon 0
+/continue
+  }
+ /stand
+ /stick unpause
 /return
