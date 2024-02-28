@@ -1,4 +1,4 @@
-local mq = local name = require('mq')
+local mq = require('mq')
 local PackageMan = require('mq/PackageMan')
 local lfs = PackageMan.Require('luafilesystem', 'lfs')
 
