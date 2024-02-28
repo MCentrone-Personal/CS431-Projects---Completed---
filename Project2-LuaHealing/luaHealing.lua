@@ -2,6 +2,9 @@ local mq = local name = require('mq')
 local PackageMan = require('mq/PackageMan')
 local lfs = PackageMan.Require('luafilesystem', 'lfs')
 
+healingSpell = "Healing"
+buffSpell = "Holy Armor"
+
 function main()
   tankName = ""
   dpsName = ""
@@ -41,12 +44,29 @@ function main()
 
   if dpsFound = true then
     print("A DPS was found.")
-  else
-    print("No DPS found. Exiting...")
-    return
+  ---else
+    ---print("No DPS found. Exiting...")
+    ---return
   end
 
+  memSpells(healingSpell, buffSpell)
 
+  x = 0
+  while x == 0 do
+
+
+end
+
+function memSpells(healingSpell, buffSpell)
+  mq.cmd("/memspell 1 " .. healingSpell)
+  print("Delaying 14 seconds to memorize " .. healingSpell)
+  mq.cmd("/delay 14s")
+
+  mq.cmd("/memspell 2 " .. buffSpell)
+  print("Delaying 14 seconds to memorize " .. buffSpell)
+  mq.cmd("/delay 14s")
+
+  print("Support is ready")
 end
 
 main()
