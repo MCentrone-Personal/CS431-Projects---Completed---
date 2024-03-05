@@ -135,6 +135,7 @@ ManaCheck()
       mq.cmd("/delay 6s")\
       --Move unpasue
       mq.cmd("/Stick unpause")
+    end
   end
 
   function ManaCheck()
