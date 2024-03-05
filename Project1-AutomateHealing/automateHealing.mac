@@ -29,7 +29,7 @@ sub Main
       }
 
   /next i
-  
+
 |Tank found, Macro goes on
   /if (${b.Equal[true]}) /echo A Tank was found
 |No tank class in party, end macro
@@ -168,21 +168,4 @@ Sub MediLoop
  /stand
  /stick unpause
 |Move
-/return
-
-Sub MediLoop
- /stick pause
- /sit
- /declare medCon int local
- /varset medCon 1
- /echo ${medCon}
-|Forever loop to keep meditating unless tank needs us
- /while (${medCon} == 1) {
-   /if (${Target.PctHPs} < 99) /varset medCon 0
-   /if (!${Target.Buff[Holy Armor].ID})	/varset medCon 0
-   /if (${Target.Distance} > 20) /varset medCon 0
-/continue
-  }
- /stand
- /stick unpause
 /return
