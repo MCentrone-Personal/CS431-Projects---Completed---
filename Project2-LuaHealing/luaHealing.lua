@@ -4,6 +4,9 @@ local lfs = PackageMan.Require('luafilesystem', 'lfs')
 
 healingSpell = "Healing"
 buffSpell = "Holy Armor"
+debuffSpell = ""
+dmgSpell = ""
+
 
 function main()
   tankName = ""
