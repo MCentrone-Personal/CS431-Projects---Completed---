@@ -29,11 +29,11 @@ function main()
   dpsFound = false
 
   --Checking for Tank and DPS
-  for i = 1, mq.Group, i+1 do
+  for i = 1, tonumber(mq.TLO.Group()), i+1 do
     mq.cmd('/target ${Group.Member[%d].CleanName}', i)
-    s = mq.Target.Class()
+    s = mq.TLO.Target.Class()
 
-    if (s.Equal("Shadow Knight") or s.Equal("Paladin") or s.Equal("Warrior")) then
+    if (s == "Shadow Knight" or s == "Paladin" or s == "Warrior") then
       tankFound = true
       tankPos = i
     end
@@ -46,14 +46,14 @@ function main()
 
   --Tank was found?
   if tankFound == true then
-    print("A tank was found.")
+    mq.echo("A tank was found.")
   else
-    print("No tank found. Exiting...")
+    mq.echo("No tank found. Exiting...")
     return
   end
 --DPS was found?
   if dpsFound == true then
-    print("A DPS was found.")
+    mq.echo("A DPS was found.")
   ---else
     ---print("No DPS found. Exiting...")
     ---return
@@ -64,12 +64,12 @@ function main()
   memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
   --Movement
-  mq.cmd("/stick helaer")
+  mq.cmd("/stick healer")
 
   --Forever loop
   x = 0
   while x == 0 do
- HpCheck()
+    HpCheck()
   end
 
 end
@@ -78,34 +78,35 @@ end
 function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
     --Healing spell
   mq.cmd("/memspell 1 " .. healingSpell)
-  print("Delaying 14 seconds to memorize " .. healingSpell)
-  mq.cmd("/delay 14s")
+  mq.echo("Delaying 14 seconds to memorize " .. healingSpell)
+  mq.delay("14s")
     --Buff Spell
   mq.cmd("/memspell 2 " .. buffSpell)
-  print("Delaying 14 seconds to memorize " .. buffSpell)
-  mq.cmd("/delay 14s")
+  mq.echo("Delaying 14 seconds to memorize " .. buffSpell)
+  mq.delay("14s")
     --Debuff Spell
   mq.cmd("/memspell 3 " .. debuffSpell)
-  print("Delaying 14 seconds to memorize " .. healingSpell)
-  mq.cmd("/delay 14s")
+  mq.echo("Delaying 14 seconds to memorize " .. healingSpell)
+  mq.delay("14s")
     --Damage Spell
   mq.cmd("/memspell 4 " .. dmgSpell)
-  print("Delaying 14 seconds to memorize " .. buffSpell)
-  mq.cmd("/delay 14s")
+  mq.echo("Delaying 14 seconds to memorize " .. buffSpell)
+  mq.delay("14s")
+  
      --Yippieeee
-  print("Support is ready")
+  mq.echo("Support is ready")
 end
 
   function HpCheck()
     --Target in Combat
-   if  mq.TLO.Target.PctHPs < 99 then
+   if  tonumber(mq.TLO.Target.PctHPs) < 99 then
       Heal()
    end
     --Target Chill
-    if mq.TLO.Target.PctsHPs == 100 then
+    if tonumber(mq.TLO.Target.PctsHPs) == 100 then
       Buff()
       --Target chill and we are in range
-      if mq.TLO.Target.Distance < 20 then
+      if tonumber(mq.TLO.Target.Distance) < 20 then
         MediLoop()
       end
     end
@@ -119,7 +120,7 @@ ManaCheck()
     --Cast spell
   mq.cmd("/cast 1")
     --Time to cast spell
-  mq.cmd("/delay 6s")
+  mq.delay("6s")
     --Movement unpaused
   mq.cmd("/Stick unpause")
  end
@@ -133,7 +134,7 @@ ManaCheck()
       --Casting buff
       mq.cmd("/cast 2")
       --Delay to cast spell
-      mq.cmd("/delay 6s")
+      mq.delay("6s")
       --Move unpasue
       mq.cmd("/Stick unpause")
     end
@@ -148,7 +149,7 @@ ManaCheck()
   function Medi()
     mq.cmd("/Stick pause")
     mq.cmd("/Sit")
-    mq.cmd("/Delay 15s")
+    mq.delay("15s")
     mq.cmd("/Stand")
     mq.cmd("/Stick unpause")
   end
