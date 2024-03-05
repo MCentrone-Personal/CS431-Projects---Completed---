@@ -92,4 +92,6 @@ function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
   print("Support is ready")
 end
 
+  
+
 main()
