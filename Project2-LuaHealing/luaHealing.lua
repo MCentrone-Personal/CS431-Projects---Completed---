@@ -58,7 +58,7 @@ function main()
     ---print("No DPS found. Exiting...")
     ---return
   end
-  
+
   --Previous conditions true
   --Memorize spells
   memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
@@ -73,7 +73,7 @@ function main()
   end
 
 end
-  
+
 --Memorizing spells
 function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
     --Healing spell
@@ -92,21 +92,21 @@ function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
   mq.cmd("/memspell 4 " .. dmgSpell)
   mq.echo("Delaying 14 seconds to memorize " .. buffSpell)
   mq.delay("14s")
-  
+
      --Yippieeee
   mq.echo("Support is ready")
 end
 
   function HpCheck()
     --Target in Combat
-   if  tonumber(mq.TLO.Target.PctHPs) < 99 then
+   if  tonumber(mq.TLO.Target.PctHPs()) < 99 then
       Heal()
    end
     --Target Chill
-    if tonumber(mq.TLO.Target.PctsHPs) == 100 then
+    if tonumber(mq.TLO.Target.PctsHPs()) == 100 then
       Buff()
       --Target chill and we are in range
-      if tonumber(mq.TLO.Target.Distance) < 20 then
+      if tonumber(mq.TLO.Target.Distance()) < 20 then
         MediLoop()
       end
     end
@@ -155,7 +155,7 @@ ManaCheck()
   end
 
   function MediLoop()
-    
+
   end
 
 main()
