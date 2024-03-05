@@ -77,36 +77,36 @@ end
 --Memorizing spells
 function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
     --Healing spell
-  mq.cmd("/memspell 1 " .. healingSpell)
+  mq.cmd("/memspell 1 " .. "\""..healingSpell.."\"")
   print("Delaying 14 seconds to memorize " .. healingSpell)
-  mq.cmd("/delay 5s")
+  mq.delay("5s")
  -- delay(10)
     --Buff Spell
   mq.cmd("/memspell 2 " .. buffSpell)
   print("Delaying 14 seconds to memorize " .. buffSpell)
-  mq.cmd("/delay 14s")
+  mq.delay("5s")
     --Debuff Spell
   mq.cmd("/memspell 3 " .. debuffSpell)
   print("Delaying 14 seconds to memorize " .. healingSpell)
-  mq.cmd("/delay 14s")
     --Damage Spell
+
   mq.cmd("/memspell 4 " .. dmgSpell)
   print("Delaying 14 seconds to memorize " .. buffSpell)
-  mq.cmd("/delay 14s")
+  mq.delay("5s")
      --Yippieeee
   print("Support is ready")
 end
 
   function HpCheck()
     --Target in Combat
-   if  tonumber(mq.TLO.Target.PctHPs) < 99 then
+   if  tonumber(mq.TLO.Target.PctHPs()) < 99 then
       Heal()
    end
     --Target Chill
-    if tonumber(mq.TLO.Target.PctsHPs) == 100 then
+    if tonumber(mq.TLO.Target.PctHPs()) == 100 then
       Buff()
       --Target chill and we are in range
-      if tonumber(mq.TLO.Target.Distance) < 20 then
+      if tonumber(mq.TLO.Target.Distance()) < 20 then
         MediLoop()
       end
     end
@@ -141,7 +141,7 @@ ManaCheck()
   end
 
   function ManaCheck()
-    if mq.TLO.Me.PctMana < 20 then
+    if tonumber(mq.TLO.Me.PctMana()) < 20 then
       Medi()
     end
     end
@@ -157,10 +157,5 @@ ManaCheck()
   function MediLoop()
     
   end
-  
-  function delay(seconds)
-    local start = os.time()
-    repeat until os.time() > start + seconds
-end
 
 main()
