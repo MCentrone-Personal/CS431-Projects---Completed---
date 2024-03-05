@@ -1,7 +1,7 @@
 --Things Lua needs to use for MacroQuest
 local mq = require('mq')
 local PackageMan = require('mq/PackageMan')
-local lfs = PackageMan.Require('luafilesystem', 'lfs')
+--local lfs = PackageMan.Require('luafilesystem', 'lfs')
 
 --Spells for the healer macro
 healingSpell = "Healing"
@@ -19,7 +19,7 @@ function main()
   dpsPos = 0
 
   --Checking group has enough members
-  if mq.Group < 2 then
+  if tonumber(mq.TLO.Group()) < 2 then
     print("You need at least 2 group members")
     return
   end
@@ -29,7 +29,7 @@ function main()
   dpsFound = false
 
   --Checking for Tank and DPS
-  for i = 1, mq.Group, +1 do
+  for i = 1, mq.Group, i+1 do
     mq.cmd('/target ${Group.Member[%d].CleanName}', i)
     s = mq.Target.Class()
 
@@ -69,7 +69,8 @@ function main()
   --Forever loop
   x = 0
   while x == 0 do
---HP Check?
+ HPCheck()
+  end
 
 end
   
