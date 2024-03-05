@@ -12,7 +12,7 @@ function main()
   tankPos = 0
   dpsPos = 0
 
-  if mq.TLO.Group < 1 then
+  if tonumber(mq.TLO.Group()) < 1 then
     mq.echo("You need at least 1 group member.")
     return
   end
@@ -20,7 +20,7 @@ function main()
   tankFound = false
   dpsFound = false
 
-  for i = 1, mq.TLO.Group, +1 do
+  for i = 1, tonumber(mq.TLO.Group()), i+1 do
     mq.cmd('/target ${Group.Member[%d].CleanName}', i)
     s = mq.TLO.Target.Class()
 
