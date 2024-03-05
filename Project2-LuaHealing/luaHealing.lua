@@ -77,20 +77,20 @@ end
 --Memorizing spells
 function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
     --Healing spell
-  mq.cmd("/memspell 1 " .. healingSpell)
-  mq.echo("Delaying 14 seconds to memorize " .. healingSpell)
+  mq.cmd("/memspell 1 " .. "\"" .. healingSpell .. "\"")
+  mq.echo("Delaying 14 seconds to memorize " .. "\"" .. healingSpell .. "\"")
   mq.delay("14s")
     --Buff Spell
   mq.cmd("/memspell 2 " .. buffSpell)
-  mq.echo("Delaying 14 seconds to memorize " .. buffSpell)
+  mq.echo("Delaying 14 seconds to memorize " .. "\"" .. buffSpell .. "\"")
   mq.delay("14s")
     --Debuff Spell
   mq.cmd("/memspell 3 " .. debuffSpell)
-  mq.echo("Delaying 14 seconds to memorize " .. healingSpell)
+  mq.echo("Delaying 14 seconds to memorize " .. "\"" .. debuffSpell .. "\"")
   mq.delay("14s")
     --Damage Spell
   mq.cmd("/memspell 4 " .. dmgSpell)
-  mq.echo("Delaying 14 seconds to memorize " .. buffSpell)
+  mq.echo("Delaying 14 seconds to memorize " .. "\"" .. dmgSpell .. "\"")
   mq.delay("14s")
 
      --Yippieeee
