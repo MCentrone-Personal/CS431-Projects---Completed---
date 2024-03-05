@@ -139,12 +139,21 @@ ManaCheck()
   end
 
   function ManaCheck()
+    if mq.TLO.Me.PctMana < 20
+      Medi()
+    end
     end
 
   function Medi()
+    mq.cmd("/Stick pause")
+    mq.cmd("/Sit")
+    mq.cmd("/Delay 15s")
+    mq.cmd("/Stand")
+    mq.cmd("/Stick unpause")
   end
 
   function MediLoop()
+    
   end
 
 main()
