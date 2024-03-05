@@ -64,7 +64,7 @@ function main()
   memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
   --Movement
- -- mq.cmd("/stick helaer")
+  mq.cmd("/stick helaer")
 
   --Forever loop
   x = 0
@@ -96,19 +96,48 @@ function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 end
 
   function HpCheck()
+    --Target in Combat
    if  mq.TLO.Target.PctHPs < 99
-
+      Heal()
    end
+    --Target Chill
+    if mq.TLO.Target.PctsHPs == 100
+      Buff()
+      --Target chill and we are in range
+      if mq.TLO.Target.Distance < 20
+        MediLoop()
+      end
+    end
   end
 
  function Heal()
-
+    --Check Mana
+ManaCheck()
+    --Pause Movement
+  mq.cmd("/Stick pause")
+    --Cast spell
+  mq.cmd("/cast 1")
+    --Time to cast spell
+  mq.cmd("/delay 6s")
+    --Movement unpaused
+  mq.cmd("/Stick unpause")
  end
 
  function Buff()
+    if not mq.TLO.Target.Buff('Holy Amror').ID()
+      --Buff not active
+      ManaCheck()
+      --Move pause
+      mq.cmd("/Stick pause")
+      --Casting buff
+      mq.cmd("/cast 2")
+      --Delay to cast spell
+      mq.cmd("/delay 6s")\
+      --Move unpasue
+      mq.cmd("/Stick unpause")
   end
 
-  function ManaCheck(0
+  function ManaCheck()
     end
 
   function Medi()
