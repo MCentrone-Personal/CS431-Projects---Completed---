@@ -98,14 +98,14 @@ end
 
   function HpCheck()
     --Target in Combat
-   if  mq.TLO.Target.PctHPs < 99
+   if  mq.TLO.Target.PctHPs < 99 then
       Heal()
    end
     --Target Chill
-    if mq.TLO.Target.PctsHPs == 100
+    if mq.TLO.Target.PctsHPs == 100 then
       Buff()
       --Target chill and we are in range
-      if mq.TLO.Target.Distance < 20
+      if mq.TLO.Target.Distance < 20 then
         MediLoop()
       end
     end
@@ -125,7 +125,7 @@ ManaCheck()
  end
 
  function Buff()
-    if not mq.TLO.Target.Buff('Holy Amror').ID()
+    if not mq.TLO.Target.Buff('Holy Amror').ID() then
       --Buff not active
       ManaCheck()
       --Move pause
@@ -140,7 +140,7 @@ ManaCheck()
   end
 
   function ManaCheck()
-    if mq.TLO.Me.PctMana < 20
+    if mq.TLO.Me.PctMana < 20 then
       Medi()
     end
     end
