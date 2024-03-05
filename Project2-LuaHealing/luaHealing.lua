@@ -20,11 +20,11 @@ function main()
   tankFound = false
   dpsFound = false
 
-  for i = 1, mq.Group, +1 do
+  for i = 1, mq.TLO.Group, +1 do
     mq.cmd('/target ${Group.Member[%d].CleanName}', i)
-    s = mq.Target.Class()
+    s = mq.TLO.Target.Class()
 
-    if (s.Equal("Shadow Knight") or s.Equal("Paladin") or s.Equal("Warrior")) then
+    if (s.TLO.Equal("Shadow Knight") or s.TLO.Equal("Paladin") or s.TLO.Equal("Warrior")) then
       tankFound = true
       tankPos = i
     end
