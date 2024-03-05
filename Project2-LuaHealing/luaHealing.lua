@@ -54,7 +54,7 @@ function main()
   x = 0
   while x == 0 do
 
-
+  end
 end
 
 function memSpells(healingSpell, buffSpell)
