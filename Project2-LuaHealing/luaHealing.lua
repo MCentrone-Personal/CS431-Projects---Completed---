@@ -63,6 +63,9 @@ function main()
   --Memorize spells
   memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
+  --Movement
+ -- mq.cmd("/stick helaer")
+
   --Forever loop
   x = 0
   while x == 0 do
@@ -92,6 +95,26 @@ function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
   print("Support is ready")
 end
 
-  
+  function HpCheck()
+   if  mq.TLO.Target.PctHPs < 99
+
+   end
+  end
+
+ function Heal()
+
+ end
+
+ function Buff()
+  end
+
+  function ManaCheck(0
+    end
+
+  function Medi()
+  end
+
+  function MediLoop()
+  end
 
 main()
