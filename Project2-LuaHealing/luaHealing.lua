@@ -79,19 +79,19 @@ function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
     --Healing spell
   mq.cmd("/memspell 1 " .. healingSpell)
   print("Delaying 14 seconds to memorize " .. healingSpell)
-  mq.cmd("/delay 14s")
+  mq.delay(14s)
     --Buff Spell
   mq.cmd("/memspell 2 " .. buffSpell)
   print("Delaying 14 seconds to memorize " .. buffSpell)
-  mq.cmd("/delay 14s")
+  mq.delay(14s)
     --Debuff Spell
   mq.cmd("/memspell 3 " .. debuffSpell)
   print("Delaying 14 seconds to memorize " .. healingSpell)
-  mq.cmd("/delay 14s")
+  mq.delay(14s)
     --Damage Spell
   mq.cmd("/memspell 4 " .. dmgSpell)
   print("Delaying 14 seconds to memorize " .. buffSpell)
-  mq.cmd("/delay 14s")
+  mq.delay(14s)
      --Yippieeee
   print("Support is ready")
 end
@@ -119,7 +119,7 @@ ManaCheck()
     --Cast spell
   mq.cmd("/cast 1")
     --Time to cast spell
-  mq.cmd("/delay 6s")
+  mq.delay(6s)
     --Movement unpaused
   mq.cmd("/Stick unpause")
  end
@@ -133,7 +133,7 @@ ManaCheck()
       --Casting buff
       mq.cmd("/cast 2")
       --Delay to cast spell
-      mq.cmd("/delay 6s")
+      mq.delay(6s)
       --Move unpasue
       mq.cmd("/Stick unpause")
     end
@@ -148,7 +148,7 @@ ManaCheck()
   function Medi()
     mq.cmd("/Stick pause")
     mq.cmd("/Sit")
-    mq.cmd("/Delay 15s")
+    mq.delay(6s)
     mq.cmd("/Stand")
     mq.cmd("/Stick unpause")
   end
