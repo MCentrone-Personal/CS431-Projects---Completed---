@@ -183,6 +183,7 @@ function MediLoop()
     if tonumber(mq.TLO.Target.Distance()) > 20 then
       medCon = false
     end
+  end
 
   -- move
   mq.cmd("/stand")
