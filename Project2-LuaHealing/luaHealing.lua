@@ -190,4 +190,9 @@ function MediLoop()
   mq.cmd("/stick unpause")
 end
 
+function target(targetIndex)
+  mq.cmd('/target ${Group.Member[%d].CleanName}', targetIndex)
+end
+
+
 main()
