@@ -133,7 +133,7 @@ ManaCheck()
       --Casting buff
       mq.cmd("/cast 2")
       --Delay to cast spell
-      mq.cmd("/delay 6s")\
+      mq.cmd("/delay 6s")
       --Move unpasue
       mq.cmd("/Stick unpause")
     end
