@@ -5,3 +5,4 @@ Contains all project file for CS-431 - Principles in Programming Languages at SU
 
 ### Directories:
 - *Project1-AutomateHealing:* Contains the MacroQuest files for automating healing of a tank. This is project 1.
+- *Project2-LuaHealing:* Contains the Lua scripts for project 2, which converts the MacroQuest macro to a Lua plugin.
