@@ -13,7 +13,7 @@ function main()
   dpsPos = 0
 
   if mq.TLO.Group < 1 then
-    print("You need at least 1 group member.")
+    mq.echo("You need at least 1 group member.")
     return
   end
 
@@ -36,14 +36,14 @@ function main()
   end
 
   if tankFound = true then
-    print("A tank was found.")
+    mq.echo("A tank was found.")
   else
-    print("No tank found. Exiting...")
+    mq.echo("No tank found. Exiting...")
     return
   end
 
   if dpsFound = true then
-    print("A DPS was found.")
+    mq.echo("A DPS was found.")
   ---else
     ---print("No DPS found. Exiting...")
     ---return
@@ -59,12 +59,12 @@ end
 
 function memSpells(healingSpell, buffSpell)
   mq.cmd("/memspell 1 " .. healingSpell)
-  print("Delaying 14 seconds to memorize " .. healingSpell)
-  mq.cmd("/delay 14s")
+  mq.echo("Delaying 14 seconds to memorize " .. healingSpell)
+  mq.delay("14s")
 
   mq.cmd("/memspell 2 " .. buffSpell)
-  print("Delaying 14 seconds to memorize " .. buffSpell)
-  mq.cmd("/delay 14s")
+  mq.echo("Delaying 14 seconds to memorize " .. buffSpell)
+  mq.delay("14s")
 
   print("Support is ready")
 end
