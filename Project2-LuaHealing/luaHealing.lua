@@ -4,8 +4,8 @@ local PackageMan = require('mq/PackageMan')
 --local lfs = PackageMan.Require('luafilesystem', 'lfs')
 
 --Spells for the healer macro
-healingSpell = "Healing"
-buffSpell = "Holy Armor"
+healingSpell = "Light Healing"
+buffSpell = "Strengthen"
 debuffSpell = ""
 dmgSpell = ""
 
@@ -19,7 +19,7 @@ function main()
   dpsPos = 0
 
   --Checking group has enough members
-  if tonumber(mq.TLO.Group()) < 2 then
+  if mq.TLO.Group() == nil or tonumber(mq.TLO.Group()) < 1 then
     print("You need at least 2 group members")
     return
   end
@@ -29,11 +29,11 @@ function main()
   dpsFound = false
 
   --Checking for Tank and DPS
-  for i = 1, tonumber(mq.TLO.Group()), i+1 do
+  for i = 1,tonumber(mq.TLO.Group()),1 do
     mq.cmd('/target ${Group.Member[%d].CleanName}', i)
     s = mq.TLO.Target.Class()
 
-    if (s == "Shadow Knight" or s == "Paladin" or s == "Warrior") then
+    if (s=="Shadow Knight" or s=="Paladin" or s=="Warrior") then
       tankFound = true
       tankPos = i
     end
@@ -46,14 +46,14 @@ function main()
 
   --Tank was found?
   if tankFound == true then
-    mq.echo("A tank was found.")
+    print("A tank was found.")
   else
-    mq.echo("No tank found. Exiting...")
+    print("No tank found. Exiting...")
     return
   end
 --DPS was found?
   if dpsFound == true then
-    mq.echo("A DPS was found.")
+    print("A DPS was found.")
   ---else
     ---print("No DPS found. Exiting...")
     ---return
@@ -64,12 +64,12 @@ function main()
   memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
   --Movement
-  mq.cmd("/stick healer")
+  mq.cmd("/stick helaer")
 
   --Forever loop
   x = 0
   while x == 0 do
-    HpCheck()
+	HpCheck()
   end
 
 end
@@ -78,23 +78,23 @@ end
 function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
     --Healing spell
   mq.cmd("/memspell 1 " .. healingSpell)
-  mq.echo("Delaying 14 seconds to memorize " .. healingSpell)
-  mq.delay("14s")
+  print("Delaying 14 seconds to memorize " .. healingSpell)
+  mq.cmd("/delay 5s")
+ -- delay(10)
     --Buff Spell
   mq.cmd("/memspell 2 " .. buffSpell)
-  mq.echo("Delaying 14 seconds to memorize " .. buffSpell)
-  mq.delay("14s")
+  print("Delaying 14 seconds to memorize " .. buffSpell)
+  mq.cmd("/delay 14s")
     --Debuff Spell
   mq.cmd("/memspell 3 " .. debuffSpell)
-  mq.echo("Delaying 14 seconds to memorize " .. healingSpell)
-  mq.delay("14s")
+  print("Delaying 14 seconds to memorize " .. healingSpell)
+  mq.cmd("/delay 14s")
     --Damage Spell
   mq.cmd("/memspell 4 " .. dmgSpell)
-  mq.echo("Delaying 14 seconds to memorize " .. buffSpell)
-  mq.delay("14s")
-  
+  print("Delaying 14 seconds to memorize " .. buffSpell)
+  mq.cmd("/delay 14s")
      --Yippieeee
-  mq.echo("Support is ready")
+  print("Support is ready")
 end
 
   function HpCheck()
@@ -120,13 +120,13 @@ ManaCheck()
     --Cast spell
   mq.cmd("/cast 1")
     --Time to cast spell
-  mq.delay("6s")
+  mq.cmd("/delay 6s")
     --Movement unpaused
   mq.cmd("/Stick unpause")
  end
 
  function Buff()
-    if not mq.TLO.Target.Buff('Holy Amror').ID() then
+    if not mq.TLO.Target.Buff('Strengthen').ID() then
       --Buff not active
       ManaCheck()
       --Move pause
@@ -134,7 +134,7 @@ ManaCheck()
       --Casting buff
       mq.cmd("/cast 2")
       --Delay to cast spell
-      mq.delay("6s")
+      mq.cmd("/delay 6s")
       --Move unpasue
       mq.cmd("/Stick unpause")
     end
@@ -149,7 +149,7 @@ ManaCheck()
   function Medi()
     mq.cmd("/Stick pause")
     mq.cmd("/Sit")
-    mq.delay("15s")
+    mq.cmd("/Delay 15s")
     mq.cmd("/Stand")
     mq.cmd("/Stick unpause")
   end
@@ -157,5 +157,10 @@ ManaCheck()
   function MediLoop()
     
   end
+  
+  function delay(seconds)
+    local start = os.time()
+    repeat until os.time() > start + seconds
+end
 
 main()
