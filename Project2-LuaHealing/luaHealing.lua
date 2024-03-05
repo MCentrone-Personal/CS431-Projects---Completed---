@@ -35,14 +35,14 @@ function main()
     ---end
   end
 
-  if tankFound = true then
+  if tankFound == true then
     mq.echo("A tank was found.")
   else
     mq.echo("No tank found. Exiting...")
     return
   end
 
-  if dpsFound = true then
+  if dpsFound == true then
     mq.echo("A DPS was found.")
   ---else
     ---print("No DPS found. Exiting...")
