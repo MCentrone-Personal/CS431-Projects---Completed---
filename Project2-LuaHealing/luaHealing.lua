@@ -1,28 +1,34 @@
+--Things Lua needs to use for MacroQuest
 local mq = require('mq')
 local PackageMan = require('mq/PackageMan')
 local lfs = PackageMan.Require('luafilesystem', 'lfs')
 
+--Spells for the healer macro
 healingSpell = "Healing"
 buffSpell = "Holy Armor"
 debuffSpell = ""
 dmgSpell = ""
 
-
+--Main Function
 function main()
   tankName = ""
   dpsName = ""
 
+  --Position of the tank and dps
   tankPos = 0
   dpsPos = 0
 
+  --Checking group has enough members
   if mq.Group < 2 then
     print("You need at least 2 group members")
     return
   end
 
+  --Bools if tank / dps in group
   tankFound = false
   dpsFound = false
 
+  --Checking for Tank and DPS
   for i = 1, mq.Group, +1 do
     mq.cmd('/target ${Group.Member[%d].CleanName}', i)
     s = mq.Target.Class()
@@ -38,45 +44,51 @@ function main()
     ---end
   end
 
+  --Tank was found?
   if tankFound = true then
     print("A tank was found.")
   else
     print("No tank found. Exiting...")
     return
   end
-
+--DPS was found?
   if dpsFound = true then
     print("A DPS was found.")
   ---else
     ---print("No DPS found. Exiting...")
     ---return
   end
-
+  
+  --Previous conditions true
+  --Memorize spells
   memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
+  --Forever loop
   x = 0
   while x == 0 do
-
+--HP Check?
 
 end
-
+  
+--Memorizing spells
 function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
+    --Healing spell
   mq.cmd("/memspell 1 " .. healingSpell)
   print("Delaying 14 seconds to memorize " .. healingSpell)
   mq.cmd("/delay 14s")
-
+    --Buff Spell
   mq.cmd("/memspell 2 " .. buffSpell)
   print("Delaying 14 seconds to memorize " .. buffSpell)
   mq.cmd("/delay 14s")
-
+    --Debuff Spell
   mq.cmd("/memspell 3 " .. debuffSpell)
   print("Delaying 14 seconds to memorize " .. healingSpell)
   mq.cmd("/delay 14s")
-
+    --Damage Spell
   mq.cmd("/memspell 4 " .. dmgSpell)
   print("Delaying 14 seconds to memorize " .. buffSpell)
   mq.cmd("/delay 14s")
-
+     --Yippieeee
   print("Support is ready")
 end
 
