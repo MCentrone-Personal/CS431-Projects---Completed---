@@ -63,13 +63,10 @@ function main()
   --Memorize spells
   memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
-  --Movement
-  mq.cmd("/stick helaer")
-
   --Forever loop
   x = 0
   while x == 0 do
-	HpCheck()
+	   HpCheck()
   end
 
 end
@@ -79,26 +76,29 @@ function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
     --Healing spell
   mq.cmd("/memspell 1 " .. "\"" .. healingSpell .. "\"")
-  mq.echo("Delaying 14 seconds to memorize " .. "\"" .. healingSpell .. "\"")
+  print("Delaying 14 seconds to memorize " .. "\"" .. healingSpell .. "\"")
   mq.delay("14s")
 
     --Buff Spell
-  mq.cmd("/memspell 2 " . "\"" .. buffSpell .. "\"")
-  mq.echo("Delaying 14 seconds to memorize " .. buffSpell)
+  mq.cmd("/memspell 2 " .. "\"" .. buffSpell .. "\"")
+  print("Delaying 14 seconds to memorize " .. "\"" .. buffSpell .. "\"")
   mq.delay("14s")
 
     --Debuff Spell
   mq.cmd("/memspell 3 " .. "\"" .. debuffSpell .. "\"")
-  mq.echo("Delaying 14 seconds to memorize " .. debuffSpell)
+  print("Delaying 14 seconds to memorize " .. "\"" .. debuffSpell .. "\"")
   mq.delay("14s")
 
     --Damage Spell
-  mq.cmd("/memspell 4 " .. "\"" .. dmgSpell .. "\""))
-  mq.echo("Delaying 14 seconds to memorize " .. dmgSpell)
+  mq.cmd("/memspell 4 " .. "\"" .. dmgSpell .. "\"")
+  print("Delaying 14 seconds to memorize " .. "\"" .. dmgSpell .. "\"")
   mq.delay("14s")
 
      --Yippieeee
   print("Support is ready")
+
+  --Movement
+  mq.cmd("/stick healer")
 end
 
 function HpCheck()
@@ -130,7 +130,7 @@ function Heal()
 end
 
 function Buff(buffSpell)
-  if not mq.TLO.Target.Buff(buffSpell).ID() then
+  if mq.TLO.Target.Buff(buffSpell).ID() == nil then
     --Buff not active
     ManaCheck()
     --Move pause
@@ -153,7 +153,7 @@ end
 function Medi()
   mq.cmd("/Stick pause")
   mq.cmd("/Sit")
-  mq.echo("Meditating for 15 seconds")
+  print("Meditating for 15 seconds")
   mq.delay("15s")
   mq.cmd("/Stand")
   mq.cmd("/Stick unpause")
@@ -175,7 +175,7 @@ function MediLoop()
     end
 
     --  tank needs a buff
-    if not mq.TLO.Target.Buff(buffSpell).ID() then
+    if mq.TLO.Target.Buff(buffSpell).ID() == nil then
       medCon = false
     end
 
