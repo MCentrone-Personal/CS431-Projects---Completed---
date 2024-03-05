@@ -45,14 +45,14 @@ function main()
   end
 
   --Tank was found?
-  if tankFound = true then
+  if tankFound == true then
     print("A tank was found.")
   else
     print("No tank found. Exiting...")
     return
   end
 --DPS was found?
-  if dpsFound = true then
+  if dpsFound == true then
     print("A DPS was found.")
   ---else
     ---print("No DPS found. Exiting...")
