@@ -52,7 +52,7 @@ function main()
     ---return
   end
 
-  memSpells(healingSpell, buffSpell)
+  memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
   x = 0
   while x == 0 do
@@ -60,12 +60,20 @@ function main()
 
 end
 
-function memSpells(healingSpell, buffSpell)
+function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
   mq.cmd("/memspell 1 " .. healingSpell)
   print("Delaying 14 seconds to memorize " .. healingSpell)
   mq.cmd("/delay 14s")
 
   mq.cmd("/memspell 2 " .. buffSpell)
+  print("Delaying 14 seconds to memorize " .. buffSpell)
+  mq.cmd("/delay 14s")
+
+  mq.cmd("/memspell 3 " .. debuffSpell)
+  print("Delaying 14 seconds to memorize " .. healingSpell)
+  mq.cmd("/delay 14s")
+
+  mq.cmd("/memspell 4 " .. dmgSpell)
   print("Delaying 14 seconds to memorize " .. buffSpell)
   mq.cmd("/delay 14s")
 
