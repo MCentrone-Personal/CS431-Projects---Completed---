@@ -30,7 +30,7 @@ function main()
 
   --Checking for Tank and DPS
   for i = 1,tonumber(mq.TLO.Group()),1 do
-    mq.cmd('/target ${Group.Member[%d].CleanName}', i)
+    target(i)
     s = mq.TLO.Target.Class()
 
     if (s=="Shadow Knight" or s=="Paladin" or s=="Warrior") then
@@ -61,6 +61,7 @@ function main()
 
   --Previous conditions true
   --Memorize spells
+  target(tankPos)
   memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
   --Forever loop
@@ -189,5 +190,10 @@ function MediLoop()
   mq.cmd("/stand")
   mq.cmd("/stick unpause")
 end
+
+function target(targetIndex)
+  mq.cmd('/target ${Group.Member[%d].CleanName}', targetIndex)
+end
+
 
 main()
