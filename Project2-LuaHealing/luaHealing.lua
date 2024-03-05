@@ -12,7 +12,7 @@ function main()
   tankPos = 0
   dpsPos = 0
 
-  if mq.Group < 2 then
+  if mq.TLO.Group < 2 then
     print("You need at least 2 group members")
     return
   end
