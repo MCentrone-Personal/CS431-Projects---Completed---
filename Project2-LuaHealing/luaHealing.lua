@@ -69,7 +69,7 @@ function main()
   --Forever loop
   x = 0
   while x == 0 do
- HPCheck()
+ HpCheck()
   end
 
 end
