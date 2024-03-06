@@ -64,6 +64,9 @@ function main()
   target(tankPos)
   memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
+  --Movement
+  mq.cmd("/stick healer")
+
   --Forever loop
   x = 0
   while x == 0 do
@@ -77,29 +80,27 @@ function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
     --Healing spell
   mq.cmd("/memspell 1 " .. "\"" .. healingSpell .. "\"")
-  print("Delaying 14 seconds to memorize " .. "\"" .. healingSpell .. "\"")
-  mq.delay("14s")
+  print("Delaying 10 seconds to memorize " .. "\"" .. healingSpell .. "\"")
+  mq.delay("10s")
 
     --Buff Spell
   mq.cmd("/memspell 2 " .. "\"" .. buffSpell .. "\"")
-  print("Delaying 14 seconds to memorize " .. "\"" .. buffSpell .. "\"")
-  mq.delay("14s")
+  print("Delaying 10 seconds to memorize " .. "\"" .. buffSpell .. "\"")
+  mq.delay("10s")
 
     --Debuff Spell
   mq.cmd("/memspell 3 " .. "\"" .. debuffSpell .. "\"")
-  print("Delaying 14 seconds to memorize " .. "\"" .. debuffSpell .. "\"")
-  mq.delay("14s")
+  print("Delaying 10 seconds to memorize " .. "\"" .. debuffSpell .. "\"")
+  mq.delay("10s")
 
     --Damage Spell
   mq.cmd("/memspell 4 " .. "\"" .. dmgSpell .. "\"")
-  print("Delaying 14 seconds to memorize " .. "\"" .. dmgSpell .. "\"")
-  mq.delay("14s")
+  print("Delaying 10 seconds to memorize " .. "\"" .. dmgSpell .. "\"")
+  mq.delay("10s")
 
      --Yippieeee
   print("Support is ready")
 
-  --Movement
-  mq.cmd("/stick healer")
 end
 
 function HpCheck()
@@ -109,7 +110,7 @@ function HpCheck()
   end
     --Target Chill
   if tonumber(mq.TLO.Target.PctHPs()) == 100 then
-    Buff()
+    Buff(buffSpell)
     --Target chill and we are in range
     if tonumber(mq.TLO.Target.Distance()) < 20 then
       MediLoop()
