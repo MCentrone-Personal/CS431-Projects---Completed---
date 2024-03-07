@@ -7,7 +7,7 @@ local PackageMan = require('mq/PackageMan')
 healingSpell = "Healing"
 buffSpell = "Grow"
 debuffSpell = "Drowsy"
-dmgSpell = "Frsot Rift"
+dmgSpell = "Frost Rift"
 
 --Main Function
 function main()
