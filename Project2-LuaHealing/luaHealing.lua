@@ -5,7 +5,7 @@ local PackageMan = require('mq/PackageMan')
 
 --Spells for the healer macro
 healingSpell = "Healing"
-buffSpell = "Holy Armor"
+buffSpell = "Grow"
 debuffSpell = "Drowsy"
 dmgSpell = "Frsot Rift"
 
@@ -129,7 +129,7 @@ ManaCheck()
  end
 
  function Buff()
-    if not mq.TLO.Target.Buff('Holy Amror').ID() then
+    if not mq.TLO.Target.Buff('Grow').ID() then
       --Buff not active
       ManaCheck()
       --Move pause
