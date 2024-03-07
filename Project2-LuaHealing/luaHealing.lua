@@ -5,9 +5,13 @@ local PackageMan = require('mq/PackageMan')
 
 --Spells for the healer macro
 healingSpell = "Light Healing"
-buffSpell = "Strengthen"
-debuffSpell = ""
-dmgSpell = ""
+-- Healing
+buffSpell = "Grow"
+--frenzy
+debuffSpell = "Drowsy"
+--Disempower
+dmgSpell = "Frost Rift"
+--Spirit strike
 
 --Main Function
 function main()
