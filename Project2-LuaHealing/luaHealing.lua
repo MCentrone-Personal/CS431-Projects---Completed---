@@ -101,6 +101,9 @@ end
     --Target in Combat
    if  tonumber(mq.TLO.Target.PctHPs) < 99 then
       Heal()
+    --Fuck up the loser
+    --Sending it tankPos to retarget tank when done
+    Assist(tankPos)
    end
     --Target Chill
     if tonumber(mq.TLO.Target.PctsHPs) == 100 then
@@ -157,5 +160,15 @@ ManaCheck()
   function MediLoop()
     
   end
+
+function Assist(i)
+  ManaCheck()
+  mq.cmd("/assist")
+  if mq.TLO.Target.Buff('Drowsy').ID() then
+  mq.cmd("/cast 3")
+  end
+  mq.cmd("/cast 4")
+ mq.cmd('/target ${Group.Member[%d].CleanName}', i)
+end
 
 main()
