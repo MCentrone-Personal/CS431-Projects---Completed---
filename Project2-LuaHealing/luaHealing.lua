@@ -193,7 +193,7 @@ function MediLoop()
 end
 
 function target(targetIndex)
-  mq.cmd('/target ${Group.Member[%d].CleanName}', targetIndex)
+  mq.cmdf('/target ${Group.Member[%d].CleanName}', targetIndex)
 end
 
 
