@@ -165,13 +165,18 @@ function Assist(i)
   ManaCheck()
   --Move pause
   mq.cmd("/Stick pause")
+  --Target Tank's target
   mq.cmd("/assist")
-  if mq.TLO.Target.Buff('Drowsy').ID() then
+  --Check for debuff already applied
+  if not mq.TLO.Target.Buff('Drowsy').ID() then
+  --Debuff Cast
   mq.cmd("/cast 3")
   mq.delay("6s")
   end
+  --Damage spell cast
   mq.cmd("/cast 4")
   mq.delay("6s")
+  --Retarget tank
   mq.cmd('/target ${Group.Member[%d].CleanName}', i)
   --Move unpasue
   mq.cmd("/Stick unpause")
