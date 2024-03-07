@@ -6,8 +6,8 @@ local PackageMan = require('mq/PackageMan')
 --Spells for the healer macro
 healingSpell = "Healing"
 buffSpell = "Holy Armor"
-debuffSpell = ""
-dmgSpell = ""
+debuffSpell = "Drowsy"
+dmgSpell = "Frsot Rift"
 
 --Main Function
 function main()
@@ -86,11 +86,11 @@ function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
   mq.delay("14s")
     --Debuff Spell
   mq.cmd("/memspell 3 " .. debuffSpell)
-  mq.echo("Delaying 14 seconds to memorize " .. healingSpell)
+  mq.echo("Delaying 14 seconds to memorize " .. debuffSpell)
   mq.delay("14s")
     --Damage Spell
   mq.cmd("/memspell 4 " .. dmgSpell)
-  mq.echo("Delaying 14 seconds to memorize " .. buffSpell)
+  mq.echo("Delaying 14 seconds to memorize " .. dmgSpell)
   mq.delay("14s")
   
      --Yippieeee
