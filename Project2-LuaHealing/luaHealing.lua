@@ -163,12 +163,18 @@ ManaCheck()
 
 function Assist(i)
   ManaCheck()
+   --Move pause
+      mq.cmd("/Stick pause")
   mq.cmd("/assist")
   if mq.TLO.Target.Buff('Drowsy').ID() then
   mq.cmd("/cast 3")
+  mq.delay("6s")
   end
   mq.cmd("/cast 4")
+  mq.delay("6s")
  mq.cmd('/target ${Group.Member[%d].CleanName}', i)
+    --Move unpasue
+      mq.cmd("/Stick unpause")
 end
 
 main()
