@@ -210,7 +210,7 @@ function Assist(i)
   --Target Tank's target
   mq.cmd("/assist")
   --Check for debuff already applied
-  if not mq.TLO.Target.Buff('Drowsy').ID() then
+  if not mq.TLO.Target.Buff(debuffSpell).ID() then
   --Debuff Cast
   mq.cmd("/cast 3")
   mq.delay("6s")
@@ -219,7 +219,7 @@ function Assist(i)
   mq.cmd("/cast 4")
   mq.delay("6s")
   --Retarget tank
-  mq.cmd('/target ${Group.Member[%d].CleanName}', i)
+   target(i)
   --Move unpasue
   mq.cmd("/Stick unpause")
 end
