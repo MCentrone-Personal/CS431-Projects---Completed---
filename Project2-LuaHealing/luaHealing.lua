@@ -65,11 +65,9 @@ function main()
   x = 0
 groupMem = 0
   while x == 0 do
-	   HpCheck(tankPos, groupMem)
-	groupMem = groupMem + 1
-	if groupMem > tonumber(mq.TLO.group()) then
-		groupMem = 0
-	end
+	 for groupMem = 1,tonumber(mq.TLO.Group()),1 do
+		HpCheck(tankPos,groupMem)
+    end
   end
 
 end
