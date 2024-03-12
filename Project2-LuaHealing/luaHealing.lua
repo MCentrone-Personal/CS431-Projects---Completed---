@@ -99,32 +99,32 @@ function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 end
 
 function HpCheck(i, x)
---i = tankPos
---x = group member index
---Targets the next party member
-target(x)
---Run through everything needed for party members
-if tonumber(mq.TLO.Target.Distance()) < 35 and mq.TLO.Target ~= nil then
-    --Target in Combat
-  if  tonumber(mq.TLO.Target.PctHPs()) < 99 then
-    Heal()
-     --Fuck up the loser
-    --Sending it tankPos to retarget tank when done
-	if x == i then
-    Assist(i)
-	end
-  end
-    --Target Chill
-  if tonumber(mq.TLO.Target.PctHPs()) == 100 then
-    Buff(buffSpell)
-    --Target chill and we are in range
-	if x == i then
-    if tonumber(mq.TLO.Target.Distance()) < 20 then
-      MediLoop()
-		end
+  --i = tankPos
+  --x = group member index
+  --Targets the next party member
+  target(x)
+  --Run through everything needed for party members
+  if tonumber(mq.TLO.Target.Distance()) < 35 and mq.TLO.Target ~= nil then
+      --Target in Combat
+    if  tonumber(mq.TLO.Target.PctHPs()) < 99 then
+      Heal()
+       --Fuck up the loser
+      --Sending it tankPos to retarget tank when done
+  	   if x == i then
+         Assist(i)
+  	    end
+    end
+      --Target Chill
+    if tonumber(mq.TLO.Target.PctHPs()) == 100 then
+      Buff(buffSpell)
+      --Target chill and we are in range
+    	if x == i then
+        if tonumber(mq.TLO.Target.Distance()) < 20 then
+          MediLoop()
+  		  end
+      end
     end
   end
-end
 end
 
 function Heal()
@@ -214,8 +214,8 @@ function Assist(i)
   --Check for debuff already applied
   if not mq.TLO.Target.Buff(debuffSpell).ID() then
   --Debuff Cast
-  mq.cmd("/cast 3")
-  mq.delay("6s")
+    mq.cmd("/cast 3")
+    mq.delay("6s")
   end
   --Damage spell cast
   mq.cmd("/cast 4")
