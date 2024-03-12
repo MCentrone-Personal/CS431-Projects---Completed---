@@ -210,7 +210,7 @@ function Assist(i)
   --Target Tank's target
   mq.cmd("/assist")
   --Check for debuff already applied
-  if not mq.TLO.Target.Buff('Drowsy').ID() then
+  if not mq.TLO.Target.Buff(debuffSpell).ID() then
   --Debuff Cast
   mq.cmd("/cast 3")
   mq.delay("6s")
