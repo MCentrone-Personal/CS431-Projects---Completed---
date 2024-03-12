@@ -62,9 +62,8 @@ function main()
   mq.cmd("/stick healer")
 
   --Forever loop
-  x = 0
 groupMem = 0
-  while x == 0 do
+  while true do
 	 for groupMem = 1,tonumber(mq.TLO.Group()),1 do
 		HpCheck(tankPos,groupMem)
     end
