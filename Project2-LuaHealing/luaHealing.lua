@@ -50,8 +50,7 @@ function main()
   else
     print("No tank found. Exiting...")
     return
-   end
-  end
+	end
 
   --Previous conditions true
   --Memorize spells
