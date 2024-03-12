@@ -5,9 +5,13 @@ local PackageMan = require('mq/PackageMan')
 
 --Spells for the healer macro
 healingSpell = "Light Healing"
+-- Healing
 buffSpell = "Strengthen"
-debuffSpell = ""
-dmgSpell = ""
+--frenzy
+debuffSpell = "Drowsy"
+--Disempower
+dmgSpell = "Frost Rift"
+--Spirit strike
 
 --Main Function
 function main()
@@ -30,7 +34,7 @@ function main()
 
   --Checking for Tank and DPS
   for i = 1,tonumber(mq.TLO.Group()),1 do
-    mq.cmd('/target ${Group.Member[%d].CleanName}', i)
+    target(i)
     s = mq.TLO.Target.Class()
 
     if (s=="Shadow Knight" or s=="Paladin" or s=="Warrior") then
@@ -61,105 +65,145 @@ function main()
 
   --Previous conditions true
   --Memorize spells
+  target(tankPos)
   memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
   --Movement
-  mq.cmd("/stick helaer")
+  mq.cmd("/stick healer")
 
   --Forever loop
   x = 0
   while x == 0 do
-	HpCheck()
+    for i = 1,tonumber(mq.TLO.Group()),1 do
+		HpCheck(i)
+    end
+	   
+	   
   end
 
 end
 
 --Memorizing spells
 function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
-  
+
     --Healing spell
   mq.cmd("/memspell 1 " .. "\"" .. healingSpell .. "\"")
-  mq.echo("Delaying 14 seconds to memorize " .. "\"" .. healingSpell .. "\"")
-  mq.delay("14s")
-  
+  print("Delaying 10 seconds to memorize " .. "\"" .. healingSpell .. "\"")
+  mq.delay("10s")
+
     --Buff Spell
-  mq.cmd("/memspell 2 " . "\"" .. buffSpell .. "\"")
-  mq.echo("Delaying 14 seconds to memorize " .. buffSpell)
-  mq.delay("14s")
-  
+  mq.cmd("/memspell 2 " .. "\"" .. buffSpell .. "\"")
+  print("Delaying 10 seconds to memorize " .. "\"" .. buffSpell .. "\"")
+  mq.delay("10s")
+
     --Debuff Spell
   mq.cmd("/memspell 3 " .. "\"" .. debuffSpell .. "\"")
-  mq.echo("Delaying 14 seconds to memorize " .. debuffSpell)
-  mq.delay("14s")
-  
+  print("Delaying 10 seconds to memorize " .. "\"" .. debuffSpell .. "\"")
+  mq.delay("10s")
+
     --Damage Spell
-  mq.cmd("/memspell 4 " .. "\"" .. dmgSpell .. "\""))
-  mq.echo("Delaying 14 seconds to memorize " .. dmgSpell)
-  mq.delay("14s")
+  mq.cmd("/memspell 4 " .. "\"" .. dmgSpell .. "\"")
+  print("Delaying 10 seconds to memorize " .. "\"" .. dmgSpell .. "\"")
+  mq.delay("10s")
 
      --Yippieeee
   print("Support is ready")
+
 end
 
-  function HpCheck()
+function HpCheck(i)
+	target(i)
     --Target in Combat
-   if  tonumber(mq.TLO.Target.PctHPs()) < 99 then
-      Heal()
-   end
+  if  tonumber(mq.TLO.Target.PctHPs()) < 99 then
+    Heal()
+  end
     --Target Chill
-    if tonumber(mq.TLO.Target.PctHPs()) == 100 then
-      Buff()
-      --Target chill and we are in range
-      if tonumber(mq.TLO.Target.Distance()) < 20 then
-        MediLoop()
-      end
-    end
+  if tonumber(mq.TLO.Target.PctHPs()) == 100 then
+    Buff(buffSpell)
+    --Target chill and we are in range
+ --   if tonumber(mq.TLO.Target.Distance()) < 20 then
+ --     MediLoop()
+ --   end
   end
+end
 
- function Heal()
-    --Check Mana
-ManaCheck()
-    --Pause Movement
+function Heal()
+  --Check Mana
+  ManaCheck()
+  --Pause Movement
   mq.cmd("/Stick pause")
-    --Cast spell
+  --Cast spell
   mq.cmd("/cast 1")
-    --Time to cast spell
+  --Time to cast spell
   mq.delay("6s")
-    --Movement unpaused
+  --Movement unpaused
   mq.cmd("/Stick unpause")
- end
+end
 
- function Buff()
-    if not mq.TLO.Target.Buff('Strengthen').ID() then
-      --Buff not active
-      ManaCheck()
-      --Move pause
-      mq.cmd("/Stick pause")
-      --Casting buff
-      mq.cmd("/cast 2")
-      --Delay to cast spell
-      mq.delay("6s")
-      --Move unpasue
-      mq.cmd("/Stick unpause")
-    end
-  end
-
-  function ManaCheck()
-    if tonumber(mq.TLO.Me.PctMana()) < 20 then
-      Medi()
-    end
-    end
-
-  function Medi()
+function Buff(buffSpell)
+  if mq.TLO.Target.Buff(buffSpell).ID() == nil then
+    --Buff not active
+    ManaCheck()
+    --Move pause
     mq.cmd("/Stick pause")
-    mq.cmd("/Sit")
-    mq.delay("15s")
-    mq.cmd("/Stand")
+  --Casting buff
+    mq.cmd("/cast 2")
+    --Delay to cast spell
+    mq.delay("6s")
+    --Move unpasue
     mq.cmd("/Stick unpause")
   end
+end
 
-  function MediLoop()
-
+function ManaCheck()
+  if tonumber(mq.TLO.Me.PctMana()) < 20 then
+    Medi()
   end
+end
+
+function Medi()
+  mq.cmd("/Stick pause")
+  mq.cmd("/Sit")
+  print("Meditating for 15 seconds")
+  mq.delay("15s")
+  mq.cmd("/Stand")
+  mq.cmd("/Stick unpause")
+end
+
+-- Function to keep healer meditating when nothing is happening
+-- and is not too far away from tank
+function MediLoop()
+  mq.cmd("/stick pause")
+  mq.cmd("/sit")
+
+  medCon = true
+
+  while medCon do
+
+    -- tank needs to be healed
+    if tonumber(mq.TLO.Target.PctHPs()) < 99 then
+      medCon = false
+    end
+
+    --  tank needs a buff
+    if mq.TLO.Target.Buff(buffSpell).ID() == nil then
+      medCon = false
+    end
+
+    -- too far from tank
+    if tonumber(mq.TLO.Target.Distance()) > 20 then
+      medCon = false
+    end
+  end
+
+  -- move
+  mq.cmd("/stand")
+  mq.cmd("/stick unpause")
+end
+
+function target(targetIndex)
+  mq.cmdf('/target ${Group.Member[%d].CleanName}', targetIndex)
+end
+
 
 main()
