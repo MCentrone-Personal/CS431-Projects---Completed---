@@ -111,6 +111,9 @@ function HpCheck()
     --Target in Combat
   if  tonumber(mq.TLO.Target.PctHPs()) < 99 then
     Heal()
+     --Fuck up the loser
+    --Sending it tankPos to retarget tank when done
+    Assist(tankPos)
   end
     --Target Chill
   if tonumber(mq.TLO.Target.PctHPs()) == 100 then
@@ -200,5 +203,25 @@ function target(targetIndex)
   mq.cmdf('/target ${Group.Member[%d].CleanName}', targetIndex)
 end
 
+function Assist(i)
+  ManaCheck()
+  --Move pause
+  mq.cmd("/Stick pause")
+  --Target Tank's target
+  mq.cmd("/assist")
+  --Check for debuff already applied
+  if not mq.TLO.Target.Buff('Drowsy').ID() then
+  --Debuff Cast
+  mq.cmd("/cast 3")
+  mq.delay("6s")
+  end
+  --Damage spell cast
+  mq.cmd("/cast 4")
+  mq.delay("6s")
+  --Retarget tank
+  mq.cmd('/target ${Group.Member[%d].CleanName}', i)
+  --Move unpasue
+  mq.cmd("/Stick unpause")
+end
 
 main()
