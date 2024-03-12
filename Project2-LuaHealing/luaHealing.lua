@@ -103,6 +103,8 @@ function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 end
 
 function HpCheck(i, x)
+--i = tankPos
+--x = group member index
 --Targets the next party member
 target(x)
 --Run through everything needed for party members
