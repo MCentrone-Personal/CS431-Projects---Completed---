@@ -219,7 +219,7 @@ function Assist(i)
   mq.cmd("/cast 4")
   mq.delay("6s")
   --Retarget tank
-  mq.cmd('/target ${Group.Member[%d].CleanName}', i)
+   target(i)
   --Move unpasue
   mq.cmd("/Stick unpause")
 end
