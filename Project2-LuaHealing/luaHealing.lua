@@ -78,33 +78,25 @@ end
 --Memorizing spells
 function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
-  --Healing spell
-  if not mq.TLO.Cast.Ready(healingSpell) then
-    mq.cmd("/memspell 1 " .. "\"" .. healingSpell .. "\"")
-    print("Delaying 10 seconds to memorize " .. "\"" .. healingSpell .. "\"")
-    mq.delay("10s")
-  end
+    --Healing spell
+  mq.cmd("/memspell 1 " .. "\"" .. healingSpell .. "\"")
+  print("Delaying 10 seconds to memorize " .. "\"" .. healingSpell .. "\"")
+  mq.delay("10s")
 
-  --Buff Spell
-  if not mq.TLO.Cast.Ready(buffSpell) then
-    mq.cmd("/memspell 2 " .. "\"" .. buffSpell .. "\"")
-    print("Delaying 10 seconds to memorize " .. "\"" .. buffSpell .. "\"")
-    mq.delay("10s")
-  end
+    --Buff Spell
+  mq.cmd("/memspell 2 " .. "\"" .. buffSpell .. "\"")
+  print("Delaying 10 seconds to memorize " .. "\"" .. buffSpell .. "\"")
+  mq.delay("10s")
 
-  --Debuff Spell
-  if not mq.TLO.Cast.Ready(debuffSpell) then
-    mq.cmd("/memspell 3 " .. "\"" .. debuffSpell .. "\"")
-    print("Delaying 10 seconds to memorize " .. "\"" .. debuffSpell .. "\"")
-    mq.delay("10s")
-  end
+    --Debuff Spell
+  mq.cmd("/memspell 3 " .. "\"" .. debuffSpell .. "\"")
+  print("Delaying 10 seconds to memorize " .. "\"" .. debuffSpell .. "\"")
+  mq.delay("10s")
 
-  --Damage Spell
-  if not mq.TLO.Cast.Ready(healingSpell) then
-    mq.cmd("/memspell 4 " .. "\"" .. dmgSpell .. "\"")
-    print("Delaying 10 seconds to memorize " .. "\"" .. dmgSpell .. "\"")
-    mq.delay("10s")
-  end 
+    --Damage Spell
+  mq.cmd("/memspell 4 " .. "\"" .. dmgSpell .. "\"")
+  print("Delaying 10 seconds to memorize " .. "\"" .. dmgSpell .. "\"")
+  mq.delay("10s")
 
      --Yippieeee
   print("Support is ready")
