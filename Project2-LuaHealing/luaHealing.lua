@@ -63,9 +63,9 @@ function main()
   --Forever loop
 groupMem = 0
   while true do
-	 for groupMem = 1,tonumber(mq.TLO.Group()),1 do
-		HpCheck(tankPos,groupMem)
-    end
+	   for groupMem = 1,tonumber(mq.TLO.Group()),1 do
+		   HpCheck(tankPos,groupMem)
+     end
   end
 
 end
