@@ -106,7 +106,7 @@ function HpCheck(i, x)
 --Targets the next party member
 target(x)
 --Run through everything needed for party members
-if tonumber(mq.TLO.Target.Distance()) < 35 then
+if tonumber(mq.TLO.Target.Distance()) < 35 and mq.TLO.Target ~= nil then
     --Target in Combat
   if  tonumber(mq.TLO.Target.PctHPs()) < 99 then
     Heal()
