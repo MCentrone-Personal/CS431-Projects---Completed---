@@ -36,16 +36,12 @@ function main()
   for i = 1,tonumber(mq.TLO.Group()),1 do
     target(i)
     s = mq.TLO.Target.Class()
-
+--Tank finding our main guy :]
     if (s=="Shadow Knight" or s=="Paladin" or s=="Warrior") then
       tankFound = true
       tankPos = i
     end
 
-    ---if s.Equal(<Name of DPS) then
-      ---dpsFound = true
-      ---dpsPos = i
-    ---end
   end
 
   --Tank was found?
@@ -54,13 +50,7 @@ function main()
   else
     print("No tank found. Exiting...")
     return
-  end
---DPS was found?
-  if dpsFound == true then
-    print("A DPS was found.")
-  ---else
-    ---print("No DPS found. Exiting...")
-    ---return
+   end
   end
 
   --Previous conditions true
@@ -73,8 +63,13 @@ function main()
 
   --Forever loop
   x = 0
+groupMem = 0
   while x == 0 do
-	   HpCheck()
+	   HpCheck(tankPos, groupMem)
+	groupMem = groupMem + 1
+	if groupMem > tonumber(mq.TLO.group()) then
+		groupMem = 0
+	end
   end
 
 end
@@ -107,22 +102,31 @@ function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
 end
 
-function HpCheck()
+function HpCheck(i, x)
+--Targets the next party member
+target(x)
+--Run through everything needed for party members
+if tonumber(mq.TLO.Target.Distance()) < 20 then
     --Target in Combat
   if  tonumber(mq.TLO.Target.PctHPs()) < 99 then
     Heal()
      --Fuck up the loser
     --Sending it tankPos to retarget tank when done
-    Assist(tankPos)
+	if x == i then
+    Assist(i)
+	end
   end
     --Target Chill
   if tonumber(mq.TLO.Target.PctHPs()) == 100 then
     Buff(buffSpell)
     --Target chill and we are in range
+	if x == i then
     if tonumber(mq.TLO.Target.Distance()) < 20 then
       MediLoop()
+		end
     end
   end
+end
 end
 
 function Heal()
