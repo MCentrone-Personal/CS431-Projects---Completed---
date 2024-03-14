@@ -79,7 +79,6 @@ function main()
     print("No tank found. Exiting...")
     return
    end
-  end
 
   --Previous conditions true
  --Memorize spells
