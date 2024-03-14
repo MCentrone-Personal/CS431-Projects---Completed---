@@ -92,7 +92,7 @@ function main()
   --Forever loop
 groupMem = 0
   while true do
-		::follow::
+		--::follow:: if first plan doesn't work
 	 for groupMem = 1,tonumber(mq.TLO.Group()),1 do
 		HpCheck(tankPos,groupMem)
     end
@@ -181,7 +181,8 @@ function MediLoop(tank)
   mq.cmd("/sit")
 
   medCon = true
-
+	--breaking out of for and while loop with flase conditionw hich ends MediLoop
+::follow::
   while medCon do
 	
 --Go through each member
