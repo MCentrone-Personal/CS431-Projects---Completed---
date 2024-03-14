@@ -16,11 +16,9 @@ dmgSpell = "Frost Rift"
 --Main Function
 function main()
   tankName = ""
-  dpsName = ""
 
   --Position of the tank and dps
   tankPos = 0
-  dpsPos = 0
 
   --Checking group has enough members
   if mq.TLO.Group() == nil or tonumber(mq.TLO.Group()) < 1 then
@@ -108,7 +106,7 @@ function HpCheck(i, x)
       --Target in Combat
     if  tonumber(mq.TLO.Target.PctHPs()) < 99 then
       Heal()
-       --Fuck up the loser
+       -- Attack the loser
       --Sending it tankPos to retarget tank when done
   	   if x == i then
          Assist(i)
