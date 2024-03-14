@@ -84,10 +84,10 @@ function main()
  --Memorize spells
  memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
-  target(tankPos) 
+  target(tankPos)
 
   --Movement
-  mq.cmd("/stick healer")
+  mq.cmd("/stick hold healer")
 
   --Forever loop
 groupMem = 0
@@ -184,7 +184,7 @@ function MediLoop(tank)
 	--breaking out of for and while loop with flase conditionw hich ends MediLoop
 ::follow::
   while medCon do
-	
+
 --Go through each member
 	for groupMem = 1,tonumber(mq.TLO.Group()),1 do
 		--Cycle targeting
