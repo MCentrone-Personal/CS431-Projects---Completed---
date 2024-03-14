@@ -92,6 +92,7 @@ function main()
   --Forever loop
 groupMem = 0
   while true do
+		::follow::
 	 for groupMem = 1,tonumber(mq.TLO.Group()),1 do
 		HpCheck(tankPos,groupMem)
     end
@@ -202,6 +203,7 @@ function MediLoop(tank)
     -- too far from tank
     if tonumber(mq.TLO.Target.Distance()) > 30 and groupMem == tank then
       medCon = false
+	goto follow
     end
 	end
   end
