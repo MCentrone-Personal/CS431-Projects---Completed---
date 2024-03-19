@@ -157,19 +157,19 @@ end
 function ManaCheck(SpellCase)
 	--Check for mana with healling spell
 	if SpellCase == 'h' then
-  if tonumber(mq.TLO.Me.CurrentMana()) < tonumber(mq.Spell[healingSpell].Mana()) then
+  if tonumber(mq.TLO.Me.CurrentMana()) < tonumber(mq.TLO.Spell[healingSpell].Mana()) then
     Medi('h')
   end
 	end
 	--Check for mana with buff spell
 	if SpellCase == 'b' then
-  if tonumber(mq.TLO.Me.CurrentMana()) < tonumber(mq.Spell[buffSpell].Mana()) then
+  if tonumber(mq.TLO.Me.CurrentMana()) < tonumber(mq.TLO.Spell[buffSpell].Mana()) then
     Medi('b')
   end
 	end
 	--Check for mana with both debuff and damage spell
 	if SpellCase == 'a' then
-  if tonumber(mq.TLO.Me.CurrentMana()) < (tonumber(mq.Spell[dmgSpell].Mana())+tonumber(mq.Spell[debuffSpell].Mana())) then
+  if tonumber(mq.TLO.Me.CurrentMana()) < (tonumber(mq.TLO.Spell[dmgSpell].Mana())+tonumber(mq.TLO.Spell[debuffSpell].Mana())) then
     Medi('a')
   end
 	end
@@ -185,19 +185,19 @@ medCon = true
 	while medCon do
 		--For healing spell
 		if mediCase == 'h' then
-			if tonumber(mq.TLO.Me.CurrentMana()) == tonumber(mq.Spell[healingSpell].Mana()) then
+			if tonumber(mq.TLO.Me.CurrentMana()) == tonumber(mq.TLO.Spell[healingSpell].Mana()) then
 				medCon = false
 			end
 		end
 		--for buff spell
 		if mediCase == 'b' then
-			if tonumber(mq.TLO.Me.CurrentMana()) == tonumber(mq.Spell[buffSpell].Mana()) then
+			if tonumber(mq.TLO.Me.CurrentMana()) == tonumber(mq.TLO.Spell[buffSpell].Mana()) then
 				medCon = false
 			end
 		end
 		--for both damage and debuff spell
 		if mediCase == 'a'then
-			if tonumber(mq.TLO.Me.CurrentMana()) == (tonumber(mq.Spell[dmgSpell].Mana())+tonumber(mq.Spell[debuffSpell].Mana())) then
+			if tonumber(mq.TLO.Me.CurrentMana()) == (tonumber(mq.TLO.Spell[dmgSpell].Mana())+tonumber(mq.TLO.Spell[debuffSpell].Mana())) then
 			medCon =false
 			end
 		end
