@@ -131,7 +131,7 @@ end
 
 function Heal()
   --Check Mana
-  ManaCheck()
+  ManaCheck('h')
   --Pause Movement
   mq.cmd("/Stick pause")
   --Cast spell
@@ -145,7 +145,7 @@ end
 function Buff(buffSpell)
   if mq.TLO.Target.Buff(buffSpell).ID() == nil then
     --Buff not active
-    ManaCheck()
+    ManaCheck('b')
     --Move pause
     mq.cmd("/Stick pause")
   --Casting buff
@@ -157,17 +157,55 @@ function Buff(buffSpell)
   end
 end
 
-function ManaCheck()
-  if tonumber(mq.TLO.Me.PctMana()) < 20 then
-    Medi()
+function ManaCheck(SpellCase)
+	--Check for mana with healling spell
+	if SpellCase == 'h' then
+  if tonumber(mq.TLO.Me.CurrentMana()) < tonumber(mq.Spell[healingSpell].Mana()) then
+    Medi('h')
   end
+	end
+	--Check for mana with buff spell
+	if SpellCase == 'b' then
+  if tonumber(mq.TLO.Me.CurrentMana()) < tonumber(mq.Spell[buffSpell].Mana()) then
+    Medi('b')
+  end
+	end
+	--Check for mana with both debuff and damage spell
+	if SpellCase == 'a' then
+  if tonumber(mq.TLO.Me.CurrentMana()) < (tonumber(mq.Spell[dmgSpell].Mana())+tonumber(mq.Spell[debuffSpell].Mana())) then
+    Medi('a')
+  end
+	end
 end
 
-function Medi()
+function Medi(medCase)
   mq.cmd("/Stick pause")
   mq.cmd("/Sit")
-  print("Meditating for 15 seconds")
-  mq.delay("15s")
+  print("Meditating for mana for spell")
+	--Condition for medi loop
+	--Vars for loop
+medCon = true
+	while medCon do
+		--For healing spell
+		if mediCase == 'h' then
+			if tonumber(mq.TLO.Me.CurrentMana()) == tonumber(mq.Spell[healingSpell].Mana()) then
+				medCon = false
+			end
+		end
+		--for buff spell
+		if mediCase == 'b' then
+			if tonumber(mq.TLO.Me.CurrentMana()) == tonumber(mq.Spell[buffSpell].Mana()) then
+				medCon = false
+			end
+		end
+		--for both damage and debuff spell
+		if mediCase == 'a'then
+			if tonumber(mq.TLO.Me.CurrentMana()) < (tonumber(mq.Spell[dmgSpell].Mana())+tonumber(mq.Spell[debuffSpell].Mana())) then
+			medCon =false
+			end
+		end
+	end
+ --Loop ended, get back to work
   mq.cmd("/Stand")
   mq.cmd("/Stick unpause")
 end
@@ -180,9 +218,7 @@ function MediLoop(tank)
   mq.cmd("/sit")
 
   medCon = true
-	--breaking out of for and while loop with flase conditionw hich ends MediLoop
   while medCon do
-
 --Go through each member
 	for groupMem = 1,tonumber(mq.TLO.Group()),1 do
 		--Cycle targeting
@@ -216,7 +252,7 @@ function target(targetIndex)
 end
 
 function Assist(i)
-  ManaCheck()
+  ManaCheck('a')
   --Move pause
   mq.cmd("/Stick pause")
   --Target Tank's target
