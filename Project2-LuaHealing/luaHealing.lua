@@ -197,7 +197,7 @@ medCon = true
 		end
 		--for both damage and debuff spell
 		if mediCase == 'a'then
-			if tonumber(mq.TLO.Me.CurrentMana()) < (tonumber(mq.Spell[dmgSpell].Mana())+tonumber(mq.Spell[debuffSpell].Mana())) then
+			if tonumber(mq.TLO.Me.CurrentMana()) == (tonumber(mq.Spell[dmgSpell].Mana())+tonumber(mq.Spell[debuffSpell].Mana())) then
 			medCon =false
 			end
 		end
