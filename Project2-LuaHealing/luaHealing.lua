@@ -102,7 +102,7 @@ target(x)
 --Run through everything needed for party members
 if tonumber(mq.TLO.Target.Distance()) < 35 and mq.TLO.Target ~= nil then
     --Target in Combat
-  if  tonumber(mq.TLO.Target.PctHPs()) < 99 then
+  if  tonumber(mq.TLO.Target.PctHPs()) < 80 then
     Heal()
      --Fuck up the loser
     --Sending it tankPos to retarget tank when done
@@ -218,7 +218,7 @@ function MediLoop(tank)
 		--Cycle targeting
 		target(groupMem)
     -- Who needs to be healed
-    if tonumber(mq.TLO.Target.PctHPs()) < 99 and tonumber(mq.TLO.Target.Distance()) < 30 then
+    if tonumber(mq.TLO.Target.PctHPs()) < 80 and tonumber(mq.TLO.Target.Distance()) < 30 then
 	Heal()
       medCon = false
     end
