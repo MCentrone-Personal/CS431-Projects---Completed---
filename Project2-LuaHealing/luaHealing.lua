@@ -160,7 +160,7 @@ function ManaCheck(SpellCase)
 	end
 	--Check for mana with buff spell
 	if SpellCase == 'b' then
-  if tonumber(mq.TLO.Me.CurrentMana()) < tonumber(mq.TLO.spell[buffSpell].Mana()) then
+  if tonumber(mq.TLO.Me.CurrentMana()) < tonumber(mq.TLO.Spell[buffSpell].Mana()) then
     Medi('b')
   end
 	end
