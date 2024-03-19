@@ -4,14 +4,10 @@ local PackageMan = require('mq/PackageMan')
 --local lfs = PackageMan.Require('luafilesystem', 'lfs')
 
 --Spells for the healer macro
-healingSpell = "Light Healing"
--- Healing
-buffSpell = "Strengthen"
---frenzy
-debuffSpell = "Drowsy"
---Disempower
-dmgSpell = "Frost Rift"
---Spirit strike
+healingSpell = "Healing"
+buffSpell = "Burst of Strength"
+debuffSpell = "Disempower"
+dmgSpell = "Spirit strike"
 
 --Memorizing spells
 function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
@@ -124,6 +120,7 @@ if tonumber(mq.TLO.Target.Distance()) < 35 and mq.TLO.Target ~= nil then
 		end
     end
   end
+end
 end
 
 function Heal()
