@@ -4,84 +4,10 @@ local PackageMan = require('mq/PackageMan')
 --local lfs = PackageMan.Require('luafilesystem', 'lfs')
 
 --Spells for the healer macro
-healingSpell = "Light Healing"
--- Healing
-buffSpell = "Strengthen"
---frenzy
-debuffSpell = "Drowsy"
---Disempower
-dmgSpell = "Frost Rift"
---Spirit strike
-
---Main Function
-function main()
-  tankName = ""
-  dpsName = ""
-
-  --Position of the tank and dps
-  tankPos = 0
-  dpsPos = 0
-
-  --Checking group has enough members
-  if mq.TLO.Group() == nil or tonumber(mq.TLO.Group()) < 1 then
-    print("You need at least 2 group members")
-    return
-  end
-
-  --Bools if tank / dps in group
-  tankFound = false
-  dpsFound = false
-
-  --Checking for Tank and DPS
-  for i = 1,tonumber(mq.TLO.Group()),1 do
-    target(i)
-    s = mq.TLO.Target.Class()
-
-    if (s=="Shadow Knight" or s=="Paladin" or s=="Warrior") then
-      tankFound = true
-      tankPos = i
-    end
-
-    ---if s.Equal(<Name of DPS) then
-      ---dpsFound = true
-      ---dpsPos = i
-    ---end
-  end
-
-  --Tank was found?
-  if tankFound == true then
-    print("A tank was found.")
-  else
-    print("No tank found. Exiting...")
-    return
-  end
---DPS was found?
-  if dpsFound == true then
-    print("A DPS was found.")
-  ---else
-    ---print("No DPS found. Exiting...")
-    ---return
-  end
-
-  --Previous conditions true
-  --Memorize spells
-  target(tankPos)
-  memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
-
-  --Movement
-  mq.cmd("/stick healer")
-
-  --Forever loop
-  x = 0
-  while x == 0 do
-    for i = 1,tonumber(mq.TLO.Group()),1 do
-		HpCheck(i)
-    end
-	   
-	   
-  end
-
-end
+healingSpell = "Healing"
+buffSpell = "Protect"
+debuffSpell = "Disempower"
+dmgSpell = "Spirit strike"
 
 --Memorizing spells
 function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
@@ -111,25 +37,93 @@ function memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
 end
 
-function HpCheck(i)
-	target(i)
+--Main Function
+function main()
+  tankName = ""
+
+  --Position of the tank and dps
+  tankPos = 0
+
+  --Checking group has enough members
+  if mq.TLO.Group() == nil or tonumber(mq.TLO.Group()) < 1 then
+    print("You need at least 2 group members")
+    return
+  end
+
+  --Bools if tank / dps in group
+  tankFound = false
+  dpsFound = false
+
+  --Checking for Tank and DPS
+  for i = 0,tonumber(mq.TLO.Group()),1 do
+    target(i)
+    s = mq.TLO.Target.Class()
+--Tank finding our main guy :]
+    if (s=="Shadow Knight" or s=="Paladin" or s=="Warrior") then
+      tankFound = true
+      tankPos = i
+    end
+
+  end
+
+  --Tank was found?
+  if tankFound == true then
+    print("A tank was found.")
+  else
+    print("No tank found. Exiting...")
+    return
+   end
+
+  --Previous conditions true
+ --Memorize spells
+ --memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
+
+  target(tankPos)
+
+  --Movement
+  mq.cmd("/stick hold healer")
+
+  --Forever loop
+groupMem = 0
+  while true do
+	   for groupMem = 0,tonumber(mq.TLO.Group()),1 do
+		   HpCheck(tankPos,groupMem)
+     end
+  end
+end
+
+
+
+function HpCheck(i, x)
+--i = tankPos
+--x = group member index
+--Targets the next party member
+target(x)
+--Run through everything needed for party members
+if tonumber(mq.TLO.Target.Distance()) < 35 and mq.TLO.Target ~= nil then
     --Target in Combat
-  if  tonumber(mq.TLO.Target.PctHPs()) < 99 then
+  if  tonumber(mq.TLO.Target.PctHPs()) < 99 and x==i then
+    Assist(i)
+  end	
+  if  tonumber(mq.TLO.Target.PctHPs()) < 80 then
     Heal()
   end
     --Target Chill
   if tonumber(mq.TLO.Target.PctHPs()) == 100 then
     Buff(buffSpell)
     --Target chill and we are in range
- --   if tonumber(mq.TLO.Target.Distance()) < 20 then
- --     MediLoop()
- --   end
+	if x == i then
+      MediLoop(i)
+		end
   end
+end
 end
 
 function Heal()
   --Check Mana
-  ManaCheck()
+  if mq.TLO.Me.CombatState[ACTIVE] then
+  ManaCheck('h')
+  end
   --Pause Movement
   mq.cmd("/Stick pause")
   --Cast spell
@@ -143,7 +137,9 @@ end
 function Buff(buffSpell)
   if mq.TLO.Target.Buff(buffSpell).ID() == nil then
     --Buff not active
-    ManaCheck()
+	if mq.TLO.Me.CombatState[ACTIVE] then
+    ManaCheck('b')
+	end
     --Move pause
     mq.cmd("/Stick pause")
   --Casting buff
@@ -155,45 +151,89 @@ function Buff(buffSpell)
   end
 end
 
-function ManaCheck()
-  if tonumber(mq.TLO.Me.PctMana()) < 20 then
-    Medi()
+function ManaCheck(SpellCase)
+	--Check for mana with healling spell
+	if SpellCase == 'h' then
+  if tonumber(mq.TLO.Me.CurrentMana()) < mq.TLO.Spell(healingSpell).Mana() then
+    Medi('h')
   end
+	end
+	--Check for mana with buff spell
+	if SpellCase == 'b' then
+  if tonumber(mq.TLO.Me.CurrentMana()) < mq.TLO.Spell(buffSpell).Mana() then
+    Medi('b')
+  end
+	end
+	--Check for mana with both debuff and damage spell
+	if SpellCase == 'a' then
+  if tonumber(mq.TLO.Me.CurrentMana()) < (mq.TLO.Spell(dmgSpell).Mana()+mq.TLO.Spell(debuffSpell).Mana()) then
+    Medi('a')
+  end
+	end
 end
 
-function Medi()
+function Medi(mediCase)
   mq.cmd("/Stick pause")
   mq.cmd("/Sit")
-  print("Meditating for 15 seconds")
-  mq.delay("15s")
+  print("Meditating for mana for spell")
+	--Condition for medi loop
+	--Vars for loop
+medCon = true
+	while medCon do
+		--For healing spell
+		if mediCase == 'h' then
+			if tonumber(mq.TLO.Me.CurrentMana()) >= (mq.TLO.Spell(healingSpell).Mana() + (mq.TLO.Me.MaxMana()*0.05)) then
+				medCon = false
+			end
+		end
+		--for buff spell
+		if mediCase == 'b' then
+			if tonumber(mq.TLO.Me.CurrentMana()) >= (mq.TLO.Spell(buffSpell).Mana() + (mq.TLO.Me.MaxMana()*0.05)) then
+				medCon = false
+			end
+		end
+		--for both damage and debuff spell
+		if mediCase == 'a' then
+			if tonumber(mq.TLO.Me.CurrentMana()) >= ((mq.TLO.Spell(dmgSpell).Mana()+mq.TLO.Spell(debuffSpell).Mana()) + (mq.TLO.Me.MaxMana()*0.05)) then
+			medCon =false
+			end
+		end
+	end
+ --Loop ended, get back to work
   mq.cmd("/Stand")
   mq.cmd("/Stick unpause")
 end
 
 -- Function to keep healer meditating when nothing is happening
 -- and is not too far away from tank
-function MediLoop()
+function MediLoop(tank)
+--Sit
   mq.cmd("/stick pause")
   mq.cmd("/sit")
 
   medCon = true
-
   while medCon do
-
-    -- tank needs to be healed
-    if tonumber(mq.TLO.Target.PctHPs()) < 99 then
+--Go through each member
+	for groupMem = 0,tonumber(mq.TLO.Group()),1 do
+		--Cycle targeting
+		target(groupMem)
+    -- Who needs to be healed
+    if tonumber(mq.TLO.Target.PctHPs()) < 80 and tonumber(mq.TLO.Target.Distance()) < 30 then
+	Heal()
       medCon = false
     end
 
     --  tank needs a buff
-    if mq.TLO.Target.Buff(buffSpell).ID() == nil then
+    if mq.TLO.Target.Buff(buffSpell).ID() == nil and tonumber(mq.TLO.Target.Distance()) < 30 then
+	Buff()
       medCon = false
     end
 
     -- too far from tank
-    if tonumber(mq.TLO.Target.Distance()) > 20 then
+    if tonumber(mq.TLO.Target.Distance()) > 30 and groupMem == tank then
       medCon = false
     end
+	end
   end
 
   -- move
@@ -205,5 +245,29 @@ function target(targetIndex)
   mq.cmdf('/target ${Group.Member[%d].CleanName}', targetIndex)
 end
 
+function Assist(i)
+  ManaCheck('a')
+  --Move pause
+  mq.cmd("/Stick pause")
+  --Target Tank's target
+  mq.cmdf('/assist ${Group.Member[%d].CleanName}', i)
+  --Check if target is there, stop spam check
+  if tonumber(mq.TLO.Target.ID) ~= nil then
+  --Check for debuff already applied
+  if not mq.TLO.Target.Buff(debuffSpell).ID() then
+  --Debuff Cast
+    mq.cmd("/cast 3")
+    mq.delay("6s")
+  end
+  --Damage spell cast
+  mq.cmd("/cast 4")
+  mq.delay("6s") 
+  end
+  --Retarget tank
+   target(i)
+  --Move unpasue
+  mq.cmd("/Stick unpause")
+
+end
 
 main()
