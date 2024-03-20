@@ -55,7 +55,7 @@ function main()
   dpsFound = false
 
   --Checking for Tank and DPS
-  for i = 1,tonumber(mq.TLO.Group()),1 do
+  for i = 0,tonumber(mq.TLO.Group()),1 do
     target(i)
     s = mq.TLO.Target.Class()
 --Tank finding our main guy :]
@@ -76,7 +76,7 @@ function main()
 
   --Previous conditions true
  --Memorize spells
--- memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
+ --memSpells(healingSpell, buffSpell, debuffSpell, dmgSpell)
 
   target(tankPos)
 
@@ -113,17 +113,17 @@ if tonumber(mq.TLO.Target.Distance()) < 35 and mq.TLO.Target ~= nil then
     Buff(buffSpell)
     --Target chill and we are in range
 	if x == i then
-    if tonumber(mq.TLO.Target.Distance()) < 20 then
       MediLoop(i)
 		end
-    end
   end
 end
 end
 
 function Heal()
   --Check Mana
+  if mq.TLO.Me.CombatState[ACTIVE] then
   ManaCheck('h')
+  end
   --Pause Movement
   mq.cmd("/Stick pause")
   --Cast spell
@@ -137,7 +137,9 @@ end
 function Buff(buffSpell)
   if mq.TLO.Target.Buff(buffSpell).ID() == nil then
     --Buff not active
+	if mq.TLO.Me.CombatState[ACTIVE] then
     ManaCheck('b')
+	end
     --Move pause
     mq.cmd("/Stick pause")
   --Casting buff
@@ -153,27 +155,24 @@ function ManaCheck(SpellCase)
 	--Check for mana with healling spell
 	if SpellCase == 'h' then
   if tonumber(mq.TLO.Me.CurrentMana()) < mq.TLO.Spell(healingSpell).Mana() then
-			mq.delay(".25s")
     Medi('h')
   end
 	end
 	--Check for mana with buff spell
 	if SpellCase == 'b' then
   if tonumber(mq.TLO.Me.CurrentMana()) < mq.TLO.Spell(buffSpell).Mana() then
-			mq.delay(".25s")
     Medi('b')
   end
 	end
 	--Check for mana with both debuff and damage spell
 	if SpellCase == 'a' then
   if tonumber(mq.TLO.Me.CurrentMana()) < (mq.TLO.Spell(dmgSpell).Mana()+mq.TLO.Spell(debuffSpell).Mana()) then
-			mq.delay(".25s")
     Medi('a')
   end
 	end
 end
 
-function Medi(medCase)
+function Medi(mediCase)
   mq.cmd("/Stick pause")
   mq.cmd("/Sit")
   print("Meditating for mana for spell")
@@ -183,19 +182,19 @@ medCon = true
 	while medCon do
 		--For healing spell
 		if mediCase == 'h' then
-			if tonumber(mq.TLO.Me.CurrentMana()) >= mq.TLO.Spell(healingSpell).Mana() then
+			if tonumber(mq.TLO.Me.CurrentMana()) >= (mq.TLO.Spell(healingSpell).Mana() + (mq.TLO.Me.MaxMana()*0.05)) then
 				medCon = false
 			end
 		end
 		--for buff spell
 		if mediCase == 'b' then
-			if tonumber(mq.TLO.Me.CurrentMana()) >= mq.TLO.Spell(buffSpell).Mana() then
+			if tonumber(mq.TLO.Me.CurrentMana()) >= (mq.TLO.Spell(buffSpell).Mana() + (mq.TLO.Me.MaxMana()*0.05)) then
 				medCon = false
 			end
 		end
 		--for both damage and debuff spell
-		if mediCase == 'a'then
-			if tonumber(mq.TLO.Me.CurrentMana()) >= (mq.TLO.Spell(dmgSpell).Mana()+mq.TLO.Spell(debuffSpell).Mana()) then
+		if mediCase == 'a' then
+			if tonumber(mq.TLO.Me.CurrentMana()) >= ((mq.TLO.Spell(dmgSpell).Mana()+mq.TLO.Spell(debuffSpell).Mana()) + (mq.TLO.Me.MaxMana()*0.05)) then
 			medCon =false
 			end
 		end
@@ -251,7 +250,9 @@ function Assist(i)
   --Move pause
   mq.cmd("/Stick pause")
   --Target Tank's target
-  mq.cmd("/assist")
+  mq.cmdf('/assist ${Group.Member[%d].CleanName}', i)
+  --Check if target is there, stop spam check
+  if tonumber(mq.TLO.Target.ID) ~= nil then
   --Check for debuff already applied
   if not mq.TLO.Target.Buff(debuffSpell).ID() then
   --Debuff Cast
@@ -260,11 +261,13 @@ function Assist(i)
   end
   --Damage spell cast
   mq.cmd("/cast 4")
-  mq.delay("6s")
+  mq.delay("6s") 
+  end
   --Retarget tank
    target(i)
   --Move unpasue
   mq.cmd("/Stick unpause")
+
 end
 
 main()
