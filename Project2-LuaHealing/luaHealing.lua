@@ -112,7 +112,7 @@ if tonumber(mq.TLO.Target.Distance()) < 35 and mq.TLO.Target ~= nil then
   if tonumber(mq.TLO.Target.PctHPs()) == 100 then
     Buff(buffSpell)
     --Target chill and we are in range
-	if x == i and tonumber(mq.TLO.Target.Distance()) < 20 then
+	if x == i then
       MediLoop(i)
 		end
   end
@@ -182,19 +182,19 @@ medCon = true
 	while medCon do
 		--For healing spell
 		if mediCase == 'h' then
-			if tonumber(mq.TLO.Me.CurrentMana()) >= (mq.TLO.Spell(healingSpell).Mana() + 5) then
+			if tonumber(mq.TLO.Me.CurrentMana()) >= (mq.TLO.Spell(healingSpell).Mana() + (mq.TLO.Me.MaxMana()*0.05)) then
 				medCon = false
 			end
 		end
 		--for buff spell
 		if mediCase == 'b' then
-			if tonumber(mq.TLO.Me.CurrentMana()) >= (mq.TLO.Spell(buffSpell).Mana() + 5) then
+			if tonumber(mq.TLO.Me.CurrentMana()) >= (mq.TLO.Spell(buffSpell).Mana() + (mq.TLO.Me.MaxMana()*0.05)) then
 				medCon = false
 			end
 		end
 		--for both damage and debuff spell
 		if mediCase == 'a' then
-			if tonumber(mq.TLO.Me.CurrentMana()) >= ((mq.TLO.Spell(dmgSpell).Mana()+mq.TLO.Spell(debuffSpell).Mana()) + 10) then
+			if tonumber(mq.TLO.Me.CurrentMana()) >= ((mq.TLO.Spell(dmgSpell).Mana()+mq.TLO.Spell(debuffSpell).Mana()) + (mq.TLO.Me.MaxMana()*0.05)) then
 			medCon =false
 			end
 		end
@@ -250,8 +250,8 @@ function Assist(i)
   --Move pause
   mq.cmd("/Stick pause")
   --Target Tank's target
-  mq.cmd("/assist")
-  --Check if target is there
+  mq.cmdf('/assist ${Group.Member[%d].CleanName}', i)
+  --Check if target is there, stop spam check
   if tonumber(mq.TLO.Target.ID) ~= nil then
   --Check for debuff already applied
   if not mq.TLO.Target.Buff(debuffSpell).ID() then
