@@ -102,7 +102,7 @@ target(x)
 --Run through everything needed for party members
 if tonumber(mq.TLO.Target.Distance()) < 35 and tonumber(mq.TLO.Target.ID()) ~= nil then
     --Target in Combat
-  	
+
   if  tonumber(mq.TLO.Target.PctHPs()) < 80 then
     Heal()
   end
@@ -212,10 +212,10 @@ function MediLoop(tank)
 --Pause movement
 mq.cmd("/Sit")
   mq.cmd("/stick pause")
- 
+
   medCon = true
   while medCon do
-  
+
 --Go through each member
 	for groupMem = 0,tonumber(mq.TLO.Group()),1 do
 		--Cycle targeting
@@ -223,25 +223,25 @@ mq.cmd("/Sit")
 		    -- too far from tank
     if tonumber(mq.TLO.Target.Distance()) >= 35 and groupMem == tank and medCon then
       medCon = false
-	  print("Distance issue... again")
+	    print("Distance issue... again")
     end
     -- Who needs to be healed
     if tonumber(mq.TLO.Target.PctHPs()) < 80 and tonumber(mq.TLO.Target.Distance()) < 30 and medCon then
-	Heal()
+    	Heal()
       medCon = false
-	  print("HP Issue")
+    	print("HP Issue")
     end
     --  tank needs a buff
     if mq.TLO.Target.Buff(buffSpell).ID() == nil and tonumber(mq.TLO.Target.Distance()) < 30 and medCon and tonumber(mq.TLO.Target.PctHPs()) >=95 then
-	print("BUFF MEDI")
-	Buff()
+    	print("BUFF MEDI")
+    	Buff()
       medCon = false
     end
 	--Tank enters combat while in loop
 	    if tonumber(mq.TLO.Target.PctHPs()) <= 94 and groupMem == tank and medCon then
      medCon = false
 	 print("Combat issue")
-   end 
+   end
 	end
   end
 
@@ -262,22 +262,22 @@ function Assist(i)
   mq.cmd("/Assist")
   print("Target enemy")
   --Check if target is there, stop spam check
-  if tonumber(mq.TLO.Me.TargetOfTarget.PctHPs) ~= nil then
-  if tonumber(mq.TLO.Me.TargetOfTarget.PctHPs) < 2 then
-  print("Checking out the enemy")
-  --Check for debuff already applied
-  if not mq.TLO.Target.Buff(debuffSpell).ID() then
-  --Debuff Cast
-    mq.cmd("/cast 3")
+  if tonumber(mq.TLO.Me.TargetOfTarget.PctHPs()) ~= nil then
+    if tonumber(mq.TLO.Me.TargetOfTarget.PctHPs()) < 2 then
+    print("Checking out the enemy")
+    --Check for debuff already applied
+      if not mq.TLO.Target.Buff(debuffSpell).ID() then
+      --Debuff Cast
+        mq.cmd("/cast 3")
+        mq.delay("6s")
+      end
+    --Damage spell cast
+    mq.cmd("/cast 4")
     mq.delay("6s")
-  end
-  --Damage spell cast
-  mq.cmd("/cast 4")
-  mq.delay("6s") 
-  end
+    end
   end
   --Retarget tank
-   target(i)
+  target(i)
   --Move unpasue
   mq.cmd("/Stick unpause")
 
