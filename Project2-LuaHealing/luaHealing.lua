@@ -5,7 +5,7 @@ local PackageMan = require('mq/PackageMan')
 
 --Spells for the healer macro
 healingSpell = "Healing"
-buffSpell = "Protect"
+buffSpell = 'Protect'
 debuffSpell = "Disempower"
 dmgSpell = "Spirit strike"
 
@@ -99,29 +99,33 @@ function HpCheck(i, x)
 --x = group member index
 --Targets the next party member
 target(x)
+print("HP Target "..mq.TLO.Target.Name())
 --Run through everything needed for party members
-if tonumber(mq.TLO.Target.Distance()) < 35 and mq.TLO.Target ~= nil then
+if tonumber(mq.TLO.Target.Distance()) < 35 and tonumber(mq.TLO.Target.ID()) ~= nil then
     --Target in Combat
-  if  tonumber(mq.TLO.Target.PctHPs()) < 99 and x==i then
-    Assist(i)
-  end	
+
   if  tonumber(mq.TLO.Target.PctHPs()) < 80 then
     Heal()
   end
     --Target Chill
-  if tonumber(mq.TLO.Target.PctHPs()) == 100 then
+  if tonumber(mq.TLO.Target.PctHPs()) >= 95 then
     Buff(buffSpell)
     --Target chill and we are in range
 	if x == i then
       MediLoop(i)
 		end
   end
+  if  tonumber(mq.TLO.Target.PctHPs()) <= 94 and x==i then
+   if tonumber(mq.TLO.Me.XTarget()) > 0 then
+    Assist(i)
+	end
+  end
 end
 end
 
 function Heal()
   --Check Mana
-  if mq.TLO.Me.CombatState[ACTIVE] then
+  if mq.TLO.Me.CombatState.Equal(ACTIVE) then
   ManaCheck('h')
   end
   --Pause Movement
@@ -135,9 +139,9 @@ function Heal()
 end
 
 function Buff(buffSpell)
-  if mq.TLO.Target.Buff(buffSpell).ID() == nil then
+  if tostring(mq.TLO.Target.Buff(buffSpell).ID()) == "nil" then
     --Buff not active
-	if mq.TLO.Me.CombatState[ACTIVE] then
+	if mq.TLO.Me.CombatState.Equal(ACTIVE) then
     ManaCheck('b')
 	end
     --Move pause
@@ -207,32 +211,40 @@ end
 -- Function to keep healer meditating when nothing is happening
 -- and is not too far away from tank
 function MediLoop(tank)
---Sit
+--Pause movement
+mq.cmd("/Sit")
   mq.cmd("/stick pause")
-  mq.cmd("/sit")
 
   medCon = true
   while medCon do
+
 --Go through each member
 	for groupMem = 0,tonumber(mq.TLO.Group()),1 do
 		--Cycle targeting
 		target(groupMem)
+		print("Medi Target "..mq.TLO.Target.Name())
+		    -- too far from tank
+    if tonumber(mq.TLO.Target.Distance()) >= 35 and groupMem == tank and medCon then
+      medCon = false
+	    print("Distance issue... again")
+    end
     -- Who needs to be healed
-    if tonumber(mq.TLO.Target.PctHPs()) < 80 and tonumber(mq.TLO.Target.Distance()) < 30 then
-	Heal()
+    if tonumber(mq.TLO.Target.PctHPs()) < 80 and tonumber(mq.TLO.Target.Distance()) < 30 and medCon then
+    	Heal()
       medCon = false
+    	print("HP Issue")
     end
-
     --  tank needs a buff
-    if mq.TLO.Target.Buff(buffSpell).ID() == nil and tonumber(mq.TLO.Target.Distance()) < 30 then
-	Buff()
+    if tostring(mq.TLO.Target.Buff(buffSpell).ID()) == "nil" and tonumber(mq.TLO.Target.Distance()) < 30 and medCon and tonumber(mq.TLO.Target.PctHPs()) >=95 then
+    	print("BUFF MEDI")
+    	Buff()
       medCon = false
     end
-
-    -- too far from tank
-    if tonumber(mq.TLO.Target.Distance()) > 30 and groupMem == tank then
-      medCon = false
-    end
+	--Tank enters combat while in loop
+	    if tonumber(mq.TLO.Target.PctHPs()) <= 94 and groupMem == tank and medCon then
+     medCon = false
+	 print("Combat issue")
+   end
 	end
   end
 
@@ -250,21 +262,25 @@ function Assist(i)
   --Move pause
   mq.cmd("/Stick pause")
   --Target Tank's target
-  mq.cmdf('/assist ${Group.Member[%d].CleanName}', i)
+  print("Target enemy")
   --Check if target is there, stop spam check
-  if tonumber(mq.TLO.Target.ID) ~= nil then
-  --Check for debuff already applied
-  if not mq.TLO.Target.Buff(debuffSpell).ID() then
-  --Debuff Cast
-    mq.cmd("/cast 3")
+   mq.cmd("/Assist")
+   print("Assist Target "..mq.TLO.Target.Name())
+   mq.delay("1s")
+    print("Checking out the enemy")
+    --Check for debuff already applied
+      if tostring(mq.TLO.Target.Buff(debuffSpell).ID()) == "nil" then
+      --Debuff Cast
+        mq.cmd("/cast 3")
+        mq.delay("6s")
+      end
+    --Damage spell cast
+    mq.cmd("/cast 4")
     mq.delay("6s")
-  end
-  --Damage spell cast
-  mq.cmd("/cast 4")
-  mq.delay("6s") 
-  end
   --Retarget tank
-   target(i)
+  target(i)
+  print("Assist End "..mq.TLO.Target.Name())
+  mq.delay("1s")
   --Move unpasue
   mq.cmd("/Stick unpause")
 
