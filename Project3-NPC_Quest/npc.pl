@@ -7,7 +7,7 @@ sub EVENT_SPAWN {
 }
 
 # Message event for NPC, right now responds to hail
-sub EVENT_PROXIMITY_SAY {
+sub EVENT_SAY {
     #:: Match say message for "hail", /i for case insensitive
     if ($text=~/hail/i) {
         quest::say("Hello, $name!");
