@@ -8,8 +8,12 @@ sub EVENT_SPAWN {
 
 # Message event for NPC, right now responds to hail
 sub EVENT_SAY {
-    #:: Match say message for "hail", /i for case insensitive
-    if ($text=~/hail/i) {
-        quest::say("Hello, $name!");
-    }
+   # Prevent pets or charmed NPCs from using the default.pl
+   if (!$npc || $npc->GetOwnerID() || $npc->GetSwarmOwner())
+   {
+      return;
+   }
+   if ($text=~/hail/i) {
+    quest::say("Shh , Im going to kill you.");
+   }
 }
