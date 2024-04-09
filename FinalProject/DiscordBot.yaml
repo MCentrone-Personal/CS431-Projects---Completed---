@@ -1,4 +1,4 @@
-token: abcdefg123456789.ABcdeFGHi.A1B3e3lkawLKW34 # This is the token you got when following the instructions to setup discord your bot.
+token: MTIyNzI2NjEzMTI1NDA1NDk3Mg.GpXX6W.huWSkKbqBUq_yP_J5uxxmYbWPv1obngnNE1dB8 # This is the token you got when following the instructions to setup discord your bot.
 user_ids:
   - 1234567890 # These are the user IDs that are allowed to send messages to your bot. Right click on your name in the Discord member's list and select "Copy ID" to get this.
 characters:
