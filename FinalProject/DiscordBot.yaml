@@ -4,7 +4,7 @@ user_ids:
   - 225768317028270080 # These are the user IDs that are allowed to send messages to your bot. Right click on your name in the Discord member's list and select "Copy ID" to get this.
 characters:
   vox_Voxvox: # This is the character you want the settings to be loaded on in the format of servername_Charactername.  Discord will tell you if it can't find your character and this is what it's talking about.
-    - name: Billyschannel # This is the name of the configuration, most people are only going to have one, but you can have as many as you'd like.
+    - name: GrunglesMcHealer # This is the name of the configuration, most people are only going to have one, but you can have as many as you'd like.
       id: 12345678901231351 # This is the channel ID you want messages to go to, you can get this by right clicking on the channel in Discord and doing "Copy ID"
       allowed: # Allowed tells you what you want to see, though you don't need something in both Allowed AND Notice
         - "#*# auctions, #*#"
