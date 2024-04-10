@@ -6,44 +6,48 @@ sub EVENT_SPAWN {
     quest::enable_proximity_say();
 }
 $item;
+@spell = (278,19421);
 # Message event for NPC, right now responds to hail
 sub EVENT_SAY {
     #:: Match say message for "hail", /i for case insensitive
-    	if ($text=~/hail/i)
-        {
-        quest::say("Hello, $name!. I NEED [SHROOMS]. Or I can give you an [item]. Dont forget to warn [josh] about his [meeting] at 12.");
+    if ($text=~/hail/i)
+    {
+        quest::say("Hello, $name!. I NEED [SHROOMS]. In return i can help you get an [item].");
+		quest::say("By any chance do you need a [buff] or [healing]");
+		quest::say("Finally i can offer up a little [trade]");
 		quest::say("if you have nothing left to do [begone]");
-	    }
-	elsif($text=~/josh/i)
-	{
-		$npc->CastSpell(5408, $userid);
-		quest::say("rawr");
 	}
-	elsif($text=~/meeting/i)
+	elsif($text=~/buff/i)
 	{
-		$npc->CastSpell(19421, $userid);
-		quest::say("excuse me");
+		$npc->CastSpell(@spell[0], $userid);
+	}
+	elsif($text=~/healing/i)
+	{
+		$npc->CastSpell(@spell[1], $userid);
 	}
 	elsif($text=~/begone/i)
 	{
 		$npc->CastSpell(2943, $userid);
 		quest::say("bye bye");
 	}
-
-	
+	elsif($text=~/trade/i)
+	{
+		quest::say("Money has no monitary value to me, however if you give me 10,000p i will give you a level");
+		quest::say("you also have the option to give me 4,000p and  i will give you alternate advancement points");
+	}
 	elsif ($text=~/shrooms/i) 
 	{
-	quest::popup("Magic Shrooms", "I need the shrooms man");
+	quest::popup("Magic Shrooms", "I need the shrooms man. Give me that mushroom right there");
 	}
 
 	elsif($text=~/item/i)
 	{
-	quest::say("In order for me to summon an item for you I need to know it's ID number. Please do a #itemsearch itemname and just tell me the number next to the item.");
+	quest::say("In order for me to summon an item for you I need to know it's ID number. I will remember this item for when you want it");
 	}
-        elsif ($text=~/\d{0,9}/)
+    elsif ($text=~/\d{0,9}/)
 	{
 		$item = $text;
-	quest::say("You want item $text");
+	quest::say("You want item ID:$text");
 	}
 
 
@@ -51,19 +55,56 @@ sub EVENT_SAY {
 
 sub EVENT_ITEM {
 	
+	my $total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
+	
+	#Purchase level
+	if($total >= 10000)
+	{
+		quest::level($ulevel+1);
+		$total -= 10000;
+	}
+	
+	#purchase alternate advancement points 
+	if($total >= 4000 && $total < 10000 && $ulevel >=52)
+	{
+		$client->AddAAPoints(1);
+		$total -= 4000;
+	}
+	elsif($ulevel < 52)
+	{
+		quest::say("You must be level 52 or higher to by AA");
+	}
+	
+	
+	#return any unused money
+	if($total > 0)
+	{
+	    my $copper_return = $total % 10;
+		$total = (($total - $copper_return)/10);
+		my $silver_return= $total % 10;
+		$total = (($total - $silver_return)/10);
+		my $gold_return = $total % 10;
+		$total = (($total - $gold_return)/10);
+		quest::say("your change is $total$gold_return$silver_return$copper_return");
+		quest::givecash($copper_return,$silver_return,$gold_return,$total);
+	}
+
+	
   if (plugin::check_handin(\%itemcount, 59955 => 1)) 
-  {
+  {  
     quest::summonitem(10037);
-	quest::givecash(10,0,1,200);
+	quest::givecash(5,5,5,5);
     quest::ding();
 	quest::say("Thanks! This item can help you in the future!");
     quest::updatetaskactivity(1448, 4);
   }
+  
   elsif(plugin::check_handin(\%itemcount, 10037 => 1)) 
-  {
-	quest::say("Thanks! Noq to give you item $item");
+  {  
+	quest::say("Thanks! Now to give you item $item");
 	quest::summonitem("$item");
     quest::updatetaskactivity(1448, 4);
-  }
+  }  
+  
   plugin::return_items(\%itemcount);
 }
