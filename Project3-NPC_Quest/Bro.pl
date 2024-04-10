@@ -92,7 +92,7 @@ sub EVENT_ITEM {
 	quest::say("Thanks! This item can help you in the future!");
   }
   
-  elsif(plugin::check_handin(\%itemcount, 10037 => 1)) 
+  elsif(plugin::check_handin(\%itemcount, 10037 => 1 && $item > 0)) 
   {  
 	quest::say("Thanks! Now to give you item $item");
 	quest::summonitem("$item");
