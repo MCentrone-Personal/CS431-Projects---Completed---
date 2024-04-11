@@ -24,12 +24,12 @@ classes:
 groups:
   - name: YourGroup
     characters:
-      - vox_Voxvox
+      - CS431_admintoon
       - server_OtherCharInGroup
       - server_OneMore
     channels:
-      - name: Deaths
-        id: 12345678901231351
+      - name: bot
+        id: 1227260419698331723
         allowed:
           - You have been slain by
         blocked:
@@ -38,11 +38,11 @@ groups:
           []
         prefix: "[${Me.Name}]"
         send_connected: true
-        allow_commands: false
+        allow_commands: true
         show_command_response: 0
 all:
-  - name: TellsChannel
-    id: 12345678901231351
+  - name: bot
+    id: 1227260419698331723
     allowed:
       - tells you
     blocked:
@@ -51,5 +51,5 @@ all:
       []
     prefix: "[${EverQuest.Server}_${Me.Name}]"
     send_connected: true
-    allow_commands: false
+    allow_commands: true
     show_command_response: 0
