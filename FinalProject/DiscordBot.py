@@ -28,7 +28,7 @@ from discord.ext import commands
 #### START USER SETTINGS ####
 
 # Bot auth token - DO NOT SHARE!
-TOKEN = 'INSERT TOKEN HERE FROM DEVELOPER PORTAL'
+TOKEN = 'MTIyNzI2NjEzMTI1NDA1NDk3Mg.GpXX6W.huWSkKbqBUq_yP_J5uxxmYbWPv1obngnNE1dB8'
 
 # database connection info
 connection = MySQLdb.connect(
