@@ -1,4 +1,8 @@
 
+sub CARD_GENERATOR {
+  return int(rand(51)) + 1;
+}
+
 # Message event for NPC, right now responds to hail
 sub EVENT_SAY {
     #:: Match say message for "hail", /i for case insensitive
@@ -13,7 +17,7 @@ sub EVENT_SAY {
 }
 
 sub EVENT_ITEM {
-	
+
 	my $total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
 	#return any unused money
 	if($total > 0)
