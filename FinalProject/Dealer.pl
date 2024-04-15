@@ -1,6 +1,19 @@
 
-sub CARD_GENERATOR {
-  return int(rand(51)) + 1;
+sub POKER_START {
+	#Function to generate 5 random cards from one deck
+	@TempCards();
+	@CurrentCards();
+	for($i = 0; $i<5; $i++)
+	{
+		TRYAGAIN:
+		$TempCards[i] = rand(51) + 1;
+		if(($TempCards[i] == $CurrentCards[1]) or $(TempCards[i] == $CurrentCards[2])) or $(TempCards[i] == $CurrentCards[3])) or $(TempCards[i] == $CurrentCards[4])) or $(TempCards[i] == $CurrentCards[5]))
+		{
+			goto TRYAGAIN;
+		}
+		$CurrentCards[i] = $TempCards[i];
+	}
+  return ($CurrentCards[1],$CurrentCards[2],$CurrentCards[3],$CurrentCards[4],$CurrentCards[5]);
 }
 
 sub POKER_LOGIC {
@@ -175,7 +188,9 @@ sub EVENT_SAY {
     }
      if ($text=~/money/i)
     {
-     quest::say("I like money");
+	@Currenthand() = POKER_START();
+	@Results() = POKER_LOGIC($Currenthand[0],$Currenthand[1],$Currenthand[2],$Currenthand[3],$Currenthand[4]);
+     quest::say("I like money". $Results[0] . " " . $Results[1] . " " . $Results[2] . " " . $Results[3] . " " . $Results[4] . " " . $Results[5] . " " .);
     }
 }
 
