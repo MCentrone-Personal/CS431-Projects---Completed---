@@ -1,19 +1,21 @@
 
 sub POKER_START {
 	#Function to generate 5 random cards from one deck
-	@TempCards();
-	@CurrentCards();
+	@TempCards = ();
+	@CurrentCards = ();
 	for($i = 0; $i<5; $i++)
 	{
 		TRYAGAIN:
-		$TempCards[i] = rand(51) + 1;
-		if(($TempCards[i] == $CurrentCards[0]) or $(TempCards[i] == $CurrentCards[1])) or $(TempCards[i] == $CurrentCards[2])) or $(TempCards[i] == $CurrentCards[3])) or $(TempCards[i] == $CurrentCards[4]))
+		$TempCards[i] = (rand(51) + 1);
+		if(($TempCards[i] == $CurrentCards[1]) or ($TempCards[i] == $CurrentCards[2]) or ($TempCards[i] == $CurrentCards[3]) or ($TempCards[i] == $CurrentCards[4]) or ($TempCards[i] == $CurrentCards[5]))
 		{
 			goto TRYAGAIN;
 		}
 		$CurrentCards[i] = $TempCards[i];
 	}
-  return ($CurrentCards[1],$CurrentCards[2],$CurrentCards[3],$CurrentCards[4],$CurrentCards[5]);
+	
+  return (@$CurrentCards);
+  
 }
 
 sub POKER_LOGIC {
@@ -23,8 +25,8 @@ sub POKER_LOGIC {
 #Will return a number, Highcard only will be a 1, Royal flush will be a 10
 
 #Sort from Lowest to Highest, Card 1 lowest ... Card 5 Highest
-my @numeric = sort { $a <=> $b } ($_[0], $_[1], $_[2], $_[3], $_[4]);
-@CardCounter(0,0,0,0,0,0,0,0,0,0,0,0,0);
+@numeric = sort { $a <=> $b } ($_[0], $_[1], $_[2], $_[3], $_[4]);
+@CardCounter = (0,0,0,0,0,0,0,0,0,0,0,0,0);
 
 $Card1 = $numeric[0];
 $Card2 = $numeric[1];
@@ -48,15 +50,15 @@ if ($Card1 >= 40 and $Card2 >= 40 and $Card3 >= 40 and $Card4 >= 40 and $Card5 >
 {
 $Flush = 1;
 }
-else if ($Card1 >= 27 and $Card2 >= 27 and $Card3 >= 27 and $Card4 >= 27 and $Card5 >= 27 and $Card1 < 40 and $Card2 < 40 and $Card3 < 40 and $Card4 < 40 and $Card5 < 40)
+elsif($Card1 >= 27 and $Card2 >= 27 and $Card3 >= 27 and $Card4 >= 27 and $Card5 >= 27 and $Card1 < 40 and $Card2 < 40 and $Card3 < 40 and $Card4 < 40 and $Card5 < 40)
 {
 $Flush = 1;
 }
-else if ($Card1 >= 14 and $Card2 >= 14 and $Card3 >= 14 and $Card4 >= 14 and $Card5 >= 14 and $Card1 < 27 and $Card2 < 27 and $Card3 < 27 and $Card4 < 27 and $Card5 < 27)
+elsif ($Card1 >= 14 and $Card2 >= 14 and $Card3 >= 14 and $Card4 >= 14 and $Card5 >= 14 and $Card1 < 27 and $Card2 < 27 and $Card3 < 27 and $Card4 < 27 and $Card5 < 27)
 {
 $Flush = 1;
 }
-else if ($Card1 <= 13 and $Card2 <= 13 and $Card3 <=13 and $Card4 <=13 and $Card5 <= 13)
+elsif ($Card1 <= 13 and $Card2 <= 13 and $Card3 <=13 and $Card4 <=13 and $Card5 <= 13)
 {
 $Flush = 1;
 }
@@ -99,7 +101,7 @@ $CardCounter[$Card5 % 13]++;
 
 $PairsCounted = 0;
 
-for($i = 0; i <13; i++)
+for($i = 0; i <13; $i++)
 {
 #Checking for 4 of a kind
 	if($CardCounter[i] == 4)
@@ -108,13 +110,13 @@ for($i = 0; i <13; i++)
 	}
 
 #Checking for 3 of a kind
-	if(CardCounter[i] == 3)
+	if($CardCounter[i] == 3)
 	{
 	$ThreeKind = 1;
 	}
 	
 #Checking for pairs
-	if(CardCounter[i] == 2)
+	if($CardCounter[i] == 2)
 	{
 	$OnePair = 1;
 	$PairsCounted++;
@@ -141,39 +143,39 @@ if($RoyalFlush)
 {
 return (10,$Card1,$Card2,$Card3,$Card4,$Card5);
 }
-else if($StraightFlush)
+elsif($StraightFlush)
 {
 return (9,$Card1,$Card2,$Card3,$Card4,$Card5);
 }
-else if(FourKind)
+elsif(FourKind)
 {
 return (8,$Card1,$Card2,$Card3,$Card4,$Card5);
 }
-else if($FullHouse)
+elsif($FullHouse)
 {
 return (7,$Card1,$Card2,$Card3,$Card4,$Card5);
 }
-else if($Flush)
+elsif($Flush)
 {
 return (6,$Card1,$Card2,$Card3,$Card4,$Card5);
 }
-else if($Straight)
+elsif($Straight)
 {
 return (5,$Card1,$Card2,$Card3,$Card4,$Card5);
 }
-else if($ThreeKind)
+elsif($ThreeKind)
 {
 return (4,$Card1,$Card2,$Card3,$Card4,$Card5);
 }
-else if($TwoPair)
+elsif($TwoPair)
 {
 return (3,$Card1,$Card2,$Card3,$Card4,$Card5);
 }
-else if($OnePair)
+elsif($OnePair)
 {
 return (2,$Card1,$Card2,$Card3,$Card4,$Card5);
 }
-else if($HighCard)
+elsif($HighCard)
 {
 return (1,$Card1,$Card2,$Card3,$Card4,$Card5);
 }
@@ -188,8 +190,8 @@ sub EVENT_SAY {
     }
      if ($text=~/money/i)
     {
-	@Currenthand() = POKER_START();
-	@Results() = POKER_LOGIC($Currenthand[0],$Currenthand[1],$Currenthand[2],$Currenthand[3],$Currenthand[4]);
+	@Currenthand = (POKER_START());
+	@Results = (POKER_LOGIC($Currenthand[0],$Currenthand[1],$Currenthand[2],$Currenthand[3],$Currenthand[4]));
      quest::say("I like money". $Results[0] . " " . $Results[1] . " " . $Results[2] . " " . $Results[3] . " " . $Results[4] . " " . $Results[5]);
     }
 }
