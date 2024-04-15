@@ -190,7 +190,7 @@ sub EVENT_SAY {
     {
 	@Currenthand() = POKER_START();
 	@Results() = POKER_LOGIC($Currenthand[0],$Currenthand[1],$Currenthand[2],$Currenthand[3],$Currenthand[4]);
-     quest::say("I like money". $Results[0] . " " . $Results[1] . " " . $Results[2] . " " . $Results[3] . " " . $Results[4] . " " . $Results[5] . " " .);
+     quest::say("I like money". $Results[0] . " " . $Results[1] . " " . $Results[2] . " " . $Results[3] . " " . $Results[4] . " " . $Results[5]);
     }
 }
 
