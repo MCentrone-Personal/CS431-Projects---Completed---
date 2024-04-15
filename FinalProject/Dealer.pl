@@ -19,16 +19,16 @@ $Card3 = $numeric[2];
 $Card4 = $numeric[3];
 $Card5 = $numeric[4];
 
-$Flush = 0;
 $RoyalFlush = 0;
 $StraightFlush = 0;
 $FourKind = 0;
 $FullHouse = 0;
+$Flush = 0;
 $Straight = 0;
 $ThreeKind = 0;
 $TwoPair = 0;
 $OnePair = 0;
-$HighCard = 0;
+$HighCard = 1;
 
 #Flush Check
 if ($Card1 >= 40 and $Card2 >= 40 and $Card3 >= 40 and $Card4 >= 40 and $Card5 >= 40)
@@ -55,12 +55,14 @@ if($Flush)
 	if((($Card1 % 13) + ($Card2 % 13) + ($Card3 % 13) + ($Card4 % 13) + ($Card5 % 13)) == 34)
 	{
 	$RoyalFlush = 1;
+	$Flush = 0;
 	}
 
 	#Straightflush
 	if((($Card1 + 1) == $Card2) and (($Card1 + 2) == $Card3) and (($Card1 + 3) == $Card4) and (($Card1 + 4) == $Card5))
 	{
 	$StraightFlush = 1;
+	$Flush = 0;
 	}
 
 }
@@ -113,7 +115,46 @@ $TwoPair = 1;
 }
 
 #Final Return Checks
-
+if($RoyalFlush)
+{
+return (10,$Card1,$Card2,$Card3,$Card4,$Card5);
+}
+else if($StraightFlush)
+{
+return (9,$Card1,$Card2,$Card3,$Card4,$Card5);
+}
+else if(FourKind)
+{
+return (8,$Card1,$Card2,$Card3,$Card4,$Card5);
+}
+else if($FullHouse)
+{
+return (7,$Card1,$Card2,$Card3,$Card4,$Card5);
+}
+else if($Flush)
+{
+return (6,$Card1,$Card2,$Card3,$Card4,$Card5);
+}
+else if($Straight)
+{
+return (5,$Card1,$Card2,$Card3,$Card4,$Card5);
+}
+else if($ThreeKind)
+{
+return (4,$Card1,$Card2,$Card3,$Card4,$Card5);
+}
+else if($TwoPair)
+{
+return (3,$Card1,$Card2,$Card3,$Card4,$Card5);
+}
+else if($OnePair)
+{
+return (2,$Card1,$Card2,$Card3,$Card4,$Card5);
+}
+else if($HighCard)
+{
+return (1,$Card1,$Card2,$Card3,$Card4,$Card5);
+}
 
 }
 # Message event for NPC, right now responds to hail
