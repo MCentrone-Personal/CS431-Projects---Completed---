@@ -67,6 +67,15 @@ if($Flush)
 
 }
 
+#Striaght Check
+if($StraightFlush == 0)
+{
+if((($Card1 + 1) == $Card2) and (($Card1 + 2) == $Card3) and (($Card1 + 3) == $Card4) and (($Card1 + 4) == $Card5))
+	{
+	$Straight = 1;
+	}
+}
+
 #Checking for Pairs, Triplets, Full House, ect.
 
 $CardCounter[$Card1 % 13]++;
