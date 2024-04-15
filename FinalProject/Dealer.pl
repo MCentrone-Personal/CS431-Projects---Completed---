@@ -1,19 +1,25 @@
 
 sub POKER_START {
 	#Function to generate 5 random cards from one deck
-	@TempCards = ();
-	@CurrentCards = ();
+	print "Start of Poker_Start";
+	@TempCards = (0,0,0,0,0);
+	@CurrentCards = (0,0,0,0,0);
+	print "Created arrays";
 	for($i = 0; $i<5; $i++)
 	{
+		print "For loop position $i";
 		TRYAGAIN:
-		$TempCards[i] = (rand(51) + 1);
-		if(($TempCards[i] == $CurrentCards[1]) or ($TempCards[i] == $CurrentCards[2]) or ($TempCards[i] == $CurrentCards[3]) or ($TempCards[i] == $CurrentCards[4]) or ($TempCards[i] == $CurrentCards[5]))
+		print "random card maker";
+		$TempCards[i] = ((int rand(51)) + 1);
+		if(($TempCards[i] == $CurrentCards[0]) or ($TempCards[i] == $CurrentCards[1]) or ($TempCards[i] == $CurrentCards[2]) or ($TempCards[i] == $CurrentCards[3]) or ($TempCards[i] == $CurrentCards[4]))
 		{
 			goto TRYAGAIN;
+			print "Card failed";
 		}
+		print "Assigning cards";
 		$CurrentCards[i] = $TempCards[i];
 	}
-	
+	print "Sending array";
   return (@$CurrentCards);
   
 }
@@ -25,7 +31,8 @@ sub POKER_LOGIC {
 #Will return a number, Highcard only will be a 1, Royal flush will be a 10
 
 #Sort from Lowest to Highest, Card 1 lowest ... Card 5 Highest
-@numeric = sort { $a <=> $b } ($_[0], $_[1], $_[2], $_[3], $_[4]);
+@numeric = sort($_[0], $_[1], $_[2], $_[3], $_[4]);
+print "Created sorted array from cards";
 @CardCounter = (0,0,0,0,0,0,0,0,0,0,0,0,0);
 
 $Card1 = $numeric[0];
@@ -46,26 +53,27 @@ $OnePair = 0;
 $HighCard = 1;
 
 #Flush Check
-if ($Card1 >= 40 and $Card2 >= 40 and $Card3 >= 40 and $Card4 >= 40 and $Card5 >= 40)
+if (($Card1 >= 40) and ($Card2 >= 40) and ($Card3 >= 40) and ($Card4 >= 40) and ($Card5 >= 40))
 {
 $Flush = 1;
 }
-elsif($Card1 >= 27 and $Card2 >= 27 and $Card3 >= 27 and $Card4 >= 27 and $Card5 >= 27 and $Card1 < 40 and $Card2 < 40 and $Card3 < 40 and $Card4 < 40 and $Card5 < 40)
+elsif(($Card1 >= 27) and ($Card2 >= 27) and ($Card3 >= 27) and ($Card4 >= 27) and ($Card5 >= 27) and ($Card1 < 40) and ($Card2 < 40) and ($Card3 < 40) and ($Card4 < 40) and ($Card5 < 40))
 {
 $Flush = 1;
 }
-elsif ($Card1 >= 14 and $Card2 >= 14 and $Card3 >= 14 and $Card4 >= 14 and $Card5 >= 14 and $Card1 < 27 and $Card2 < 27 and $Card3 < 27 and $Card4 < 27 and $Card5 < 27)
+elsif(($Card1 >= 14) and ($Card2 >= 14) and ($Card3 >= 14) and ($Card4 >= 14) and ($Card5 >= 14) and ($Card1 < 27) and ($Card2 < 27) and ($Card3 < 27) and ($Card4 < 27) and ($Card5 < 27))
 {
 $Flush = 1;
 }
-elsif ($Card1 <= 13 and $Card2 <= 13 and $Card3 <=13 and $Card4 <=13 and $Card5 <= 13)
+elsif (($Card1 <= 13) and ($Card2 <= 13) and ($Card3 <=13) and ($Card4 <=13) and ($Card5 <= 13))
 {
 $Flush = 1;
 }
-
+print "flush checks";
 #Royal Flush Check / Striaght Flush
 if($Flush)
 {
+	print "Flush detected";
 	#Royal Flush
 	if((($Card1 % 13) + ($Card2 % 13) + ($Card3 % 13) + ($Card4 % 13) + ($Card5 % 13)) == 34)
 	{
@@ -88,6 +96,7 @@ if($StraightFlush == 0)
 if((($Card1 + 1) == $Card2) and (($Card1 + 2) == $Card3) and (($Card1 + 3) == $Card4) and (($Card1 + 4) == $Card5))
 	{
 	$Straight = 1;
+	print "Striaght detected";
 	}
 }
 
@@ -98,10 +107,11 @@ $CardCounter[$Card2 % 13]++;
 $CardCounter[$Card3 % 13]++;
 $CardCounter[$Card4 % 13]++;
 $CardCounter[$Card5 % 13]++;
+print "Cards Counted";
 
 $PairsCounted = 0;
 
-for($i = 0; i <13; $i++)
+for($q = 0; $q <13; $q++)
 {
 #Checking for 4 of a kind
 	if($CardCounter[i] == 4)
@@ -138,46 +148,58 @@ $OnePair = 0;
 $TwoPair = 1;
 }
 
+@ReturnArray = ();
+
 #Final Return Checks
 if($RoyalFlush)
 {
-return (10,$Card1,$Card2,$Card3,$Card4,$Card5);
+	@ReturnArray = (10,$Card1,$Card2,$Card3,$Card4,$Card5);
+return (@ReturnArray);
 }
 elsif($StraightFlush)
 {
-return (9,$Card1,$Card2,$Card3,$Card4,$Card5);
+@ReturnArray = (9,$Card1,$Card2,$Card3,$Card4,$Card5);
+return (@ReturnArray);
 }
-elsif(FourKind)
+elsif($FourKind)
 {
-return (8,$Card1,$Card2,$Card3,$Card4,$Card5);
+@ReturnArray = (8,$Card1,$Card2,$Card3,$Card4,$Card5);
+return (@ReturnArray);
 }
 elsif($FullHouse)
 {
-return (7,$Card1,$Card2,$Card3,$Card4,$Card5);
+@ReturnArray = (7,$Card1,$Card2,$Card3,$Card4,$Card5);
+return (@ReturnArray);
 }
 elsif($Flush)
 {
-return (6,$Card1,$Card2,$Card3,$Card4,$Card5);
+@ReturnArray = (6,$Card1,$Card2,$Card3,$Card4,$Card5);
+return (@ReturnArray);
 }
 elsif($Straight)
 {
-return (5,$Card1,$Card2,$Card3,$Card4,$Card5);
+@ReturnArray = (5,$Card1,$Card2,$Card3,$Card4,$Card5);
+return (@ReturnArray);
 }
 elsif($ThreeKind)
 {
-return (4,$Card1,$Card2,$Card3,$Card4,$Card5);
+@ReturnArray = (4,$Card1,$Card2,$Card3,$Card4,$Card5);
+return (@ReturnArray);
 }
 elsif($TwoPair)
 {
-return (3,$Card1,$Card2,$Card3,$Card4,$Card5);
+@ReturnArray = (3,$Card1,$Card2,$Card3,$Card4,$Card5);
+return (@ReturnArray);
 }
 elsif($OnePair)
 {
-return (2,$Card1,$Card2,$Card3,$Card4,$Card5);
+@ReturnArray = (2,$Card1,$Card2,$Card3,$Card4,$Card5);
+return (@ReturnArray);
 }
 elsif($HighCard)
 {
-return (1,$Card1,$Card2,$Card3,$Card4,$Card5);
+@ReturnArray = (1,$Card1,$Card2,$Card3,$Card4,$Card5);
+return (@ReturnArray);
 }
 
 }
@@ -190,9 +212,14 @@ sub EVENT_SAY {
     }
      if ($text=~/money/i)
     {
+		
 	@Currenthand = (POKER_START());
+	
 	@Results = (POKER_LOGIC($Currenthand[0],$Currenthand[1],$Currenthand[2],$Currenthand[3],$Currenthand[4]));
-     quest::say("I like money". $Results[0] . " " . $Results[1] . " " . $Results[2] . " " . $Results[3] . " " . $Results[4] . " " . $Results[5]);
+	
+    quest::say("I like money ".@Results);
+   
+   #quest::say("HELLO");
     }
 }
 
