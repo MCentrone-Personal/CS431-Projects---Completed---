@@ -42,13 +42,14 @@ $Flush = 1;
 #Royal Flush Check / Striaght Flush
 if($Flush)
 {
-
+	#Royal Flush
 	if((($Card1 % 13) + ($Card2 % 13) + ($Card3 % 13) + ($Card4 % 13) + ($Card5 % 13)) == 34)
 	{
 	$RoyalFlush = 2;
 	}
 
 }
+	#Straightflush
 	if
 
 }
