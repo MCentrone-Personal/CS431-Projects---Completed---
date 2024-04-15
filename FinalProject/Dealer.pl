@@ -7,7 +7,7 @@ sub POKER_START {
 	{
 		TRYAGAIN:
 		$TempCards[i] = rand(51) + 1;
-		if(($TempCards[i] == $CurrentCards[1]) or $(TempCards[i] == $CurrentCards[2])) or $(TempCards[i] == $CurrentCards[3])) or $(TempCards[i] == $CurrentCards[4])) or $(TempCards[i] == $CurrentCards[5]))
+		if(($TempCards[i] == $CurrentCards[0]) or $(TempCards[i] == $CurrentCards[1])) or $(TempCards[i] == $CurrentCards[2])) or $(TempCards[i] == $CurrentCards[3])) or $(TempCards[i] == $CurrentCards[4]))
 		{
 			goto TRYAGAIN;
 		}
