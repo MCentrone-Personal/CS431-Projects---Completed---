@@ -1,26 +1,20 @@
 
 sub POKER_START {
 	#Function to generate 5 random cards from one deck
-	print "Start of Poker_Start";
 	@TempCards = (0,0,0,0,0);
 	@CurrentCards = (0,0,0,0,0);
-	print "Created arrays";
 	for($i = 0; $i<5; $i++)
 	{
-		print "For loop position $i";
 		TRYAGAIN:
-		print "random card maker";
-		$TempCards[i] = ((int rand(51)) + 1);
-		if(($TempCards[i] == $CurrentCards[0]) or ($TempCards[i] == $CurrentCards[1]) or ($TempCards[i] == $CurrentCards[2]) or ($TempCards[i] == $CurrentCards[3]) or ($TempCards[i] == $CurrentCards[4]))
+		$TempCards[$i] = ((int rand(51)) + 1);
+		
+		if(($TempCards[$i] == $CurrentCards[0]) or ($TempCards[$i] == $CurrentCards[1]) or ($TempCards[$i] == $CurrentCards[2]) or ($TempCards[$i] == $CurrentCards[3]) or ($TempCards[$i] == $CurrentCards[4]))
 		{
 			goto TRYAGAIN;
-			print "Card failed";
 		}
-		print "Assigning cards";
-		$CurrentCards[i] = $TempCards[i];
+		$CurrentCards[$i] = $TempCards[$i];
 	}
-	print "Sending array";
-  return (@$CurrentCards);
+  return ($CurrentCards[0],$CurrentCards[1],$CurrentCards[2],$CurrentCards[3],$CurrentCards[4]);
   
 }
 
@@ -30,16 +24,19 @@ sub POKER_LOGIC {
 # Function call PokerLogic(int,int,int,int,int);
 #Will return a number, Highcard only will be a 1, Royal flush will be a 10
 
+@numeric = (int($_[0]), int($_[1]), int($_[2]), int($_[3]), int($_[4]));
 #Sort from Lowest to Highest, Card 1 lowest ... Card 5 Highest
-@numeric = sort($_[0], $_[1], $_[2], $_[3], $_[4]);
-print "Created sorted array from cards";
+
+@numeric = sort { $a <=> $b } ($_[0], $_[1], $_[2], $_[3], $_[4]);
+
 @CardCounter = (0,0,0,0,0,0,0,0,0,0,0,0,0);
 
-$Card1 = $numeric[0];
-$Card2 = $numeric[1];
-$Card3 = $numeric[2];
-$Card4 = $numeric[3];
-$Card5 = $numeric[4];
+
+$Card1 = int($numeric[0]);
+$Card2 = int($numeric[1]);
+$Card3 = int($numeric[2]);
+$Card4 = int($numeric[3]);
+$Card5 = int($numeric[4]);
 
 $RoyalFlush = 0;
 $StraightFlush = 0;
@@ -69,11 +66,10 @@ elsif (($Card1 <= 13) and ($Card2 <= 13) and ($Card3 <=13) and ($Card4 <=13) and
 {
 $Flush = 1;
 }
-print "flush checks";
+
 #Royal Flush Check / Striaght Flush
 if($Flush)
 {
-	print "Flush detected";
 	#Royal Flush
 	if((($Card1 % 13) + ($Card2 % 13) + ($Card3 % 13) + ($Card4 % 13) + ($Card5 % 13)) == 34)
 	{
@@ -82,7 +78,7 @@ if($Flush)
 	}
 
 	#Straightflush
-	if((($Card1 + 1) == $Card2) and (($Card1 + 2) == $Card3) and (($Card1 + 3) == $Card4) and (($Card1 + 4) == $Card5))
+	if(((($Card1 % 13) + 1) == ($Card2 % 13)) and ((($Card1 % 13) + 2) == ($Card3 % 13)) and ((($Card1 % 13) + 3) == ($Card4 %13)) and ((($Card1 % 13) + 4) == ($Card5 % 13)))
 	{
 	$StraightFlush = 1;
 	$Flush = 0;
@@ -93,10 +89,9 @@ if($Flush)
 #Striaght Check
 if($StraightFlush == 0)
 {
-if((($Card1 + 1) == $Card2) and (($Card1 + 2) == $Card3) and (($Card1 + 3) == $Card4) and (($Card1 + 4) == $Card5))
+if(((($Card1 % 13) + 1) == ($Card2 % 13)) and ((($Card1 % 13) + 2) == ($Card3 % 13)) and ((($Card1 % 13) + 3) == ($Card4 %13)) and ((($Card1 % 13) + 4) == ($Card5 % 13)))
 	{
 	$Straight = 1;
-	print "Striaght detected";
 	}
 }
 
@@ -107,26 +102,25 @@ $CardCounter[$Card2 % 13]++;
 $CardCounter[$Card3 % 13]++;
 $CardCounter[$Card4 % 13]++;
 $CardCounter[$Card5 % 13]++;
-print "Cards Counted";
 
 $PairsCounted = 0;
 
 for($q = 0; $q <13; $q++)
 {
 #Checking for 4 of a kind
-	if($CardCounter[i] == 4)
+	if($CardCounter[$q] == 4)
 	{
 	$FourKind = 1;
 	}
 
 #Checking for 3 of a kind
-	if($CardCounter[i] == 3)
+	if($CardCounter[$q] == 3)
 	{
 	$ThreeKind = 1;
 	}
 	
 #Checking for pairs
-	if($CardCounter[i] == 2)
+	if($CardCounter[$q] == 2)
 	{
 	$OnePair = 1;
 	$PairsCounted++;
@@ -147,61 +141,57 @@ if($PairsCounted == 2)
 $OnePair = 0;
 $TwoPair = 1;
 }
-
-@ReturnArray = ();
-
 #Final Return Checks
 if($RoyalFlush)
 {
-	@ReturnArray = (10,$Card1,$Card2,$Card3,$Card4,$Card5);
-return (@ReturnArray);
+return(10,int($Card1),int($Card2),int($Card3),int($Card4),int($Card5));
 }
 elsif($StraightFlush)
 {
-@ReturnArray = (9,$Card1,$Card2,$Card3,$Card4,$Card5);
-return (@ReturnArray);
+return(9,int($Card1),int($Card2),int($Card3),int($Card4),int($Card5));
 }
 elsif($FourKind)
 {
-@ReturnArray = (8,$Card1,$Card2,$Card3,$Card4,$Card5);
-return (@ReturnArray);
+return(8,int($Card1),int($Card2),int($Card3),int($Card4),int($Card5));
 }
 elsif($FullHouse)
 {
-@ReturnArray = (7,$Card1,$Card2,$Card3,$Card4,$Card5);
-return (@ReturnArray);
+return(7,int($Card1),int($Card2),int($Card3),int($Card4),int($Card5));
 }
 elsif($Flush)
 {
-@ReturnArray = (6,$Card1,$Card2,$Card3,$Card4,$Card5);
-return (@ReturnArray);
+return(6,int($Card1),int($Card2),int($Card3),int($Card4),int($Card5));
 }
 elsif($Straight)
 {
-@ReturnArray = (5,$Card1,$Card2,$Card3,$Card4,$Card5);
-return (@ReturnArray);
+return (5,int($Card1),int($Card2),int($Card3),int($Card4),int($Card5));
 }
 elsif($ThreeKind)
 {
-@ReturnArray = (4,$Card1,$Card2,$Card3,$Card4,$Card5);
-return (@ReturnArray);
+return(4,int($Card1),int($Card2),int($Card3),int($Card4),int($Card5));
 }
 elsif($TwoPair)
 {
-@ReturnArray = (3,$Card1,$Card2,$Card3,$Card4,$Card5);
-return (@ReturnArray);
+return(3,int($Card1),int($Card2),int($Card3),int($Card4),int($Card5));
 }
 elsif($OnePair)
 {
-@ReturnArray = (2,$Card1,$Card2,$Card3,$Card4,$Card5);
-return (@ReturnArray);
+return (2,int($Card1),int($Card2),int($Card3),int($Card4),int($Card5));
 }
 elsif($HighCard)
 {
-@ReturnArray = (1,$Card1,$Card2,$Card3,$Card4,$Card5);
-return (@ReturnArray);
+return (1,int($Card1),int($Card2),int($Card3),int($Card4),int($Card5));
 }
 
+}
+
+sub POKER_CARD_NAMES{
+	
+	@Names = ('Ace of Hearts', 'Two of Hearts', 'Three of Hearts', 'Four of Hearts', 'Five of Hearts', 'Six of Hearts', 'Seven of Hearts', 'Eight of Hearts', 'Nine of Hearts', 'Ten of Hearts', 'Jack of Hearts', 'Queen of Hearts', 'King of Hearts','Ace of Clubs', 'Two of Clubs', 'Three of Clubs', 'Four of Clubs', 'Five of Clubs', 'Six of Clubs', 'Seven of Clubs', 'Eight of Clubs', 'Nine of Clubs', 'Ten of Clubs', 'Jack of Clubs', 'Queen of Clubs', 'King of Clubs', 'Ace of Diamonds', 'Two of Diamonds', 'Three of Diamonds', 'Four of Diamondss', 'Five of Diamonds', 'Six of Diamondss', 'Seven of Diamonds', 'Eight of Diamonds', 'Nine of Diamonds', 'Ten of Diamonds', 'Jack of Diamonds', 'Queen of Diamonds', 'King of Diamonds','Ace of Spades', 'Two of Spades', 'Three of Spades', 'Four of Spades', 'Five of Spades', 'Six of Spades', 'Seven of Spades', 'Eight of Spades', 'Nine of Spades', 'Ten of Spades', 'Jack of Spades', 'Queen of Spades', 'King of Spades');
+	
+	
+	
+	
 }
 # Message event for NPC, right now responds to hail
 sub EVENT_SAY {
@@ -215,11 +205,10 @@ sub EVENT_SAY {
 		
 	@Currenthand = (POKER_START());
 	
-	@Results = (POKER_LOGIC($Currenthand[0],$Currenthand[1],$Currenthand[2],$Currenthand[3],$Currenthand[4]));
+	@Results = (POKER_LOGIC(int($Currenthand[0]),int($Currenthand[1]),$Currenthand[2],$Currenthand[3],$Currenthand[4]));
 	
-    quest::say("I like money ".@Results);
-   
-   #quest::say("HELLO");
+    quest::say("I like money ");
+	quest::say($Results[0].' '.$Results[1].' '.$Results[2].' '.$Results[3].' '.$Results[4].' '.$Results[5]);
     }
 }
 
