@@ -203,6 +203,40 @@ return (@ReturnArray);
 }
 
 }
+
+sub BlackJack {
+	@CardsNumList = (1..52);
+	@PlayerCardsNum = ();
+	@DealerCardsNum = ();
+	@PlayerCardsStr = ();
+	@DealerCardsStr = ();
+	$PlayerPoints = 0;
+	$DealerPoints = 0;
+
+	for (my $i = 0; $i < 2; $i++) {
+		TRYAGAIN:
+		$indexCardNumList = rand(51) + 1;
+		$cardNum = @CardsNumList[$indexCardNumList];
+		if ($cardNum == 0) {
+			goto TRYAGAIN;
+		}
+		@CardsNumList[$indexCardNumList] = 0;
+		$suitNum = $cardNum % 4;
+		$cardVal = $carNum % 13;
+
+		push(@PlayerCardsNum, $cardNum);
+
+	}
+
+	$client->DiaWind("
+			{title: This is BlackJack!}
+			{button_one: Stand!}
+			{button_two: Hit!}
+			wintype:1
+			Hello!
+	");
+}
+
 # Message event for NPC, right now responds to hail
 sub EVENT_SAY {
     #:: Match say message for "hail", /i for case insensitive
