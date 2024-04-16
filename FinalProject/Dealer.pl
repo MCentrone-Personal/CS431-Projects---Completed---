@@ -240,7 +240,7 @@ sub BlackJack {
 			$cardString = $cardString . "Queen of ";
 		}
 
-		elsif ($cardVal == 12) {
+		elsif ($cardVal == 13) {
 			$cardString = $cardString . "King of ";
 		}
 		else {
