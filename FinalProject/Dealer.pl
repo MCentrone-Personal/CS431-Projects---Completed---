@@ -206,8 +206,15 @@ sub EVENT_SAY {
 	
 	@Results = (POKER_LOGIC(int($Currenthand[0]),int($Currenthand[1]),$Currenthand[2],$Currenthand[3],$Currenthand[4]));
 	
+	$Card1 = POKER_CARD_NAMES($Results[1]);
+	$Card2 = POKER_CARD_NAMES($Results[2]);
+	$Card3 = POKER_CARD_NAMES($Results[3]);
+	$Card4 = POKER_CARD_NAMES($Results[4]);
+	$Card5 = POKER_CARD_NAMES($Results[5]);
+	
     quest::say("I like money ");
 	quest::say($Results[0].', '.POKER_CARD_NAMES($Results[1]).', '.POKER_CARD_NAMES($Results[2]).', '.POKER_CARD_NAMES($Results[3]).', '.POKER_CARD_NAMES($Results[4]).', '.POKER_CARD_NAMES($Results[5]));
+	quest::say($Results[0].', '."[$Card5]".', '."[$Card1]".', '."[$Card2]".', '."[$Card3]".', '."[$Card4]");
     }
 }
 
