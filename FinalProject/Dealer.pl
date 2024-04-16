@@ -216,13 +216,13 @@ sub BlackJack {
 	for (my $i = 0; $i < 2; $i++) {
 		TRYAGAIN:
 		$indexCardNumList = rand(51) + 1;
-		$cardNum = @CardsNumList[$indexCardNumList];
+		$cardNum = $CardsNumList[$indexCardNumList];
 		if ($cardNum == 0) {
 			goto TRYAGAIN;
 		}
 
 		$cardString = "";
-		@CardsNumList[$indexCardNumList] = 0;
+		$CardsNumList[$indexCardNumList] = 0;
 		$suitNum = $cardNum % 4;
 		$cardVal = $carNum % 13 + 1;
 
@@ -262,13 +262,13 @@ sub BlackJack {
 	for (my $i = 0; $i < 2; $i++) {
 		TRYAGAIN:
 		$indexCardNumList = rand(51) + 1;
-		$cardNum = @CardsNumList[$indexCardNumList];
+		$cardNum = $CardsNumList[$indexCardNumList];
 		if ($cardNum == 0) {
 			goto TRYAGAIN;
 		}
 
 		$cardString = "";
-		@CardsNumList[$indexCardNumList] = 0;
+		$CardsNumList[$indexCardNumList] = 0;
 		$suitNum = $cardNum % 4;
 		$cardVal = $carNum % 13 + 1;
 
