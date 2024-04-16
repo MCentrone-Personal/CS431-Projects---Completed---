@@ -220,11 +220,42 @@ sub BlackJack {
 		if ($cardNum == 0) {
 			goto TRYAGAIN;
 		}
+
+		$cardString = "";
 		@CardsNumList[$indexCardNumList] = 0;
 		$suitNum = $cardNum % 4;
-		$cardVal = $carNum % 13;
+		$cardVal = $carNum % 13 + 1;
 
 		push(@PlayerCardsNum, $cardNum);
+
+		if ($cardVal == 1) {
+			$cardString = $cardString . "Ace of ";
+		}
+
+		elsif ($cardVal == 11) {
+			$cardString = $cardString . "Jack of ";
+		}
+
+		elsif ($cardVal == 12) {
+			$cardString = $cardString . "Queen of ";
+		}
+
+		elsif ($cardVal == 12) {
+			$cardString = $cardString . "King of ";
+		}
+		else {
+			$cardString = $cardString . $cardVal . " of ";
+		}
+
+
+		switch($suitNum) {
+			case 0	{$cardString . "Spades"};
+			case 1	{$cardString . "Clubs"};
+			case 2	{$cardString . "Diamonds"}
+			case 3	{$cardString . "Hearts"}
+		}
+
+		push(@PlayerCardsStr, $cardString)
 
 	}
 
