@@ -213,7 +213,7 @@ sub BlackJack {
 
 	for (my $i = 0; $i < 2; $i++) {
 		TRYAGAIN1:
-		$indexCardNumList = rand(51);
+		$indexCardNumList = int(rand(51));
 		$cardNum = $CardsNumList[$indexCardNumList];
 		if ($cardNum == 0) {
 			goto TRYAGAIN1;
@@ -259,7 +259,7 @@ sub BlackJack {
 
 	for (my $i = 0; $i < 2; $i++) {
 		TRYAGAIN2:
-		$indexCardNumList = rand(51);
+		$indexCardNumList = int(rand(51));
 		$cardNum = $CardsNumList[$indexCardNumList];
 		if ($cardNum == 0) {
 			goto TRYAGAIN2;
