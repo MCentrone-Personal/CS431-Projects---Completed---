@@ -346,8 +346,162 @@ sub BlackJack_Init {
 
 	}
 	quest::say("You are playing Black Jack.")
-	quest::say("You have a $BlackJackPlayerCardsStr[0] and a $BlackJackPlayerCardsStr[1]. The dealer has a $BlackJackPlayerCardsStr[1]. Do you want to [Hit] or [Stand]?");
+	quest::say("You have a $BlackJackPlayerCardsStr[0] and a $BlackJackPlayerCardsStr[1]. The dealer has a $BlackJackDealerCardsStr[0]. Do you want to [Hit] or [Stand]?");
 
+
+}
+
+sub BlackJack_Hit {
+	if ($BlackJackPlayerPoints < 21) {
+		TRYAGAIN1:
+		$indexCardNumList = int(rand(51));
+		$cardNum = $BlackJackCardsNumList[$indexCardNumList];
+		if ($cardNum == 0) {
+			goto TRYAGAIN1;
+		}
+
+		$cardString = "";
+		$BlackJackCardsNumList[$indexCardNumList] = 0;
+		$suitNum = $cardNum % 4;
+		$cardVal = $carNum % 13 + 1;
+
+		push(@BlackJackPlayerCardsNum, $cardNum);
+
+		if ($cardVal == 1) {
+			$cardString = $cardString . "Ace of ";
+		}
+
+		elsif ($cardVal == 11) {
+			$cardString = $cardString . "Jack of ";
+		}
+
+		elsif ($cardVal == 12) {
+			$cardString = $cardString . "Queen of ";
+		}
+
+		elsif ($cardVal == 13) {
+			$cardString = $cardString . "King of ";
+		}
+		else {
+			$cardString = $cardString . $cardVal . " of ";
+		}
+
+
+		switch($suitNum) {
+			case 0	{$cardString . "Spades";}
+			case 1	{$cardString . "Clubs";}
+			case 2	{$cardString . "Diamonds";}
+			case 3	{$cardString . "Hearts";}
+		}
+
+		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+			$BlackJackPlayerPoints += 10;
+		}
+		elsif ($cardVal < 11 && $cardVal > 1) {
+			$BlackJackPlayerPoints += $cardVal;
+		}
+
+		if ($cardVal == 1) {
+			if ($BlackJackPlayerPoints < 21) {
+				$BlackJackPlayerPoints += 11;
+			}
+			else {
+				$BlackJackPlayerPoints += 1;
+			}
+		}
+
+		push(@BlackJackPlayerCardsStr, $cardString);
+
+	}
+	else {
+		BlackJack_RecalculatePlayerPoints();
+	}
+	if ($BlackJackDealerPoints < 21) {
+		if ($BlackJackDealerPoints < 17) {
+			TRYAGAIN2:
+			$indexCardNumList = int(rand(51));
+			$cardNum = $BlackJackCardsNumList[$indexCardNumList];
+			if ($cardNum == 0) {
+				goto TRYAGAIN2;
+			}
+
+			$cardString = "";
+			$BlackJackCardsNumList[$indexCardNumList] = 0;
+			$suitNum = $cardNum % 4;
+			$cardVal = $carNum % 13 + 1;
+
+			push(@BlackJackDealerCardsNum, $cardNum);
+
+			if ($cardVal == 1) {
+				$cardString = $cardString . "Ace of ";
+			}
+
+			elsif ($cardVal == 11) {
+				$cardString = $cardString . "Jack of ";
+			}
+
+			elsif ($cardVal == 12) {
+				$cardString = $cardString . "Queen of ";
+			}
+
+			elsif ($cardVal == 12) {
+				$cardString = $cardString . "King of ";
+			}
+			else {
+				$cardString = $cardString . $cardVal . " of ";
+			}
+
+
+			switch($suitNum) {
+				case 0	{$cardString . "Spades";}
+				case 1	{$cardString . "Clubs";}
+				case 2	{$cardString . "Diamonds";}
+				case 3	{$cardString . "Hearts";}
+			}
+
+			if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+				$BlackJackDealerPoints += 10;
+			}
+			elsif ($cardVal < 11 && $cardVal > 1) {
+				$BlackJackDealerPoints += $cardVal;
+			}
+
+			if ($cardVal == 1) {
+				if ($BlackJackPlayerPoints < 21) {
+					$BlackJackDealerPoints += 11;
+				}
+				else {
+					$BlackJackDealerPoints += 1;
+				}
+			}
+
+			push(@BlackJackDealerCardsStr, $cardString);
+
+		}
+	}
+	else {
+		BlackJack_RecalculateDealerPoints();
+	}
+
+	quest::say("You have:");
+	quest::say join(", ", @BlackJackPlayerCardsStr);
+	quest::say("The dealer has:")
+	$cardinality = @BlackJackDealerCardsStr;
+	for ($i = 0; $i < $cardinality - 1; $i++) {
+		quest::say("$BlackJackDealerCardsStr[$i]")
+	}
+	quest::say("Do you want to [Hit] or [Stand]?");
+}
+
+sub BlackJack_Stand {
+
+}
+
+sub BlackJack_RecalculatePlayerPoints {
+
+}
+
+sub BlackJack_RecalculateDealerPoints {
 
 }
 
