@@ -257,11 +257,17 @@ sub BlackJack_Init {
 		}
 
 
-		switch($suitNum) {
-			case 0	{$cardString . "Spades";}
-			case 1	{$cardString . "Clubs";}
-			case 2	{$cardString . "Diamonds";}
-			case 3	{$cardString . "Hearts";}
+		if ($suitNum == 0) {
+			$cardString . "Spades";
+		}
+		elsif ($suitNum == 1) {
+			$cardString . "Spades";
+		}
+		elsif ($suitNum == 2) {
+			$cardString . "Diamonds";
+		}
+		elsif ($suitNum == 3) {
+			$cardString . "Hearts";
 		}
 
 		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
@@ -319,11 +325,17 @@ sub BlackJack_Init {
 		}
 
 
-		switch($suitNum) {
-			case 0	{$cardString . "Spades";}
-			case 1	{$cardString . "Clubs";}
-			case 2	{$cardString . "Diamonds";}
-			case 3	{$cardString . "Hearts";}
+		if ($suitNum == 0) {
+			$cardString . "Spades";
+		}
+		elsif ($suitNum == 1) {
+			$cardString . "Clubs";
+		}
+		elsif ($suitNum == 2) {
+			$cardString . "Diamonds";
+		}
+		elsif ($suitNum == 3) {
+			$cardString . "Hearts";
 		}
 
 		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
@@ -387,11 +399,17 @@ sub BlackJack_Hit {
 		}
 
 
-		switch($suitNum) {
-			case 0	{$cardString . "Spades";}
-			case 1	{$cardString . "Clubs";}
-			case 2	{$cardString . "Diamonds";}
-			case 3	{$cardString . "Hearts";}
+		if ($suitNum == 0) {
+			$cardString . "Spades";
+		}
+		elsif ($suitNum == 1) {
+			$cardString . "Clubs";
+		}
+		elsif ($suitNum == 2) {
+			$cardString . "Diamonds";
+		}
+		elsif ($suitNum == 3) {
+			$cardString . "Hearts";
 		}
 
 		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
@@ -452,11 +470,17 @@ sub BlackJack_Hit {
 			}
 
 
-			switch($suitNum) {
-				case 0	{$cardString . "Spades";}
-				case 1	{$cardString . "Clubs";}
-				case 2	{$cardString . "Diamonds";}
-				case 3	{$cardString . "Hearts";}
+			if ($suitNum == 0) {
+				$cardString . "Spades";
+			}
+			elsif ($suitNum == 1) {
+				$cardString . "Clubs";
+			}
+			elsif ($suitNum == 2) {
+				$cardString . "Diamonds";
+			}
+			elsif ($suitNum == 3) {
+				$cardString . "Hearts";
 			}
 
 			if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
