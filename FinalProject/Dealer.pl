@@ -210,7 +210,7 @@ our @BlackJackPlayerCardsStr = ();
 our @BlackJackDealerCardsStr = ();
 our $BlackJackPlayerPoints = 0;
 our $BlackJackDealerPoints = 0;
-sub BlackJack {
+sub BlackJack_Init {
 	for (my $i = 0; $i < 2; $i++) {
 		TRYAGAIN1:
 		$indexCardNumList = int(rand(51));
