@@ -202,7 +202,6 @@ return (@ReturnArray);
 }
 
 }
-
 sub BlackJack {
 	@CardsNumList = (1..52);
 	@PlayerCardsNum = ();
@@ -214,7 +213,7 @@ sub BlackJack {
 
 	for (my $i = 0; $i < 2; $i++) {
 		TRYAGAIN:
-		$indexCardNumList = rand(51) + 1;
+		$indexCardNumList = rand(51);
 		$cardNum = $CardsNumList[$indexCardNumList];
 		if ($cardNum == 0) {
 			goto TRYAGAIN;
@@ -260,7 +259,7 @@ sub BlackJack {
 
 	for (my $i = 0; $i < 2; $i++) {
 		TRYAGAIN:
-		$indexCardNumList = rand(51) + 1;
+		$indexCardNumList = rand(51);
 		$cardNum = $CardsNumList[$indexCardNumList];
 		if ($cardNum == 0) {
 			goto TRYAGAIN;
