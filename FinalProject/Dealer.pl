@@ -210,6 +210,17 @@ our @BlackJackPlayerCardsStr = ();
 our @BlackJackDealerCardsStr = ();
 our $BlackJackPlayerPoints = 0;
 our $BlackJackDealerPoints = 0;
+
+sub BlackJack_GameReset {
+	@BlackJackCardsNumList = (1..52);
+	@BlackJackPlayerCardsNum = ();
+	@BlackJackDealerCardsNum = ();
+	@BlackJackPlayerCardsStr = ();
+	@BlackJackDealerCardsStr = ();
+	$BlackJackPlayerPoints = 0;
+	$BlackJackDealerPoints = 0;
+}
+
 sub BlackJack_Init {
 	for (my $i = 0; $i < 2; $i++) {
 		TRYAGAIN1:
@@ -247,16 +258,32 @@ sub BlackJack_Init {
 
 
 		switch($suitNum) {
-			case 0	{$cardString . "Spades"};
-			case 1	{$cardString . "Clubs"};
-			case 2	{$cardString . "Diamonds"}
-			case 3	{$cardString . "Hearts"}
+			case 0	{$cardString . "Spades";}
+			case 1	{$cardString . "Clubs";}
+			case 2	{$cardString . "Diamonds";}
+			case 3	{$cardString . "Hearts";}
 		}
 
-		push(@BlackJackPlayerCardsStr, $cardString)
+		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+			$BlackJackPlayerPoints += 10;
+		}
+		elsif ($cardVal < 11 && $cardVal > 1) {
+			$BlackJackPlayerPoints += $cardVal;
+		}
+
+		if ($cardVal == 1) {
+			if ($BlackJackPlayerPoints < 21) {
+				$BlackJackPlayerPoints += 11;
+			}
+			else {
+				$BlackJackPlayerPoints += 1;
+			}
+		}
+
+		push(@BlackJackPlayerCardsStr, $cardString);
 
 	}
-
+	print("Dealing dealer cards.")
 	for (my $i = 0; $i < 2; $i++) {
 		TRYAGAIN2:
 		$indexCardNumList = int(rand(51));
@@ -293,15 +320,33 @@ sub BlackJack_Init {
 
 
 		switch($suitNum) {
-			case 0	{$cardString . "Spades"};
-			case 1	{$cardString . "Clubs"};
-			case 2	{$cardString . "Diamonds"}
-			case 3	{$cardString . "Hearts"}
+			case 0	{$cardString . "Spades";}
+			case 1	{$cardString . "Clubs";}
+			case 2	{$cardString . "Diamonds";}
+			case 3	{$cardString . "Hearts";}
 		}
 
-		push(@BlackJackDealerCardsStr, $cardString)
+		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+			$BlackJackDealerPoints += 10;
+		}
+		elsif ($cardVal < 11 && $cardVal > 1) {
+			$BlackJackDealerPoints += $cardVal;
+		}
+
+		if ($cardVal == 1) {
+			if ($BlackJackPlayerPoints < 21) {
+				$BlackJackDealerPoints += 11;
+			}
+			else {
+				$BlackJackDealerPoints += 1;
+			}
+		}
+
+		push(@BlackJackDealerCardsStr, $cardString);
 
 	}
+	quest::say("You are playing Black Jack.")
+	quest::say("You have a $BlackJackPlayerCardsStr[0] and a $BlackJackPlayerCardsStr[1]. The dealer has a $BlackJackPlayerCardsStr[1]. Do you want to [Hit] or [Stand]?");
 
 
 }
@@ -339,7 +384,7 @@ sub EVENT_SAY {
     }
 
 	if ($text=~/Black Jack/i){
-		quest::say("This game is currently closed");
+		BlackJack_Init();
 	}
 
 	if ($text=~/Poker/i){
@@ -359,6 +404,14 @@ sub EVENT_SAY {
 		my $TextToCenterRoul9 = plugin::PWAutoCenter(" Please tell the dealer what you want to bet on. If you want to select multiple number, please type each number seperated by a comma.");
 		my $TextToCenterRoul10 = plugin::PWAutoCenter(" First play your bets, then hand me the ammount of money you want to play with.");
 			 quest::popup("Rules of Roulette", "$RoulRules </c><br><br> $TextToCenterRoul </c><br> $TextToCenterRoul2 </c><br> $TextToCenterRoul3 </c><br> $TextToCenterRoul4 </c><br> $TextToCenterRoul5 </c><br> $TextToCenterRoul6 </c><br> $TextToCenterRoul7 </c><br> $TextToCenterRoul8 </c><br><br> $TextToCenterRoul9 </c><br> $TextToCenterRoul10 </c><br>");
+	}
+
+	if ($text=~/Stand/i) {
+		quest::say("NOT IMPLEMENTED YET!!!!");
+	}
+
+	if ($text=~/Hit/i) {
+		quest::say("NOT IMPLEMENTED YET!!!!");
 	}
 
 }
