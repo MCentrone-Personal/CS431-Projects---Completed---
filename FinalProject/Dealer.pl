@@ -202,29 +202,29 @@ return (@ReturnArray);
 }
 
 }
-sub BlackJack {
-	@CardsNumList = (1..52);
-	@PlayerCardsNum = ();
-	@DealerCardsNum = ();
-	@PlayerCardsStr = ();
-	@DealerCardsStr = ();
-	$PlayerPoints = 0;
-	$DealerPoints = 0;
 
+our @BlackJackCardsNumList = (1..52);
+our @BlackJackPlayerCardsNum = ();
+our @BlackJackDealerCardsNum = ();
+our @BlackJackPlayerCardsStr = ();
+our @BlackJackDealerCardsStr = ();
+our $BlackJackPlayerPoints = 0;
+our $BlackJackDealerPoints = 0;
+sub BlackJack {
 	for (my $i = 0; $i < 2; $i++) {
 		TRYAGAIN1:
 		$indexCardNumList = int(rand(51));
-		$cardNum = $CardsNumList[$indexCardNumList];
+		$cardNum = $BlackJackCardsNumList[$indexCardNumList];
 		if ($cardNum == 0) {
 			goto TRYAGAIN1;
 		}
 
 		$cardString = "";
-		$CardsNumList[$indexCardNumList] = 0;
+		$BlackJackCardsNumList[$indexCardNumList] = 0;
 		$suitNum = $cardNum % 4;
 		$cardVal = $carNum % 13 + 1;
 
-		push(@PlayerCardsNum, $cardNum);
+		push(@BlackJackPlayerCardsNum, $cardNum);
 
 		if ($cardVal == 1) {
 			$cardString = $cardString . "Ace of ";
@@ -253,24 +253,24 @@ sub BlackJack {
 			case 3	{$cardString . "Hearts"}
 		}
 
-		push(@PlayerCardsStr, $cardString)
+		push(@BlackJackPlayerCardsStr, $cardString)
 
 	}
 
 	for (my $i = 0; $i < 2; $i++) {
 		TRYAGAIN2:
 		$indexCardNumList = int(rand(51));
-		$cardNum = $CardsNumList[$indexCardNumList];
+		$cardNum = $BlackJackCardsNumList[$indexCardNumList];
 		if ($cardNum == 0) {
 			goto TRYAGAIN2;
 		}
 
 		$cardString = "";
-		$CardsNumList[$indexCardNumList] = 0;
+		$BlackJackCardsNumList[$indexCardNumList] = 0;
 		$suitNum = $cardNum % 4;
 		$cardVal = $carNum % 13 + 1;
 
-		push(@DealerCardsNum, $cardNum);
+		push(@BlackJackDealerCardsNum, $cardNum);
 
 		if ($cardVal == 1) {
 			$cardString = $cardString . "Ace of ";
@@ -299,17 +299,11 @@ sub BlackJack {
 			case 3	{$cardString . "Hearts"}
 		}
 
-		push(@DealerCardsStr, $cardString)
+		push(@BlackJackDealerCardsStr, $cardString)
 
 	}
 
-	$client->DiaWind("
-			{title: This is BlackJack!}
-			{button_one: Stand!}
-			{button_two: Hit!}
-			wintype:1
-			Hello!
-	");
+
 }
 
 # Message event for NPC, right now responds to hail
