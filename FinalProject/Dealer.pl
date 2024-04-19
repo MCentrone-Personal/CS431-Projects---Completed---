@@ -595,7 +595,7 @@ sub BlackJack_Stand {
 
 		}
 	}
-	
+
 	if ($BlackJack_PlayerPoints == $BlackJack_DealerPoints && $BlackJack_DealerPoints == 21) {
 		$BlackJack_GameCondition = 4;
 	}
@@ -626,6 +626,8 @@ sub BlackJack_RecalculatePlayerPoints {
 			$BlackJack_PlayerPoints += $i
 		}
 	}
+
+	BlackJack_RecalculateDealerPoints();
 }
 
 sub BlackJack_RecalculateDealerPoints {
@@ -635,6 +637,8 @@ sub BlackJack_RecalculateDealerPoints {
 			$BlackJack_DealerPoints += $i
 		}
 	}
+
+	BlackJack_RecalculatePlayerPoints();
 }
 
 # Message event for NPC, right now responds to hail
