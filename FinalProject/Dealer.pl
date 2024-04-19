@@ -203,39 +203,41 @@ return (@ReturnArray);
 
 }
 
-our @BlackJackCardsNumList = (1..52);
-our @BlackJackPlayerCardsNum = ();
-our @BlackJackDealerCardsNum = ();
-our @BlackJackPlayerCardsStr = ();
-our @BlackJackDealerCardsStr = ();
-our $BlackJackPlayerPoints = 0;
-our $BlackJackDealerPoints = 0;
+our @BlackJack_CardsNumList = (1..52);
+our @BlackJack_PlayerCardsNum = ();
+our @BlackJack_DealerCardsNum = ();
+our @BlackJack_PlayerCardsStr = ();
+our @BlackJack_DealerCardsStr = ();
+our $BlackJack_PlayerPoints = 0;
+our $BlackJack_DealerPoints = 0;
+our $BlackJack_GameCondition = 0; # 1 = player lost (bust), 2 = player wins, 3 = player gets black jack, 4 = push (player and dealer tie)
 
 sub BlackJack_GameReset {
-	@BlackJackCardsNumList = (1..52);
-	@BlackJackPlayerCardsNum = ();
-	@BlackJackDealerCardsNum = ();
-	@BlackJackPlayerCardsStr = ();
-	@BlackJackDealerCardsStr = ();
-	$BlackJackPlayerPoints = 0;
-	$BlackJackDealerPoints = 0;
+	@BlackJack_CardsNumList = (1..52);
+	@BlackJack_PlayerCardsNum = ();
+	@BlackJack_DealerCardsNum = ();
+	@BlackJack_PlayerCardsStr = ();
+	@BlackJack_DealerCardsStr = ();
+	$BlackJack_PlayerPoints = 0;
+	$BlackJack_DealerPoints = 0;
+	$BlackJack_GameCondition = 0;
 }
 
 sub BlackJack_Init {
 	for (my $i = 0; $i < 2; $i++) {
 		TRYAGAIN1:
-		$indexCardNumList = int(rand(51));
-		$cardNum = $BlackJackCardsNumList[$indexCardNumList];
+		my $indexCardNumList = int(rand(51));
+		my $cardNum = $BlackJack_CardsNumList[$indexCardNumList];
 		if ($cardNum == 0) {
 			goto TRYAGAIN1;
 		}
 
-		$cardString = "";
-		$BlackJackCardsNumList[$indexCardNumList] = 0;
-		$suitNum = $cardNum % 4;
-		$cardVal = $carNum % 13 + 1;
+		my $cardString = "";
+		$BlackJack_CardsNumList[$indexCardNumList] = 0;
+		my $suitNum = $cardNum % 4;
+		my $cardVal = $carNum % 13 + 1;
 
-		push(@BlackJackPlayerCardsNum, $cardNum);
+		push(@BlackJack_PlayerCardsNum, $cardNum);
 
 		if ($cardVal == 1) {
 			$cardString = $cardString . "Ace of ";
@@ -271,39 +273,39 @@ sub BlackJack_Init {
 		}
 
 		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
-			$BlackJackPlayerPoints += 10;
+			$BlackJack_PlayerPoints += 10;
 		}
 		elsif ($cardVal < 11 && $cardVal > 1) {
-			$BlackJackPlayerPoints += $cardVal;
+			$BlackJack_PlayerPoints += $cardVal;
 		}
 
 		if ($cardVal == 1) {
-			if ($BlackJackPlayerPoints < 21) {
-				$BlackJackPlayerPoints += 11;
+			if ($BlackJack_PlayerPoints < 21) {
+				$BlackJack_PlayerPoints += 11;
 			}
 			else {
-				$BlackJackPlayerPoints += 1;
+				$BlackJack_PlayerPoints += 1;
 			}
 		}
 
-		push(@BlackJackPlayerCardsStr, $cardString);
+		push(@BlackJack_PlayerCardsStr, $cardString);
 
 	}
 	print("Dealing dealer cards.")
 	for (my $i = 0; $i < 2; $i++) {
 		TRYAGAIN2:
-		$indexCardNumList = int(rand(51));
-		$cardNum = $BlackJackCardsNumList[$indexCardNumList];
+		my $indexCardNumList = int(rand(51));
+		my $cardNum = $BlackJack_CardsNumList[$indexCardNumList];
 		if ($cardNum == 0) {
 			goto TRYAGAIN2;
 		}
 
-		$cardString = "";
-		$BlackJackCardsNumList[$indexCardNumList] = 0;
-		$suitNum = $cardNum % 4;
-		$cardVal = $carNum % 13 + 1;
+		my $cardString = "";
+		$BlackJack_CardsNumList[$indexCardNumList] = 0;
+		my $suitNum = $cardNum % 4;
+		my $cardVal = $carNum % 13 + 1;
 
-		push(@BlackJackDealerCardsNum, $cardNum);
+		push(@BlackJack_DealerCardsNum, $cardNum);
 
 		if ($cardVal == 1) {
 			$cardString = $cardString . "Ace of ";
@@ -339,45 +341,45 @@ sub BlackJack_Init {
 		}
 
 		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
-			$BlackJackDealerPoints += 10;
+			$BlackJack_DealerPoints += 10;
 		}
 		elsif ($cardVal < 11 && $cardVal > 1) {
-			$BlackJackDealerPoints += $cardVal;
+			$BlackJack_DealerPoints += $cardVal;
 		}
 
 		if ($cardVal == 1) {
-			if ($BlackJackPlayerPoints < 21) {
-				$BlackJackDealerPoints += 11;
+			if ($BlackJack_PlayerPoints < 21) {
+				$BlackJack_DealerPoints += 11;
 			}
 			else {
-				$BlackJackDealerPoints += 1;
+				$BlackJack_DealerPoints += 1;
 			}
 		}
 
-		push(@BlackJackDealerCardsStr, $cardString);
+		push(@BlackJack_DealerCardsStr, $cardString);
 
 	}
 	quest::say("You are playing Black Jack.")
-	quest::say("You have a $BlackJackPlayerCardsStr[0] and a $BlackJackPlayerCardsStr[1]. The dealer has a $BlackJackDealerCardsStr[0]. Do you want to [Hit] or [Stand]?");
+	quest::say("You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. The dealer has a $BlackJack_DealerCardsStr[0]. Do you want to [Hit] or [Stand]?");
 
 
 }
 
 sub BlackJack_Hit {
-	if ($BlackJackPlayerPoints < 21) {
-		TRYAGAIN1:
-		$indexCardNumList = int(rand(51));
-		$cardNum = $BlackJackCardsNumList[$indexCardNumList];
+	if ($BlackJack_PlayerPoints <= 21) {
+		TRYAGAIN3:
+		my $indexCardNumList = int(rand(51));
+		my $cardNum = $BlackJack_CardsNumList[$indexCardNumList];
 		if ($cardNum == 0) {
-			goto TRYAGAIN1;
+			goto TRYAGAIN3;
 		}
 
-		$cardString = "";
-		$BlackJackCardsNumList[$indexCardNumList] = 0;
-		$suitNum = $cardNum % 4;
-		$cardVal = $carNum % 13 + 1;
+		my $cardString = "";
+		$BlackJack_CardsNumList[$indexCardNumList] = 0;
+		my $suitNum = $cardNum % 4;
+		my $cardVal = $carNum % 13 + 1;
 
-		push(@BlackJackPlayerCardsNum, $cardNum);
+		push(@BlackJack_PlayerCardsNum, $cardNum);
 
 		if ($cardVal == 1) {
 			$cardString = $cardString . "Ace of ";
@@ -413,42 +415,42 @@ sub BlackJack_Hit {
 		}
 
 		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
-			$BlackJackPlayerPoints += 10;
+			$BlackJack_PlayerPoints += 10;
 		}
 		elsif ($cardVal < 11 && $cardVal > 1) {
-			$BlackJackPlayerPoints += $cardVal;
+			$BlackJack_PlayerPoints += $cardVal;
 		}
 
 		if ($cardVal == 1) {
-			if ($BlackJackPlayerPoints < 21) {
-				$BlackJackPlayerPoints += 11;
+			if ($BlackJack_PlayerPoints < 21) {
+				$BlackJack_PlayerPoints += 11;
 			}
 			else {
-				$BlackJackPlayerPoints += 1;
+				$BlackJack_PlayerPoints += 1;
 			}
 		}
 
-		push(@BlackJackPlayerCardsStr, $cardString);
+		push(@BlackJack_PlayerCardsStr, $cardString);
 
 	}
 	else {
 		BlackJack_RecalculatePlayerPoints();
 	}
-	if ($BlackJackDealerPoints < 21) {
-		if ($BlackJackDealerPoints < 17) {
-			TRYAGAIN2:
-			$indexCardNumList = int(rand(51));
-			$cardNum = $BlackJackCardsNumList[$indexCardNumList];
+	if ($BlackJack_DealerPoints <= 21) {
+		if ($BlackJack_DealerPoints < 17) {
+			TRYAGAIN4:
+			my $indexCardNumList = int(rand(51));
+			my $cardNum = $BlackJack_CardsNumList[$indexCardNumList];
 			if ($cardNum == 0) {
-				goto TRYAGAIN2;
+				goto TRYAGAIN4;
 			}
 
-			$cardString = "";
-			$BlackJackCardsNumList[$indexCardNumList] = 0;
-			$suitNum = $cardNum % 4;
-			$cardVal = $carNum % 13 + 1;
+			my$cardString = "";
+			$BlackJack_CardsNumList[$indexCardNumList] = 0;
+			my $suitNum = $cardNum % 4;
+			my$cardVal = $carNum % 13 + 1;
 
-			push(@BlackJackDealerCardsNum, $cardNum);
+			push(@BlackJack_DealerCardsNum, $cardNum);
 
 			if ($cardVal == 1) {
 				$cardString = $cardString . "Ace of ";
@@ -484,22 +486,22 @@ sub BlackJack_Hit {
 			}
 
 			if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
-				$BlackJackDealerPoints += 10;
+				$BlackJack_DealerPoints += 10;
 			}
 			elsif ($cardVal < 11 && $cardVal > 1) {
-				$BlackJackDealerPoints += $cardVal;
+				$BlackJack_DealerPoints += $cardVal;
 			}
 
 			if ($cardVal == 1) {
-				if ($BlackJackPlayerPoints < 21) {
-					$BlackJackDealerPoints += 11;
+				if ($BlackJack_PlayerPoints < 21) {
+					$BlackJack_DealerPoints += 11;
 				}
 				else {
-					$BlackJackDealerPoints += 1;
+					$BlackJack_DealerPoints += 1;
 				}
 			}
 
-			push(@BlackJackDealerCardsStr, $cardString);
+			push(@BlackJack_DealerCardsStr, $cardString);
 
 		}
 	}
@@ -508,25 +510,58 @@ sub BlackJack_Hit {
 	}
 
 	quest::say("You have:");
-	quest::say join(", ", @BlackJackPlayerCardsStr);
-	quest::say("The dealer has:")
-	$cardinality = @BlackJackDealerCardsStr;
-	for ($i = 0; $i < $cardinality - 1; $i++) {
-		quest::say("$BlackJackDealerCardsStr[$i]")
+	for my $i (@BlackJack_PlayerCardsStr) {
+		quest::say("$i");
 	}
+	quest::say("The dealer has: ");
+	quest::say("$BlackJack_DealerCardsStr[0]");
 	quest::say("Do you want to [Hit] or [Stand]?");
 }
 
 sub BlackJack_Stand {
+	if ($BlackJack_PlayerPoints > 21) {
+		BlackJack_RecalculatePlayerPoints();
+	}
+	if ($BlackJack_DealerPoints > 21) {
+		BlackJack_RecalculateDealerPoints();
+	}
+
+	if ($BlackJack_PlayerPoints > 21) {
+		$BlackJack_GameCondition = 1; # Bust (lose condition)
+	}
+	elsif ($BlackJack_PlayerPoints == 21) {
+		$BlackJack_GameCondition = 3;
+	}
+	else {
+		if ($BlackJack_PlayerPoints < $BlackJack_DealerPoints) {
+			$BlackJack_GameCondition = 2; # Win condition
+		}
+		elsif ($BlackJack_PlayerPoints == $BlackJack_DealerPoints) {
+			$BlackJack_GameCondition = 4; # Tie (push) condition;
+		}
+		elsif ($BlackJack_PlayerPoints > $BlackJack_DealerPoints) {
+			$BlackJack_GameCondition = 1; # lose condition (lost to dealer)
+		}
+	}
 
 }
 
 sub BlackJack_RecalculatePlayerPoints {
-
+	if ($BlackJack_PlayerPoints > 21) {
+		$BlackJack_PlayerPoints = 0;
+		for my $i (@BlackJack_PlayerCardsNum) {
+			$BlackJack_PlayerPoints += $i
+		}
+	}
 }
 
 sub BlackJack_RecalculateDealerPoints {
-
+	if ($BlackJack_DealerPoints > 21) {
+		$BlackJack_DealerPoints = 0;
+		for my $i (@BlackJack_DealerCardsNum) {
+			$BlackJack_DealerPoints += $i
+		}
+	}
 }
 
 # Message event for NPC, right now responds to hail
