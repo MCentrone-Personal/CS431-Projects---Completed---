@@ -522,11 +522,84 @@ sub BlackJack_Stand {
 	if ($BlackJack_PlayerPoints > 21) {
 		BlackJack_RecalculatePlayerPoints();
 	}
+
 	if ($BlackJack_DealerPoints > 21) {
 		BlackJack_RecalculateDealerPoints();
 	}
+	elsif ($BlackJack_DealerPoints <= 21) {
+		if ($BlackJack_DealerPoints < 17) {
+			TRYAGAIN5:
+			my $indexCardNumList = int(rand(51));
+			my $cardNum = $BlackJack_CardsNumList[$indexCardNumList];
+			if ($cardNum == 0) {
+				goto TRYAGAIN5;
+			}
 
-	if ($BlackJack_PlayerPoints > 21) {
+			my$cardString = "";
+			$BlackJack_CardsNumList[$indexCardNumList] = 0;
+			my $suitNum = $cardNum % 4;
+			my$cardVal = $carNum % 13 + 1;
+
+			push(@BlackJack_DealerCardsNum, $cardNum);
+
+			if ($cardVal == 1) {
+				$cardString = $cardString . "Ace of ";
+			}
+
+			elsif ($cardVal == 11) {
+				$cardString = $cardString . "Jack of ";
+			}
+
+			elsif ($cardVal == 12) {
+				$cardString = $cardString . "Queen of ";
+			}
+
+			elsif ($cardVal == 12) {
+				$cardString = $cardString . "King of ";
+			}
+			else {
+				$cardString = $cardString . $cardVal . " of ";
+			}
+
+
+			if ($suitNum == 0) {
+				$cardString . "Spades";
+			}
+			elsif ($suitNum == 1) {
+				$cardString . "Clubs";
+			}
+			elsif ($suitNum == 2) {
+				$cardString . "Diamonds";
+			}
+			elsif ($suitNum == 3) {
+				$cardString . "Hearts";
+			}
+
+			if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+				$BlackJack_DealerPoints += 10;
+			}
+			elsif ($cardVal < 11 && $cardVal > 1) {
+				$BlackJack_DealerPoints += $cardVal;
+			}
+
+			if ($cardVal == 1) {
+				if ($BlackJack_PlayerPoints < 21) {
+					$BlackJack_DealerPoints += 11;
+				}
+				else {
+					$BlackJack_DealerPoints += 1;
+				}
+			}
+
+			push(@BlackJack_DealerCardsStr, $cardString);
+
+		}
+	}
+	
+	if ($BlackJack_PlayerPoints == $BlackJack_DealerPoints && $BlackJack_DealerPoints == 21) {
+		$BlackJack_GameCondition = 4;
+	}
+	elsif ($BlackJack_PlayerPoints > 21) {
 		$BlackJack_GameCondition = 1; # Bust (lose condition)
 	}
 	elsif ($BlackJack_PlayerPoints == 21) {
