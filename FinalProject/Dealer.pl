@@ -435,6 +435,7 @@ sub BlackJack_Hit {
 	}
 	else {
 		BlackJack_RecalculatePlayerPoints();
+		BlackJack_Stand();
 	}
 	if ($BlackJack_DealerPoints <= 21) {
 		if ($BlackJack_DealerPoints < 17) {
@@ -507,6 +508,7 @@ sub BlackJack_Hit {
 	}
 	else {
 		BlackJack_RecalculateDealerPoints();
+		BlackJack_Stand();
 	}
 
 	quest::say("You have:");
@@ -527,7 +529,7 @@ sub BlackJack_Stand {
 		BlackJack_RecalculateDealerPoints();
 	}
 	elsif ($BlackJack_DealerPoints <= 21) {
-		if ($BlackJack_DealerPoints < 17) {
+		while ($BlackJack_DealerPoints < 17) {
 			TRYAGAIN5:
 			my $indexCardNumList = int(rand(51));
 			my $cardNum = $BlackJack_CardsNumList[$indexCardNumList];
