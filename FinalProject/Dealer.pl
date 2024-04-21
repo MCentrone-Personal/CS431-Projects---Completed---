@@ -17,6 +17,16 @@ our $UICard2 = "";
 our $UICard3 = "";
 our $UICard4 = "";
 our $UICard5 = "";
+our $PHigh = 0;
+our $DHigh = 0;
+our $PFour = 0;
+our $DFour = 0;
+our $PThree = 0;
+our $DThree = 0;
+our $POne = 0;
+our $DOne = 0;
+our $PTwo = 0;
+our $DTwo = 0;
 
 sub POKER_START {
 	#Function to generate 5 random cards from one deck
@@ -145,6 +155,15 @@ $Card3 = int($numeric[2]);
 $Card4 = int($numeric[3]);
 $Card5 = int($numeric[4]);
 
+	if($_[5] == 0)
+	{
+		$PHigh = ($Card5 % 13);
+	}
+	if($_[5] == 1)
+	{
+		$DHigh = ($Card5 % 13);
+	}
+
 $RoyalFlush = 0;
 $StraightFlush = 0;
 $FourKind = 0;
@@ -218,12 +237,29 @@ for($q = 0; $q <13; $q++)
 	if($CardCounter[$q] == 4)
 	{
 	$FourKind = 1;
+	if($_[5] == 0)
+	{
+		$PFour = $q;
+	}
+	if($_[5] == 1)
+	{
+		$DFour = $q;
+	}
 	}
 
 #Checking for 3 of a kind
 	if($CardCounter[$q] == 3)
 	{
 	$ThreeKind = 1;
+	
+	if($_[5] == 0)
+	{
+		$PThree = $q;
+	}
+	if($_[5] == 1)
+	{
+		$DThree = $q;
+	}
 	}
 	
 #Checking for pairs
@@ -231,6 +267,28 @@ for($q = 0; $q <13; $q++)
 	{
 	$OnePair = 1;
 	$PairsCounted++;
+	if($_[5] == 0)
+	{
+		if($PairsCounted == 0)
+		{
+		$POne = $q;
+		}
+		else
+		{
+		$PTwo = $q;
+		}
+	}
+	if($_[5] == 1)
+	{
+		if($PairsCounted == 0)
+		{
+		$DOne = $q;
+		}
+		else
+		{
+		$DTwo = $q;
+		}
+	}
 	}
 }
 
@@ -283,13 +341,86 @@ return(3,$_[0], $_[1], $_[2], $_[3], $_[4], "Two Pair");
 }
 elsif($OnePair)
 {
-return (2,$_[0], $_[1], $_[2], $_[3], $_[4], "Single Pair");
+return (2,$_[0], $_[1], $_[2], $_[3], $_[4], "One Pair");
 }
 elsif($HighCard)
 {
 return (1,$_[0], $_[1], $_[2], $_[3], $_[4], "High Card");
 }
 
+}
+
+sub CMPNUM
+{
+	if($_[0] > $_[1])
+	{
+		return("Player Wins by ");
+	}
+	if($_[0] < $_[1])
+	{
+		return("Dealer Wins by ");
+	}
+	if($_[0] == $_[1])
+	{
+		return("Tie with ");
+	}
+}
+
+sub POKER_DEALER_V_PLAYER{
+	
+	if($_[0] > $_[1])
+	{
+		return("Player Wins by ". $_[2]);
+	}
+	if($_[0] < $_[1])
+	{
+		return("Dealer Wins by ". $_[3]);
+	}
+	if($_[0] == $_[1])
+	{
+		if($_[2] == "Royal Flush")
+		{
+		return("Tie");
+		}
+		if($_[2] == "Straight Flush")
+		{
+			return(CMPNUM($PHigh,$DHigh) . "Higher Cards");
+		}
+		if($_[2] == "Four of a Kind")
+		{
+			return(CMPNUM($PFour,$DFour) . "Higher Cards");
+		}
+		if($_[2] == "Full House")
+		{
+			return(CMPNUM($PThree,$DThree) . "Higher Cards");
+		}
+		if($_[2] == "Flush")
+		{
+			return(CMPNUM($PHigh,$DHigh) . "Higher Cards");
+		}
+		if($_[2] == "Striaght")
+		{
+			return(CMPNUM($PHigh,$DHigh) . "Higher Cards");
+		}
+		if($_[2] == "Three of a Kind")
+		{
+			return(CMPNUM($PThree,$DThree) . "Higher Cards");
+		}
+		if($_[2] == "Two Pair")
+		{
+			return(CMPNUM($PTwo,$DTwo) . "Higher Cards");
+		}
+		if($_[2] == "One Pair")
+		{
+			return(CMPNUM($PPOne,$DPOne) . "Higher Cards");
+		}
+		if($_[2] == "High Card")
+		{
+			return(CMPNUM($PHigh,$DHigh) . "Higher Cards");
+		}
+	}
+	
+	
 }
 
 sub POKER_CARD_NAMES{
@@ -534,13 +665,15 @@ sub EVENT_SAY {
 		 
     @Newhand = (POKER_START(1,$Currenthand[0],$Currenthand[1],$Currenthand[2],$Currenthand[3],$Currenthand[4]));
 	
-	@NewResults = (POKER_LOGIC($Newhand[0],$Newhand[1],$Newhand[2],$Newhand[3],$Newhand[4]));
+	@NewResults = (POKER_LOGIC($Newhand[0],$Newhand[1],$Newhand[2],$Newhand[3],$Newhand[4],0));
 	
 	$Card1F = POKER_CARD_NAMES($NewResults[1]);
 	$Card2F = POKER_CARD_NAMES($NewResults[2]);
 	$Card3F = POKER_CARD_NAMES($NewResults[3]);
 	$Card4F = POKER_CARD_NAMES($NewResults[4]);
 	$Card5F = POKER_CARD_NAMES($NewResults[5]);
+	
+	
 	
 	my $intro = "Current Hand Power: ". $NewResults[0]. ". Hand Type: ". $NewResults[6];
 	 my $TextToCenter2 = plugin::PWAutoCenter($Card1F);
@@ -556,8 +689,22 @@ sub EVENT_SAY {
 	 my $grn = plugin::PWColor("Forest Green");
 	
 	 quest::popup("Results", "$intro </c> <br><br> $Yel $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6");
+	 
+	 @DealerHand = (POKER_START(0,0,0,0,0,0));
+	 
+	 @DealerResults = (POKER_LOGIC($DealerHand[0],$DealerHand[1],$DealerHand[2],$DealerHand[3],$DealerHand[4],1));
+	 
+	 $Card1FD = POKER_CARD_NAMES($DealerResults[1]);
+	$Card2FD = POKER_CARD_NAMES($DealerResults[2]);
+	$Card3FD = POKER_CARD_NAMES($DealerResults[3]);
+	$Card4FD = POKER_CARD_NAMES($DealerResults[4]);
+	$Card5FD = POKER_CARD_NAMES($DealerResults[5]);
+	
+	 $Outcome = POKER_DEALER_V_PLAYER($NewResults[0], $DealerResults[0],$NewResults[6],$DealerResults[6]);
 	
 	quest::say($NewResults[0].', '."[$Card1F]".', '."[$Card2F]".', '."[$Card3F]".', '."[$Card4F]".', '."[$Card5F]");
+	quest::say($DealerResults[0].', '."[$Card1FD]".', '."[$Card2FD]".', '."[$Card3FD]".', '."[$Card4FD]".', '."[$Card5FD]");
+	quest::say($Outcome);
       }
 }
 
