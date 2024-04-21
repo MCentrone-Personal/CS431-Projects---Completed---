@@ -31,6 +31,13 @@ sub EVENT_SAY {
     }
 	
 	if ($text=~/Test/i) {
+		$games = 2;
+		$gameSelect = 0;
+	    $layer = 0;
+		$RRP = 0;
+		
+		
+		
         my $dialogMessage = "{title: TestBox} {button_one: Change Game} {button_two: RightClick} wintype:1 Hello Game";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
     }
@@ -43,33 +50,33 @@ sub EVENT_SAY {
 		quest::say("This game is currently closed");
 	}
 	
-	if ($text=~/Roulette/i){
-		my $RoulRules = "Roulette is a game where you bet on the numbers 0 - 36 and if you bet is correct, you will be rewarded with a payout equivalent to the odds of the bet.";
-		my $TextToCenterRoul = plugin::PWAutoCenter(" What can you bet on?");
-		my $TextToCenterRoul2 = plugin::PWAutoCenter(" Numbers.");
-		my $TextToCenterRoul3 = plugin::PWAutoCenter(" Odd / Even");
-		my $TextToCenterRoul4 = plugin::PWAutoCenter(" 1st12 / 2nd12 / 3rd12");
-		my $TextToCenterRoul5 = plugin::PWAutoCenter(" 1st18 / 2nd18");
-		my $TextToCenterRoul6 = plugin::PWAutoCenter(" Column1  (1,4,7, . . 34)");
-		my $TextToCenterRoul7 = plugin::PWAutoCenter(" Column2  (2,5,8, . . 35)");
-		my $TextToCenterRoul8 = plugin::PWAutoCenter(" Column3  (3,6,9, . . 36)");
-		my $TextToCenterRoul9 = plugin::PWAutoCenter(" Please tell the dealer what you want to bet on. If you want to select multiple number, please type each number seperated by a comma.");
-		my $TextToCenterRoul10 = plugin::PWAutoCenter(" First play your bets, then hand me the ammount of money you want to play with.");		
-			 quest::popup("Rules of Roulette", "$RoulRules </c><br><br> $TextToCenterRoul </c><br> $TextToCenterRoul2 </c><br> $TextToCenterRoul3 </c><br> $TextToCenterRoul4 </c><br> $TextToCenterRoul5 </c><br> $TextToCenterRoul6 </c><br> $TextToCenterRoul7 </c><br> $TextToCenterRoul8 </c><br><br> $TextToCenterRoul9 </c><br> $TextToCenterRoul10 </c><br>");
-	}
 	
 }
 
 our $games = 2;
 our $gameSelect = 0;
+our $layer = 0;
 
 sub EVENT_POPUPRESPONSE {
-		 if($popupid == 99999){
-			 	 PopUpChange($gameSelect);
+	quest::say($popupid);
+		 if($popupid == 99999)
+		 {
+		    if($layer==0){PopUpChange();}
+		    elsif($layer==2){BlackJackRules();}
+			elsif($layer==3){Roulette();}
+			elsif($layer==4){PokerRules();}
 		 }
 		 
 		 if($popupid == 100000){
-			 	
+			 
+			 
+			 
+			if($layer==0){$layer = $games + $gameSelect;}
+
+		       if($layer==2){BlackJackRules();}
+		    elsif($layer==3){Roulette();}
+			elsif($layer==4){PokerRules();}
+			
 		 }
 		 
 }
@@ -99,7 +106,6 @@ sub PopUpChange()
 		$gameSelect++;
 		my $dialogMessage = "{title: ROULETTE} {button_one: Change Game} {button_two: SELECT GAME} wintype:1 SPIN SPIN SPIN";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
-		quest::say("You are playing roulette    $gameSelect");
 	}
 	
 	elsif($gameSelect==1)
@@ -107,7 +113,6 @@ sub PopUpChange()
 		$gameSelect++;
 		my $dialogMessage = "{title: POKER} {button_one: Change Game} {button_two: SELECT GAME} wintype:1 DANCE ON THEIR GRAVES";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
-		quest::say("You are playing Poker    $gameSelect");
 	}
 	
 	elsif($gameSelect==2)
@@ -115,6 +120,81 @@ sub PopUpChange()
 		$gameSelect=0;
 		my $dialogMessage = "{title: BLACKJACK} {button_one: Change Game} {button_two: SELECT GAME} wintype:1 ONLY THE CLUBS AND SPADES";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
-		quest::say("You are playing BlackJack   $gameSelect");
 	}
 }
+our $RRP = 0;
+our $tab = "------";
+sub Roulette()
+{
+
+		my $TextToCenterRoul = plugin::PWAutoCenter(" What can you bet on?");
+		my $TextToCenterRoul2 = plugin::PWAutoCenter(" Numbers.");
+		my $TextToCenterRoul3 = plugin::PWAutoCenter(" Odd / Even");
+		my $TextToCenterRoul4 = plugin::PWAutoCenter(" 1st12 / 2nd12 / 3rd12");
+		my $TextToCenterRoul5 = plugin::PWAutoCenter(" 1st18 / 2nd18");
+		my $TextToCenterRoul6 = plugin::PWAutoCenter(" Column1  (1,4,7, . . 34)");
+		my $TextToCenterRoul7 = plugin::PWAutoCenter(" Column2  (2,5,8, . . 35)");
+		my $TextToCenterRoul8 = plugin::PWAutoCenter(" Column3  (3,6,9, . . 36)");
+		my $TextToCenterRoul9 = plugin::PWAutoCenter(" Please tell the dealer what you want to bet on. If you want to select multiple number, please type each number seperated by a comma.");
+		my $TextToCenterRoul10 = plugin::PWAutoCenter(" First play your bets, then hand me the ammount of money you want to play with.");
+	
+	
+	
+	if($RRP ==0)
+	{
+		$RRP++;
+		my $RoulRules = "Roulette is a game where you bet on the numbers 0 - 36 and if you bet is correct, you will be rewarded with a payout equivalent to the odds of the bet.";
+		my $RoulRules1 = "$tab  Click <c \"#F0F0F0\"> {More Bets} </c> to look at different options on how to bet.";
+	    my $RoulRules2 = "$tab  Click <c \"#F0F0F0\"> {Bet Now} </c> to bet with that option.";
+		my $RoulRules3 = "$tab  To Bet with random numbers please refer to the <c \"#00F0F0\">Numbers</c> page.";
+		my $RoulRules4 = "$tab  To get started, click the continue button.";
+	    my $dialogMessage = "{title: ROULETTE} wintype:0 <br> $RoulRules <br><br> $RoulRules1 <br> $RoulRules2 <br> $RoulRules3 <br> $RoulRules4 <br><br>";
+        quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
+	}
+	elsif($RRP ==1)
+	{
+		$RRP++;
+		my $dialogMessage = "{title: ROULETTE} {button_one: More Bets} {button_two: Bet Now} wintype:1 SPIN SPIN SPIN";
+        quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
+	}
+    elsif($RRP ==2)
+	{
+		
+	}
+    elsif($RRP ==3)
+	{
+		
+	}
+	elsif($RRP ==4)
+	{
+		
+	}
+	elsif($RRP ==5)
+	{
+		
+	}
+	elsif($RRP ==6)
+	{
+		
+	}
+	elsif($RRP ==7)
+	{
+		
+	}
+	elsif($RRP ==8)
+	{
+		
+	}
+}
+
+sub PokerRules()
+{
+	
+}
+
+sub BlackJackRules()
+{
+		my $dialogMessage = "{title: BLACKJACK Rules} {button_one: Confirm} wintype:0 These Are where your rules should be";
+        quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
+}
+	
