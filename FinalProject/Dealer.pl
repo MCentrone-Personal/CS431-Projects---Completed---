@@ -12,6 +12,7 @@ our $Card2F = "";
 our $Card3F = "";
 our $Card4F = "";
 our $Card5F = "";
+our $UIProgression = 0;
 our $UICard1 = "";
 our $UICard2 = "";
 our $UICard3 = "";
@@ -439,6 +440,8 @@ sub EVENT_SAY {
      quest::say("Hello, $name!. Give me your [money]");
 	 @Currenthand = (0,0,0,0,0);
 	 $Count = 0;
+	 
+	 $UIProgression = 0;
     }
      if ($text=~/money/i)
     {
@@ -484,10 +487,12 @@ sub EVENT_SAY {
 		$Flag3 = 0;
 		$Flag4 = 0;
 		$Flag5 = 0;
+		
+		$UIProgression = 1;
 	
     }
 	
-	if ($text=~/Start Swapping/i)
+	if (($text=~/Start Swapping/i) and ($UIProgression == 1))
 	{
 		$Count = 0;
 		$Flag1 = 0;
@@ -498,9 +503,11 @@ sub EVENT_SAY {
 		
 		my $dialogMessage = "{title: $Card1F} {button_one: Keep Card} {button_two: Swap} wintype:1 $intro </c> <br><br> $Red $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6 </c> <br>";
 		quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
+		
+		$UIProgression = 2;
 	}
 	
-	if ($text=~/Swap/i)
+	if (($text=~/Swap/i) and ($UIProgression == 2))
 	{
 		my $intro = "Current Hand Power: ". $Results[0]. ". Hand Type: ". $Results[6];
 	 my $TextToCenter2 = plugin::PWAutoCenter($Card1F);
@@ -566,7 +573,7 @@ sub EVENT_SAY {
 		}
 	}
 	
-	if ($text=~/Restart/i)
+	if (($text=~/Restart/i)and ($UIProgression == 2))
 	{
 		$Count = 0;
 		$Flag1 =0;
@@ -599,7 +606,7 @@ sub EVENT_SAY {
 		
 	}
 	
-	if ($text=~/Keep Card/i)
+	if (($text=~/Keep Card/i)and ($UIProgression == 2))
 	{
 		
 		my $intro = "Current Hand Power: ". $Results[0]. ". Hand Type: ". $Results[6];
@@ -660,7 +667,7 @@ sub EVENT_SAY {
 	}
 	
 	
-	if ($text=~/Confirm Hand/i)
+	if (($text=~/Confirm Hand/i) and ($UIProgression != 0))
      {
 		 
     @Newhand = (POKER_START(1,$Currenthand[0],$Currenthand[1],$Currenthand[2],$Currenthand[3],$Currenthand[4]));
@@ -705,6 +712,8 @@ sub EVENT_SAY {
 	quest::say($NewResults[0].', '."[$Card1F]".', '."[$Card2F]".', '."[$Card3F]".', '."[$Card4F]".', '."[$Card5F]");
 	quest::say($DealerResults[0].', '."[$Card1FD]".', '."[$Card2FD]".', '."[$Card3FD]".', '."[$Card4FD]".', '."[$Card5FD]");
 	quest::say($Outcome);
+	
+	$UIProgression = 0;
       }
 }
 
