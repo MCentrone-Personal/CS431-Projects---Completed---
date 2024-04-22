@@ -614,10 +614,10 @@ sub BlackJack_RecalculatePlayerPoints {
 	$BlackJack_PlayerPoints = 0;
 	for $i (@BlackJack_PlayerCardsNum) {
 		if ($i == 11 || $i == 12 || $i == 13) {
-			$BlackJack_DealerPoints += 10;
+			$BlackJack_PlayerPoints += 10;
 		}
 		elsif ($i < 11 && $i >= 1) {
-			$BlackJack_DealerPoints += $i;
+			$BlackJack_PlayerPoints += $i;
 		}
 	}
 }
