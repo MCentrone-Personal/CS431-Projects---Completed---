@@ -612,7 +612,7 @@ sub BlackJack_Stand {
 	}
 	elsif ($BlackJack_PlayerPoints == 21) {
 		$BlackJack_GameCondition = 3; # Black jack condition
-		quest::say("You got blackjack!");
+		quest::say("You got blackjack! You win!");
 	}
 	else {
 		if ($BlackJack_PlayerPoints > $BlackJack_DealerPoints) {
