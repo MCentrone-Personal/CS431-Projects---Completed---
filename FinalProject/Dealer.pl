@@ -434,7 +434,8 @@ sub BlackJack_Hit {
 		push(@BlackJack_PlayerCardsStr, $cardString);
 
 	}
-	else {
+	if ($BlackJack_PlayerPoints > 21) {
+		BlackJack_RecalculateDealerPoints();
 		BlackJack_RecalculatePlayerPoints();
 		BlackJack_Stand();
 	}
@@ -507,8 +508,9 @@ sub BlackJack_Hit {
 
 		}
 	}
-	else {
+	if ($BlackJack_DealerPoints > 21) {
 		BlackJack_RecalculateDealerPoints();
+		BlackJack_RecalculatePlayerPoints();
 		BlackJack_Stand();
 	}
 
@@ -522,12 +524,9 @@ sub BlackJack_Hit {
 }
 
 sub BlackJack_Stand {
-	if ($BlackJack_PlayerPoints > 21) {
-		BlackJack_RecalculatePlayerPoints();
-	}
-
-	if ($BlackJack_DealerPoints > 21) {
+	if ($BlackJack_DealerPoints > 21 || $BlackJack_PlayerPoints > 21) {
 		BlackJack_RecalculateDealerPoints();
+		BlackJack_RecalculatePlayerPoints();
 	}
 	elsif ($BlackJack_DealerPoints <= 21) {
 		while ($BlackJack_DealerPoints < 17) {
@@ -597,6 +596,10 @@ sub BlackJack_Stand {
 			push(@BlackJack_DealerCardsStr, $cardString);
 
 		}
+		if ($BlackJack_DealerPoints > 21 || $BlackJack_PlayerPoints > 21) {
+			BlackJack_RecalculateDealerPoints();
+			BlackJack_RecalculatePlayerPoints();
+		}
 	}
 
 	if ($BlackJack_PlayerPoints == $BlackJack_DealerPoints && $BlackJack_DealerPoints == 21) {
@@ -629,8 +632,6 @@ sub BlackJack_RecalculatePlayerPoints {
 			$BlackJack_PlayerPoints += $i
 		}
 	}
-
-	BlackJack_RecalculateDealerPoints();
 }
 
 sub BlackJack_RecalculateDealerPoints {
@@ -639,9 +640,6 @@ sub BlackJack_RecalculateDealerPoints {
 		for $i (@BlackJack_DealerCardsNum) {
 			$BlackJack_DealerPoints += $i
 		}
-	}
-
-	BlackJack_RecalculatePlayerPoints();
 }
 
 # Message event for NPC, right now responds to hail
