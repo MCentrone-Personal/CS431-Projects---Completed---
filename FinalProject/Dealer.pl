@@ -494,7 +494,7 @@ sub BlackJack_Hit {
 		BlackJack_Stand();
 	}
 
-	if ($BlackJack_DealerPoints == 21 || $BlackJack_PlayerPoints == 21) {
+	elsif ($BlackJack_DealerPoints == 21 || $BlackJack_PlayerPoints == 21) {
 		BlackJack_Stand();
 	}
 	else {
