@@ -292,7 +292,7 @@ sub BlackJack_Init {
 
 	}
 	print("Dealing dealer cards.")
-	for (my $i = 0; $i < 2; $i++) {
+	for ($i = 0; $i < 2; $i++) {
 		TRYAGAIN2:
 		my $indexCardNumList = int(rand(51));
 		my $cardNum = $BlackJack_CardsNumList[$indexCardNumList];
@@ -512,7 +512,7 @@ sub BlackJack_Hit {
 	}
 
 	quest::say("You have:");
-	for my $i (@BlackJack_PlayerCardsStr) {
+	for $i (@BlackJack_PlayerCardsStr) {
 		quest::say("$i");
 	}
 	quest::say("The dealer has: ");
@@ -624,7 +624,7 @@ sub BlackJack_Stand {
 sub BlackJack_RecalculatePlayerPoints {
 	if ($BlackJack_PlayerPoints > 21) {
 		$BlackJack_PlayerPoints = 0;
-		for my $i (@BlackJack_PlayerCardsNum) {
+		for $i (@BlackJack_PlayerCardsNum) {
 			$BlackJack_PlayerPoints += $i
 		}
 	}
@@ -635,7 +635,7 @@ sub BlackJack_RecalculatePlayerPoints {
 sub BlackJack_RecalculateDealerPoints {
 	if ($BlackJack_DealerPoints > 21) {
 		$BlackJack_DealerPoints = 0;
-		for my $i (@BlackJack_DealerCardsNum) {
+		for $i (@BlackJack_DealerCardsNum) {
 			$BlackJack_DealerPoints += $i
 		}
 	}
