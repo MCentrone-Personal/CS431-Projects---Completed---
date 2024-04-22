@@ -224,6 +224,7 @@ sub BlackJack_GameReset {
 }
 
 sub BlackJack_Init {
+	BlackJack_GameReset();
 	for ($i = 0; $i < 2; $i++) {
 		TRYAGAIN1:
 		my $indexCardNumList = int(rand(51));
@@ -235,7 +236,7 @@ sub BlackJack_Init {
 		my $cardString = "";
 		$BlackJack_CardsNumList[$indexCardNumList] = 0;
 		my $suitNum = $cardNum % 4;
-		my $cardVal = $carNum % 13 + 1;
+		my $cardVal = $cardNum % 13 + 1;
 
 		push(@BlackJack_PlayerCardsNum, $cardNum);
 
@@ -303,7 +304,7 @@ sub BlackJack_Init {
 		my $cardString = "";
 		$BlackJack_CardsNumList[$indexCardNumList] = 0;
 		my $suitNum = $cardNum % 4;
-		my $cardVal = $carNum % 13 + 1;
+		my $cardVal = $cardNum % 13 + 1;
 
 		push(@BlackJack_DealerCardsNum, $cardNum);
 
@@ -377,7 +378,7 @@ sub BlackJack_Hit {
 		my $cardString = "";
 		$BlackJack_CardsNumList[$indexCardNumList] = 0;
 		my $suitNum = $cardNum % 4;
-		my $cardVal = $carNum % 13 + 1;
+		my $cardVal = $cardNum % 13 + 1;
 
 		push(@BlackJack_PlayerCardsNum, $cardNum);
 
@@ -449,7 +450,7 @@ sub BlackJack_Hit {
 			my$cardString = "";
 			$BlackJack_CardsNumList[$indexCardNumList] = 0;
 			my $suitNum = $cardNum % 4;
-			my$cardVal = $carNum % 13 + 1;
+			my$cardVal = $cardNum % 13 + 1;
 
 			push(@BlackJack_DealerCardsNum, $cardNum);
 
