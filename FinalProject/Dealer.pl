@@ -604,22 +604,29 @@ sub BlackJack_Stand {
 
 	if ($BlackJack_PlayerPoints == $BlackJack_DealerPoints && $BlackJack_DealerPoints == 21) {
 		$BlackJack_GameCondition = 4;
+		quest::say("Pushed! We both got blackjack.");
 	}
 	elsif ($BlackJack_PlayerPoints > 21) {
 		$BlackJack_GameCondition = 1; # Bust (lose condition)
+		quest::say("Busted! You lose!");
 	}
 	elsif ($BlackJack_PlayerPoints == 21) {
-		$BlackJack_GameCondition = 3;
+		$BlackJack_GameCondition = 3; # Black jack condition
+		quest::say("You got blackjack!");
 	}
 	else {
-		if ($BlackJack_PlayerPoints < $BlackJack_DealerPoints) {
+		if ($BlackJack_PlayerPoints > $BlackJack_DealerPoints) {
 			$BlackJack_GameCondition = 2; # Win condition
+			quest::say("You won! You got more points than me without going over 21.");
+
 		}
 		elsif ($BlackJack_PlayerPoints == $BlackJack_DealerPoints) {
 			$BlackJack_GameCondition = 4; # Tie (push) condition;
+			quest::say("Pushed! We got the same amount of points.");
 		}
-		elsif ($BlackJack_PlayerPoints > $BlackJack_DealerPoints) {
+		elsif ($BlackJack_PlayerPoints < $BlackJack_DealerPoints) {
 			$BlackJack_GameCondition = 1; # lose condition (lost to dealer)
+			quest::say("You lost! You got less points than me.");
 		}
 	}
 
