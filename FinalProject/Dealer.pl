@@ -361,7 +361,7 @@ sub BlackJack_Init {
 
 	}
 	quest::say("You are playing Black Jack.");
-	quest::say("You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. The dealer has a $BlackJack_DealerCardsStr[0]. Do you want to [Hit] or [Stand]?");
+	quest::say("You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. The dealer has a $BlackJack_DealerCardsStr[0] and a $BlackJack_DealerCardsStr[1]. Do you want to [Hit] or [Stand]?");
 
 
 }
@@ -434,11 +434,6 @@ sub BlackJack_Hit {
 		push(@BlackJack_PlayerCardsStr, $cardString);
 
 	}
-	if ($BlackJack_PlayerPoints > 21) {
-		BlackJack_RecalculateDealerPoints();
-		BlackJack_RecalculatePlayerPoints();
-		BlackJack_Stand();
-	}
 	if ($BlackJack_DealerPoints <= 21) {
 		if ($BlackJack_DealerPoints < 17) {
 			TRYAGAIN4:
@@ -508,19 +503,23 @@ sub BlackJack_Hit {
 
 		}
 	}
-	if ($BlackJack_DealerPoints > 21) {
+	if ($BlackJack_DealerPoints > 21 || $BlackJack_PlayerPoints > 21) {
 		BlackJack_RecalculateDealerPoints();
 		BlackJack_RecalculatePlayerPoints();
 		BlackJack_Stand();
+		last;
 	}
-
-	quest::say("You have:");
-	for $i (@BlackJack_PlayerCardsStr) {
-		quest::say("$i");
+	else {
+		quest::say("You have:");
+		for $i (@BlackJack_PlayerCardsStr) {
+			quest::say("$i");
+		}
+		quest::say("The dealer has: ");
+		for $i (@BlackJack_DealerCardsStr) {
+			quest::say("$i");
+		}
+		quest::say("Do you want to [Hit] or [Stand]?");
 	}
-	quest::say("The dealer has: ");
-	quest::say("$BlackJack_DealerCardsStr[0]");
-	quest::say("Do you want to [Hit] or [Stand]?");
 }
 
 sub BlackJack_Stand {
