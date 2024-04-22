@@ -608,7 +608,7 @@ sub BlackJack_End() {
 		}
 	}
 
-	quest::say("You had $BlackJack_PlayerPoints. The dealer had $BlackJack_DealerPoints.");
+	quest::say("You had $BlackJack_PlayerPoints points. I had $BlackJack_DealerPoints points.");
 	BlackJack_GameReset();
 }
 
