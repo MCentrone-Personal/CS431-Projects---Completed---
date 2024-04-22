@@ -647,6 +647,7 @@ sub BlackJack_RecalculateDealerPoints {
 		for $i (@BlackJack_DealerCardsNum) {
 			$BlackJack_DealerPoints += $i
 		}
+	}
 }
 
 # Message event for NPC, right now responds to hail
