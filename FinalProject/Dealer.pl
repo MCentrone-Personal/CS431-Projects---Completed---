@@ -2,6 +2,7 @@
 our @Results = ();
 our @Currenthand = ();
 our @Newhand = ();
+our @DealerHand = ();
 our $Flag1 = 0;
 our $Flag2 = 0;
 our $Flag3 = 0;
@@ -12,6 +13,11 @@ our $Card2F = "";
 our $Card3F = "";
 our $Card4F = "";
 our $Card5F = "";
+our $Card1FD = "";
+our $Card2FD = "";
+our $Card3FD = "";
+our $Card4FD = "";
+our $Card5FD = "";
 our $UIProgression = 0;
 our $UICard1 = "";
 our $UICard2 = "";
@@ -522,15 +528,18 @@ sub CMPNUM
 {
 	if($_[0] > $_[1])
 	{
+		quest::popup("Results", "$intro </c> <br><br> $Yel $Card1F , $Yel $Card2F , $Yel $Card3F , $Yel $Card4F , $Yel $Card5F</c> <br><br> $Yel Dealers Hand: </c> <br><br> $Yel $ , $Yel $Card2FD , $Yel $Card3FD , $Yel $Card4FD , $Yel $Card5FD </c> <br><br> $grn $TextToCenter2");
 		quest::givecash($copper_return,$silver_return,$gold_return,$total);
 		return("Player Wins by ");
 	}
 	if($_[0] < $_[1])
 	{
+		quest::popup("Results", "$intro </c> <br><br> $Yel $Card1F , $Yel $Card2F , $Yel $Card3F , $Yel $Card4F , $Yel $Card5F</c> <br><br> $Yel Dealers Hand: </c> <br><br> $Yel $ , $Yel $Card2FD , $Yel $Card3FD , $Yel $Card4FD , $Yel $Card5FD </c> <br><br> $Red $TextToCenter3");
 		return("Dealer Wins by ");
 	}
 	if($_[0] == $_[1])
 	{
+		quest::popup("Results", "$intro </c> <br><br> $Yel $Card1F , $Yel $Card2F , $Yel $Card3F , $Yel $Card4F , $Yel $Card5F</c> <br><br> $Yel Dealers Hand: </c> <br><br> $Yel $ , $Yel $Card2FD , $Yel $Card3FD , $Yel $Card4FD , $Yel $Card5FD </c> <br><br> $Blu $TextToCenter4");
 		quest::givecash($copper_return,$silver_return,$gold_return,$total);
 		return("Tie with ");
 	}
@@ -538,13 +547,30 @@ sub CMPNUM
 
 sub POKER_DEALER_V_PLAYER{
 	
+		my $intro = "Current Hand Power: ". $NewResults[0]. ". Hand Type: ". $NewResults[6];
+	 my $TextToCenter2 = plugin::PWAutoCenter("You Win!");
+	 my $TextToCenter3 = plugin::PWAutoCenter("You Lost");
+	 my $TextToCenter4 = plugin::PWAutoCenter("Its a tie!");
+	 #my $TextToCenter5 = plugin::PWAutoCenter($Card4F);
+	 #my $TextToCenter6 = plugin::PWAutoCenter($Card5F);
+
+	 my $Indent = plugin::PWIndent();
+	 my $Yel = plugin::PWColor("Yellow");
+	 my $Blu = plugin::PWColor("Light Blue");
+	 my $Red = plugin::PWColor("Red");
+	 my $grn = plugin::PWColor("Forest Green");
+	
+	
+	
 	if($_[0] > $_[1])
 	{
+		quest::popup("Results", "$intro </c> <br><br> $Yel $Card1F , $Yel $Card2F , $Yel $Card3F , $Yel $Card4F , $Yel $Card5F</c> <br><br> $Yel Dealers Hand: </c> <br><br> $Yel $ , $Yel $Card2FD , $Yel $Card3FD , $Yel $Card4FD , $Yel $Card5FD </c> <br><br> $grn $TextToCenter2");
 		quest::givecash($copper_return,$silver_return,$gold_return,$total);
 		return("Player Wins by ". $_[2]);
 	}
 	elsif($_[0] < $_[1])
 	{
+		quest::popup("Results", "$intro </c> <br><br> $Yel $Card1F , $Yel $Card2F , $Yel $Card3F , $Yel $Card4F , $Yel $Card5F</c> <br><br> $Yel Dealers Hand: </c> <br><br> $Yel $ , $Yel $Card2FD , $Yel $Card3FD , $Yel $Card4FD , $Yel $Card5FD </c> <br><br> $Red $TextToCenter3");
 		return("Dealer Wins by ". $_[3]);
 	}
 	elsif($_[0] == $_[1])
@@ -876,7 +902,10 @@ sub EVENT_SAY {
 	$Card5F = POKER_CARD_NAMES($NewResults[5]);
 	
 	
-	
+	 @DealerHand = (POKER_START(2,0,0,0,0,0));
+	 
+	 @DealerResults = (POKER_LOGIC($DealerHand[0],$DealerHand[1],$DealerHand[2],$DealerHand[3],$DealerHand[4],1));
+	 
 	my $intro = "Current Hand Power: ". $NewResults[0]. ". Hand Type: ". $NewResults[6];
 	 my $TextToCenter2 = plugin::PWAutoCenter($Card1F);
 	 my $TextToCenter3 = plugin::PWAutoCenter($Card2F);
@@ -890,11 +919,9 @@ sub EVENT_SAY {
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
 	
-	 quest::popup("Results", "$intro </c> <br><br> $Yel $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6");
+	 #quest::popup("Results", "$intro </c> <br><br> $Yel $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6");
 	 
-	 @DealerHand = (POKER_START(2,0,0,0,0,0));
-	 
-	 @DealerResults = (POKER_LOGIC($DealerHand[0],$DealerHand[1],$DealerHand[2],$DealerHand[3],$DealerHand[4],1));
+	
 	 
 	 $Card1FD = POKER_CARD_NAMES($DealerResults[1]);
 	$Card2FD = POKER_CARD_NAMES($DealerResults[2]);
@@ -908,13 +935,6 @@ sub EVENT_SAY {
 	quest::say($DealerResults[0].', '."[$Card1FD]".', '."[$Card2FD]".', '."[$Card3FD]".', '."[$Card4FD]".', '."[$Card5FD]");
 	quest::say($Outcome);
 	
-	if(substr($Outcome,0,1) == "P")
-	{
-	}
-	else
-	{
-		
-	}
 	
 	$UIProgression = 0;
 	$MoneyCheck = 0;
@@ -947,7 +967,5 @@ sub EVENT_ITEM {
 	 
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Stop} {button_two: Play} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
-	#	quest::givecash($copper_return,$silver_return,$gold_return,$total);
-	#plugin::return_items(\%itemcount);
 	}
 }
