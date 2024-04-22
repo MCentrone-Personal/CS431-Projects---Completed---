@@ -28,12 +28,18 @@ our $POne = 0;
 our $DOne = 0;
 our $PTwo = 0;
 our $DTwo = 0;
+our $MoneyCheck = 0;
+our $MoneyCalc = 0;
+our $total = 0;
+our $copper_return = 0;
+our $silver_return = 0;
+our $gold_return = 0;
 
 sub POKER_START {
 	#Function to generate 5 random cards from one deck
 	@TempCards = (0,0,0,0,0);
 	@CurrentCards = (0,0,0,0,0);
-	if($_[0] != 1)
+	if($_[0] == 0)
 	{
 	for($i = 0; $i<5; $i++)
 	{
@@ -45,6 +51,80 @@ sub POKER_START {
 			goto TRYAGAIN;
 		}
 		$CurrentCards[$i] = $TempCards[$i];
+	}
+	}
+	
+	if($_[0] == 2)
+	{
+		if((int rand(5)) == 0)
+		{
+			$Rand = int rand(99);
+			if($Rand == 0)
+			{
+				@CurrentCards = (1,13,12,11,10);
+			}
+			elsif(($Rand > 0) and ($Rand <= 3))
+			{
+				$TempRand = int rand(6) + 5;
+				@CurrentCards = ($TempRand,$TempRand-1,$TempRand-2,$TempRand-3,$TempRand-4);
+			}
+			elsif(($Rand > 3) and ($Rand <= 11))
+			{
+				$TempRand = int rand(12) + 1;
+				if($TempRand == 1)
+				{
+				@CurrentCards = ($TempRand, $TempRand + 13, $TempRand + 26, $TempRand + 39, $TempRand + 1);
+				}
+				else
+				{
+				@CurrentCards = ($TempRand, $TempRand + 13, $TempRand + 26, $TempRand + 39, $TempRand - 1);
+				}
+			}
+			elsif(($Rand > 11) and ($Rand <= 26))
+			{
+				$TempRand = int rand(12) + 1;
+				@CurrentCards = ($TempRand, $TempRand + 13, $TempRand + 26, $TempRand + 2 , $TempRand + 15);
+			}
+			elsif(($Rand > 26) and ($Rand <= 37))
+			{
+				$TempRand = 13;
+				if($TempRand == 13)
+				{
+				@CurrentCards = ($TempRand, $TempRand - 6, $TempRand - 2, $TempRand - 7, $TempRand -9);
+				}
+			}
+			elsif(($Rand > 37) and ($Rand <= 50))
+			{
+				@CurrentCards = (3, 16, 4, 29, 17);
+			}
+			elsif(($Rand > 50) and ($Rand <= 65))
+			{
+				$TempRand = int rand(12) + 1;
+				@CurrentCards = ($TempRand, $TempRand + 13, $TempRand + 39, $TempRand +3, $TempRand + 20);
+			}
+			elsif(($Rand > 65) and ($Rand <= 85))
+			{
+				$TempRand = int rand(12) + 1;
+				@CurrentCards = ($TempRand + 16, $TempRand + 13, $TempRand + 39, $TempRand +3, $TempRand + 20);
+			}
+			elsif($Rand > 85)
+			{
+				$TempRand = int rand(12) + 1;
+				@CurrentCards = ($TempRand + 1, $TempRand + 28, $TempRand + 39, $TempRand +3, $TempRand + 20);
+			}
+		}
+		else{
+	for($i = 0; $i<5; $i++)
+	{
+		TRYAGAIN:
+		$TempCards[$i] = ((int rand(51)) + 1);
+		
+		if(($TempCards[$i] == $CurrentCards[0]) or ($TempCards[$i] == $CurrentCards[1]) or ($TempCards[$i] == $CurrentCards[2]) or ($TempCards[$i] == $CurrentCards[3]) or ($TempCards[$i] == $CurrentCards[4]))
+		{
+			goto TRYAGAIN;
+		}
+		$CurrentCards[$i] = $TempCards[$i];
+	}
 	}
 	}
 	
@@ -158,11 +238,33 @@ $Card5 = int($numeric[4]);
 
 	if($_[5] == 0)
 	{
-		$PHigh = ($Card5 % 13);
+		if(($Card1 % 13) == 1)
+		{
+			$PHigh = 14;
+		}
+		elsif(($Card5 % 13) == 0)
+		{
+		$PHigh = 13;
+		}
+		else
+		{
+			$PHigh = ($Card5 % 13);
+		}
 	}
 	if($_[5] == 1)
 	{
-		$DHigh = ($Card5 % 13);
+		if(($Card1 % 13) == 1)
+		{
+			$DHigh = 14;
+		}
+		elsif(($Card5 % 13) == 0)
+		{
+		$DHigh = 13;
+		}
+		else
+		{
+			$DHigh = ($Card5 % 13);
+		}
 	}
 
 $RoyalFlush = 0;
@@ -240,11 +342,25 @@ for($q = 0; $q <13; $q++)
 	$FourKind = 1;
 	if($_[5] == 0)
 	{
+		if($q == 1)
+		{
+		$PFour = 14;
+		}
+		else
+		{
 		$PFour = $q;
+		}
 	}
 	if($_[5] == 1)
 	{
+		if($q == 1)
+		{
+		$DFour = 14;
+		}
+		else
+		{
 		$DFour = $q;
+		}
 	}
 	}
 
@@ -255,11 +371,26 @@ for($q = 0; $q <13; $q++)
 	
 	if($_[5] == 0)
 	{
+		if($q == 1)
+		{
+		$PThree = 14;
+		}
+		else
+		{
 		$PThree = $q;
+		}
 	}
 	if($_[5] == 1)
 	{
+		if($q == 1)
+		{
+		$DThree = 14;
+		}
+		else
+		{
 		$DThree = $q;
+		}
+	
 	}
 	}
 	
@@ -267,31 +398,67 @@ for($q = 0; $q <13; $q++)
 	if($CardCounter[$q] == 2)
 	{
 	$OnePair = 1;
-	$PairsCounted++;
+	
 	if($_[5] == 0)
 	{
 		if($PairsCounted == 0)
 		{
-		$POne = $q;
+			if($q == 1)
+			{
+			$POne = 14;
+			}
+			else
+			{
+			$POne = $q;
+			}
 		}
 		else
-		{
-		$PTwo = $q;
+			{
+
+			if($q == 1)
+			{
+			$PTwo = 14;
+			}
+			else
+			{
+			$PTwo = $q;
+			}
 		}
-	}
+		}
+		
+	
 	if($_[5] == 1)
 	{
 		if($PairsCounted == 0)
 		{
-		$DOne = $q;
+		
+			if($q == 1)
+			{
+			$DOne = 14;
+			}
+			else
+			{
+			$DOne = $q;
+			}
 		}
 		else
 		{
-		$DTwo = $q;
+			if($q == 1)
+			{
+			$DTwo = 14;
+			}
+			else
+			{
+			$DTwo = $q;
+			}
 		}
+		
 	}
+	$PairsCounted++;
 	}
-}
+	
+	}
+
 
 #Full House check
 if($ThreeKind and $OnePair)
@@ -355,6 +522,7 @@ sub CMPNUM
 {
 	if($_[0] > $_[1])
 	{
+		quest::givecash($copper_return,$silver_return,$gold_return,$total);
 		return("Player Wins by ");
 	}
 	if($_[0] < $_[1])
@@ -363,6 +531,7 @@ sub CMPNUM
 	}
 	if($_[0] == $_[1])
 	{
+		quest::givecash($copper_return,$silver_return,$gold_return,$total);
 		return("Tie with ");
 	}
 }
@@ -371,53 +540,55 @@ sub POKER_DEALER_V_PLAYER{
 	
 	if($_[0] > $_[1])
 	{
+		quest::givecash($copper_return,$silver_return,$gold_return,$total);
 		return("Player Wins by ". $_[2]);
 	}
-	if($_[0] < $_[1])
+	elsif($_[0] < $_[1])
 	{
 		return("Dealer Wins by ". $_[3]);
 	}
-	if($_[0] == $_[1])
+	elsif($_[0] == $_[1])
 	{
-		if($_[2] == "Royal Flush")
+		
+		if($_[0] == 10)
 		{
-		return("Tie");
+		return(CMPNUM($PHigh, $DHigh) . "Equal Cards");
 		}
-		if($_[2] == "Straight Flush")
+		elsif($_[0] == 9)
 		{
-			return(CMPNUM($PHigh,$DHigh) . "Higher Cards");
+		return(CMPNUM($PHigh,$DHigh) . "Higher Cards");
 		}
-		if($_[2] == "Four of a Kind")
+		elsif($_[0] == 8)
 		{
-			return(CMPNUM($PFour,$DFour) . "Higher Cards");
+		return(CMPNUM($PFour,$DFour) . "Higher Cards");
 		}
-		if($_[2] == "Full House")
+		elsif($_[0] == 7)
 		{
-			return(CMPNUM($PThree,$DThree) . "Higher Cards");
+		return(CMPNUM($PThree,$DThree) . "Higher Cards");
 		}
-		if($_[2] == "Flush")
+		elsif($_[0] == 6)
 		{
-			return(CMPNUM($PHigh,$DHigh) . "Higher Cards");
+		return(CMPNUM($PHigh,$DHigh) . "Higher Cards");
 		}
-		if($_[2] == "Striaght")
+		elsif($_[0] == 5)
 		{
-			return(CMPNUM($PHigh,$DHigh) . "Higher Cards");
+		return(CMPNUM($PHigh,$DHigh) . "Higher Cards");
 		}
-		if($_[2] == "Three of a Kind")
+		elsif($_[0] == 4)
 		{
-			return(CMPNUM($PThree,$DThree) . "Higher Cards");
+		return(CMPNUM($PThree,$DThree) . "Higher Cards");
 		}
-		if($_[2] == "Two Pair")
+		elsif($_[0] == 3)
 		{
-			return(CMPNUM($PTwo,$DTwo) . "Higher Cards");
+		return(CMPNUM($PTwo,$DTwo) . "Higher Cards");
 		}
-		if($_[2] == "One Pair")
+		elsif($_[0] == 2)
 		{
-			return(CMPNUM($PPOne,$DPOne) . "Higher Cards");
+		return(CMPNUM($POne,$DOne) . "Higher Cards");
 		}
-		if($_[2] == "High Card")
+		elsif($_[0] == 1)
 		{
-			return(CMPNUM($PHigh,$DHigh) . "Higher Cards");
+		return(CMPNUM($PHigh,$DHigh) . "Higher Cards");
 		}
 	}
 	
@@ -442,12 +613,38 @@ sub EVENT_SAY {
 	 $Count = 0;
 	 
 	 $UIProgression = 0;
+	 
+	  my $intro = "You need to pay to start playing!";
+	
+
+	 my $Indent = plugin::PWIndent();
+	 my $Yel = plugin::PWColor("Yellow");
+	 my $Blu = plugin::PWColor("Light Blue");
+	 my $Red = plugin::PWColor("Red");
+	 my $grn = plugin::PWColor("Forest Green");
+	 
+	 
+	  my $dialogMessage = "{title: Curernt Hand} {button_one: Cancel} {button_two: Play} wintype:1 $intro </c> <br><br>";
+        quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
+	 
     }
-     if ($text=~/money/i)
+	
+	if($text=~/Stop/i)
+	{
+		quest::givecash($copper_return,$silver_return,$gold_return,$total);
+		$MoneyCheck = 0;
+		$total = 0;
+		$copper_return = 0;
+		$silver_return = 0;
+		$gold_return = 0;
+	}
+	
+     if (($text=~/Play/i) and ($MoneyCheck == 1))
     {
 		
 		
-	@Currenthand = (POKER_START(2,0,0,0,0,0));
+		
+	@Currenthand = (POKER_START(0,0,0,0,0,0));
 	
 	@Results = (POKER_LOGIC($Currenthand[0],$Currenthand[1],$Currenthand[2],$Currenthand[3],$Currenthand[4]));
 	
@@ -456,9 +653,6 @@ sub EVENT_SAY {
 	$Card3F = POKER_CARD_NAMES($Results[3]);
 	$Card4F = POKER_CARD_NAMES($Results[4]);
 	$Card5F = POKER_CARD_NAMES($Results[5]);
-	
-    quest::say("I like money ");
-	quest::say($Results[0].', '."[$Card1F]".', '."[$Card2F]".', '."[$Card3F]".', '."[$Card4F]".', '."[$Card5F]");
 	
 	 my $intro = "Current Hand Power: ". $Results[0]. ". Hand Type: ". $Results[6];
 	 my $TextToCenter2 = plugin::PWAutoCenter($Card1F);
@@ -494,6 +688,7 @@ sub EVENT_SAY {
 	
 	if (($text=~/Start Swapping/i) and ($UIProgression == 1))
 	{
+		$MoneyCheck = 0;
 		$Count = 0;
 		$Flag1 = 0;
 		$Flag2 = 0;
@@ -697,7 +892,7 @@ sub EVENT_SAY {
 	
 	 quest::popup("Results", "$intro </c> <br><br> $Yel $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6");
 	 
-	 @DealerHand = (POKER_START(0,0,0,0,0,0));
+	 @DealerHand = (POKER_START(2,0,0,0,0,0));
 	 
 	 @DealerResults = (POKER_LOGIC($DealerHand[0],$DealerHand[1],$DealerHand[2],$DealerHand[3],$DealerHand[4],1));
 	 
@@ -713,23 +908,46 @@ sub EVENT_SAY {
 	quest::say($DealerResults[0].', '."[$Card1FD]".', '."[$Card2FD]".', '."[$Card3FD]".', '."[$Card4FD]".', '."[$Card5FD]");
 	quest::say($Outcome);
 	
+	if(substr($Outcome,0,1) == "P")
+	{
+	}
+	else
+	{
+		
+	}
+	
 	$UIProgression = 0;
+	$MoneyCheck = 0;
       }
 }
 
 sub EVENT_ITEM {
 
-	my $total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
+	 $total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
 	#return any unused money
 	if($total > 0)
 	{
-	    my $copper_return = $total % 10;
+		$MoneyCheck = 1;
+	    $copper_return = $total % 10;
 		$total = (($total - $copper_return)/10);
-		my $silver_return= $total % 10;
+		$silver_return= $total % 10;
 		$total = (($total - $silver_return)/10);
-		my $gold_return = $total % 10;
+		$gold_return = $total % 10;
 		$total = (($total - $gold_return)/10);
-		quest::givecash($copper_return,$silver_return,$gold_return,$total);
+		
+		 my $intro = "Thank you for your bet, you can start playing!";
+	
+
+	 my $Indent = plugin::PWIndent();
+	 my $Yel = plugin::PWColor("Yellow");
+	 my $Blu = plugin::PWColor("Light Blue");
+	 my $Red = plugin::PWColor("Red");
+	 my $grn = plugin::PWColor("Forest Green");
+	 
+	 
+	  my $dialogMessage = "{title: Curernt Hand} {button_one: Stop} {button_two: Play} wintype:1 $intro </c> <br><br>";
+        quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
+	#	quest::givecash($copper_return,$silver_return,$gold_return,$total);
+	#plugin::return_items(\%itemcount);
 	}
-  plugin::return_items(\%itemcount);
 }
