@@ -700,11 +700,13 @@ sub EVENT_SAY {
 	}
 
 	if ($text=~/Stand/i) {
-		quest::say("NOT IMPLEMENTED YET!!!!");
+		quest::say("You chose to stand.");
+		BlackJack_Stand();
 	}
 
 	if ($text=~/Hit/i) {
-		quest::say("NOT IMPLEMENTED YET!!!!");
+		quest::say("You chose to hit.");
+		BlackJack_Hit();
 	}
 
 }
