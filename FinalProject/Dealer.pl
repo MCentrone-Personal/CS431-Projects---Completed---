@@ -287,7 +287,6 @@ sub BlackJack_Init {
 		push(@BlackJack_PlayerCardsStr, $cardString);
 
 	}
-	print("Dealing dealer cards.");
 	for ($i = 0; $i < 2; $i++) {
 		TRYAGAIN2:
 		my $indexCardNumList = int(rand(51));
@@ -486,11 +485,11 @@ sub BlackJack_Hit {
 	if ($BlackJack_DealerPoints > 21 || $BlackJack_PlayerPoints > 21) {
 		BlackJack_RecalculateDealerPoints();
 		BlackJack_RecalculatePlayerPoints();
-		BlackJack_Stand();
+		BlackJack_End();
 	}
 
 	elsif ($BlackJack_DealerPoints == 21 || $BlackJack_PlayerPoints == 21) {
-		BlackJack_Stand();
+		BlackJack_End();
 	}
 	else {
 		quest::say("You have:");
@@ -577,8 +576,11 @@ sub BlackJack_Stand {
 			BlackJack_RecalculateDealerPoints();
 			BlackJack_RecalculatePlayerPoints();
 		}
+		BlackJack_End();
 	}
+}
 
+sub BlackJack_End() {
 	if ($BlackJack_PlayerPoints == $BlackJack_DealerPoints && $BlackJack_DealerPoints == 21) {
 		$BlackJack_GameCondition = 4;
 		quest::say("Pushed! We both got blackjack.");
