@@ -281,12 +281,7 @@ sub BlackJack_Init {
 		}
 
 		if ($cardVal == 1) {
-			if ($BlackJack_PlayerPoints < 21) {
-				$BlackJack_PlayerPoints += 11;
-			}
-			else {
-				$BlackJack_PlayerPoints += 1;
-			}
+			$BlackJack_PlayerPoints += 11;
 		}
 
 		push(@BlackJack_PlayerCardsStr, $cardString);
@@ -362,7 +357,7 @@ sub BlackJack_Init {
 }
 
 sub BlackJack_Hit {
-	if ($BlackJack_PlayerPoints <= 21) {
+	if ($BlackJack_PlayerPoints < 21) {
 		TRYAGAIN3:
 		my $indexCardNumList = int(rand(51));
 		my $cardNum = $BlackJack_CardsNumList[$indexCardNumList];
@@ -424,7 +419,7 @@ sub BlackJack_Hit {
 		push(@BlackJack_PlayerCardsStr, $cardString);
 
 	}
-	if ($BlackJack_DealerPoints <= 21) {
+	if ($BlackJack_DealerPoints < 21) {
 		if ($BlackJack_DealerPoints < 17) {
 			TRYAGAIN4:
 			my $indexCardNumList = int(rand(51));
