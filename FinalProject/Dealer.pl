@@ -423,12 +423,7 @@ sub BlackJack_Hit {
 		}
 
 		if ($cardVal == 1) {
-			if ($BlackJack_PlayerPoints < 21) {
-				$BlackJack_PlayerPoints += 11;
-			}
-			else {
-				$BlackJack_PlayerPoints += 1;
-			}
+			$BlackJack_PlayerPoints += 11;
 		}
 
 		push(@BlackJack_PlayerCardsStr, $cardString);
@@ -491,12 +486,7 @@ sub BlackJack_Hit {
 			}
 
 			if ($cardVal == 1) {
-				if ($BlackJack_PlayerPoints < 21) {
-					$BlackJack_DealerPoints += 11;
-				}
-				else {
-					$BlackJack_DealerPoints += 1;
-				}
+				$BlackJack_DealerPoints += 11;
 			}
 
 			push(@BlackJack_DealerCardsStr, $cardString);
@@ -583,12 +573,7 @@ sub BlackJack_Stand {
 			}
 
 			if ($cardVal == 1) {
-				if ($BlackJack_PlayerPoints < 21) {
-					$BlackJack_DealerPoints += 11;
-				}
-				else {
-					$BlackJack_DealerPoints += 1;
-				}
+				$BlackJack_DealerPoints += 11;
 			}
 
 			push(@BlackJack_DealerCardsStr, $cardString);
@@ -635,7 +620,12 @@ sub BlackJack_RecalculatePlayerPoints {
 	if ($BlackJack_PlayerPoints > 21) {
 		$BlackJack_PlayerPoints = 0;
 		for $i (@BlackJack_PlayerCardsNum) {
-			$BlackJack_PlayerPoints += $i
+			if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+				$BlackJack_DealerPoints += 10;
+			}
+			elsif ($cardVal < 11 && $cardVal >= 1) {
+				$BlackJack_DealerPoints += $cardVal;
+			}
 		}
 	}
 }
@@ -644,7 +634,12 @@ sub BlackJack_RecalculateDealerPoints {
 	if ($BlackJack_DealerPoints > 21) {
 		$BlackJack_DealerPoints = 0;
 		for $i (@BlackJack_DealerCardsNum) {
-			$BlackJack_DealerPoints += $i
+			if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+				$BlackJack_DealerPoints += 10;
+			}
+			elsif ($cardVal < 11 && $cardVal >= 1) {
+				$BlackJack_DealerPoints += $cardVal;
+			}
 		}
 	}
 }
