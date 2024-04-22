@@ -213,7 +213,7 @@ our $BlackJack_DealerPoints;
 our $BlackJack_GameCondition;
 
 sub BlackJack_GameReset {
-	@BlackJack_CardsNumList = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52);
+	@BlackJack_CardsNumList = (1..52);
 	@BlackJack_PlayerCardsNum = ();
 	@BlackJack_DealerCardsNum = ();
 	@BlackJack_PlayerCardsStr = ();
@@ -350,9 +350,17 @@ sub BlackJack_Init {
 
 	}
 	quest::say("You are playing Blackjack.");
-	quest::say("You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. The dealer has a $BlackJack_DealerCardsStr[0] and a $BlackJack_DealerCardsStr[1]. Do you want to [Hit] or [Stand]?");
-
-
+	if ($BlackJack_PlayerPoints == 21 || $BlackJack_DealerPoints == 21) {
+		BlackJack_End();
+	}
+	elsif ($BlackJack_PlayerPoints > 21 || $BlackJack_DealerPoints > 21) {
+		BlackJack_RecalculateDealerPoints();
+		BlackJack_RecalculatePlayerPoints();
+		BlackJack_End();
+	}
+	else {
+		quest::say("You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. The dealer has a $BlackJack_DealerCardsStr[0] and a $BlackJack_DealerCardsStr[1]. Do you want to [Hit] or [Stand]?");
+	}
 }
 
 sub BlackJack_Hit {
@@ -482,12 +490,12 @@ sub BlackJack_Hit {
 
 		}
 	}
-	if ($BlackJack_DealerPoints > 21 || $BlackJack_PlayerPoints > 21) {
+	if ($BlackJack_PlayerPoints > 21) {
 		BlackJack_RecalculateDealerPoints();
 		BlackJack_RecalculatePlayerPoints();
 		BlackJack_End();
 	}
-	elsif ($BlackJack_DealerPoints == 21 || $BlackJack_PlayerPoints == 21) {
+	elsif ($BlackJack_PlayerPoints == 21) {
 		BlackJack_End();
 	}
 	else {
@@ -623,8 +631,8 @@ sub BlackJack_RecalculatePlayerPoints {
 		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
 			$BlackJack_PlayerPoints += 10;
 		}
-		elsif ($i < 11 && $i >= 1) {
-			$BlackJack_PlayerPoints += $i;
+		elsif ($cardVal < 11 && $cardVal >= 1) {
+			$BlackJack_PlayerPoints += $cardVal;
 		}
 	}
 }
@@ -636,8 +644,8 @@ sub BlackJack_RecalculateDealerPoints {
 		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
 			$BlackJack_DealerPoints += 10;
 		}
-		elsif ($cardVal < 11 && $cardval >= 1) {
-			$BlackJack_DealerPoints += $i;
+		elsif ($cardVal < 11 && $cardVal >= 1) {
+			$BlackJack_DealerPoints += $cardVal;
 		}
 	}
 }
