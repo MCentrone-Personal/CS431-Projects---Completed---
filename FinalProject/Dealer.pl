@@ -1,3 +1,4 @@
+
 our @Results = ();
 our @Currenthand = ();
 our @Newhand = ();
@@ -541,7 +542,7 @@ sub CMPNUM
 	if($_[0] > $_[1])
 	{
 		quest::popup("Results", "$intro </c> <br><br> $Yel $Card1F , $Yel $Card2F , $Yel $Card3F , $Yel $Card4F , $Yel $Card5F</c> <br><br> $Yel Dealers Hand: </c> <br><br> $Yel $ , $Yel $Card2FD , $Yel $Card3FD , $Yel $Card4FD , $Yel $Card5FD </c> <br><br> $grn $TextToCenter2");
-		quest::givecash($copper_return,$silver_return,$gold_return,$total);
+		quest::givecash($copper_return * 2,$silver_return * 2,$gold_return * 2,$total * 2);
 		quest::ding();
 		return("Player Wins by ");
 	}
@@ -578,7 +579,7 @@ sub POKER_DEALER_V_PLAYER{
 	if($_[0] > $_[1])
 	{
 		quest::popup("Results", "$intro </c> <br><br> $Yel $Card1F , $Yel $Card2F , $Yel $Card3F , $Yel $Card4F , $Yel $Card5F</c> <br><br> $Yel Dealers Hand: </c> <br><br> $Yel $ , $Yel $Card2FD , $Yel $Card3FD , $Yel $Card4FD , $Yel $Card5FD </c> <br><br> $grn $TextToCenter2");
-		quest::givecash($copper_return,$silver_return,$gold_return,$total);
+		quest::givecash($copper_return * 2,$silver_return * 2,$gold_return * 2,$total * 2);
 		quest::ding();
 		return("Player Wins by ". $_[2]);
 	}
