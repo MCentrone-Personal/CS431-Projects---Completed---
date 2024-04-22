@@ -507,7 +507,6 @@ sub BlackJack_Hit {
 		BlackJack_RecalculateDealerPoints();
 		BlackJack_RecalculatePlayerPoints();
 		BlackJack_Stand();
-		last;
 	}
 	else {
 		quest::say("You have:");
