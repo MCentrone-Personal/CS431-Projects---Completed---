@@ -261,16 +261,16 @@ sub BlackJack_Init {
 
 
 		if ($suitNum == 0) {
-			$cardString . "Spades";
+			$cardString = $cardString . "Spades";
 		}
 		elsif ($suitNum == 1) {
-			$cardString . "Clubs";
+			$cardString = $cardString . "Clubs";
 		}
 		elsif ($suitNum == 2) {
-			$cardString . "Diamonds";
+			$cardString = $cardString . "Diamonds";
 		}
 		elsif ($suitNum == 3) {
-			$cardString . "Hearts";
+			$cardString = $cardString . "Hearts";
 		}
 
 		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
