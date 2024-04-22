@@ -1,4 +1,3 @@
-
 our @Results = ();
 our @Currenthand = ();
 our @Newhand = ();
@@ -543,6 +542,7 @@ sub CMPNUM
 	{
 		quest::popup("Results", "$intro </c> <br><br> $Yel $Card1F , $Yel $Card2F , $Yel $Card3F , $Yel $Card4F , $Yel $Card5F</c> <br><br> $Yel Dealers Hand: </c> <br><br> $Yel $ , $Yel $Card2FD , $Yel $Card3FD , $Yel $Card4FD , $Yel $Card5FD </c> <br><br> $grn $TextToCenter2");
 		quest::givecash($copper_return,$silver_return,$gold_return,$total);
+		quest::ding();
 		return("Player Wins by ");
 	}
 	if($_[0] < $_[1])
@@ -579,6 +579,7 @@ sub POKER_DEALER_V_PLAYER{
 	{
 		quest::popup("Results", "$intro </c> <br><br> $Yel $Card1F , $Yel $Card2F , $Yel $Card3F , $Yel $Card4F , $Yel $Card5F</c> <br><br> $Yel Dealers Hand: </c> <br><br> $Yel $ , $Yel $Card2FD , $Yel $Card3FD , $Yel $Card4FD , $Yel $Card5FD </c> <br><br> $grn $TextToCenter2");
 		quest::givecash($copper_return,$silver_return,$gold_return,$total);
+		quest::ding();
 		return("Player Wins by ". $_[2]);
 	}
 	elsif($_[0] < $_[1])
