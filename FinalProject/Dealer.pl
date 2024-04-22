@@ -628,6 +628,15 @@ sub BlackJack_Stand {
 		}
 	}
 
+	quest::say("You had:");
+	for $i (@BlackJack_PlayerCardsStr) {
+		quest::say("$i");
+	}
+	quest::say("The dealer had: ");
+	for $i (@BlackJack_DealerCardsStr) {
+		quest::say("$i");
+	}
+
 }
 
 sub BlackJack_RecalculatePlayerPoints {
