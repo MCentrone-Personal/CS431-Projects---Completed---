@@ -234,8 +234,8 @@ sub BlackJack_Init {
 
 		my $cardString = "";
 		$BlackJack_CardsNumList[$indexCardNumList] = 0;
-		my $suitNum = $cardNum % 13;
-		my $cardVal = $carNum % 4 + 1;
+		my $suitNum = $cardNum % 4;
+		my $cardVal = $carNum % 13 + 1;
 
 		push(@BlackJack_PlayerCardsNum, $cardNum);
 
@@ -302,8 +302,8 @@ sub BlackJack_Init {
 
 		my $cardString = "";
 		$BlackJack_CardsNumList[$indexCardNumList] = 0;
-		my $suitNum = $cardNum % 13;
-		my $cardVal = $carNum % 4 + 1;
+		my $suitNum = $cardNum % 4;
+		my $cardVal = $carNum % 13 + 1;
 
 		push(@BlackJack_DealerCardsNum, $cardNum);
 
@@ -376,8 +376,8 @@ sub BlackJack_Hit {
 
 		my $cardString = "";
 		$BlackJack_CardsNumList[$indexCardNumList] = 0;
-		my $suitNum = $cardNum % 13;
-		my $cardVal = $carNum % 4 + 1;
+		my $suitNum = $cardNum % 4;
+		my $cardVal = $carNum % 13 + 1;
 
 		push(@BlackJack_PlayerCardsNum, $cardNum);
 
@@ -448,8 +448,8 @@ sub BlackJack_Hit {
 
 			my$cardString = "";
 			$BlackJack_CardsNumList[$indexCardNumList] = 0;
-			my $suitNum = $cardNum % 13;
-			my $cardVal = $carNum % 4 + 1;
+			my $suitNum = $cardNum % 4;
+			my$cardVal = $carNum % 13 + 1;
 
 			push(@BlackJack_DealerCardsNum, $cardNum);
 
@@ -539,8 +539,8 @@ sub BlackJack_Stand {
 
 			my$cardString = "";
 			$BlackJack_CardsNumList[$indexCardNumList] = 0;
-			my $suitNum = $cardNum % 13;
-			my $cardVal = $carNum % 4 + 1;
+			my $suitNum = $cardNum % 4;
+			my$cardVal = $carNum % 13 + 1;
 
 			push(@BlackJack_DealerCardsNum, $cardNum);
 
