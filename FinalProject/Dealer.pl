@@ -224,7 +224,7 @@ sub BlackJack_GameReset {
 }
 
 sub BlackJack_Init {
-	for (my $i = 0; $i < 2; $i++) {
+	for ($i = 0; $i < 2; $i++) {
 		TRYAGAIN1:
 		my $indexCardNumList = int(rand(51));
 		my $cardNum = $BlackJack_CardsNumList[$indexCardNumList];
@@ -359,7 +359,7 @@ sub BlackJack_Init {
 		push(@BlackJack_DealerCardsStr, $cardString);
 
 	}
-	quest::say("You are playing Black Jack.")
+	quest::say("You are playing Black Jack.");
 	quest::say("You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. The dealer has a $BlackJack_DealerCardsStr[0]. Do you want to [Hit] or [Stand]?");
 
 
