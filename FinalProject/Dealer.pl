@@ -203,14 +203,14 @@ return (@ReturnArray);
 
 }
 
-our @BlackJack_CardsNumList = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52);
-our @BlackJack_PlayerCardsNum = ();
-our @BlackJack_DealerCardsNum = ();
-our @BlackJack_PlayerCardsStr = ();
-our @BlackJack_DealerCardsStr = ();
-our $BlackJack_PlayerPoints = 0;
-our $BlackJack_DealerPoints = 0;
-our $BlackJack_GameCondition = 0; # 1 = player lost (bust), 2 = player wins, 3 = player gets black jack, 4 = push (player and dealer tie)
+our @BlackJack_CardsNumList;
+our @BlackJack_PlayerCardsNum;
+our @BlackJack_DealerCardsNum;
+our @BlackJack_PlayerCardsStr;
+our @BlackJack_DealerCardsStr;
+our $BlackJack_PlayerPoints;
+our $BlackJack_DealerPoints;
+our $BlackJack_GameCondition;
 
 sub BlackJack_GameReset {
 	@BlackJack_CardsNumList = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52);
@@ -487,7 +487,6 @@ sub BlackJack_Hit {
 		BlackJack_RecalculatePlayerPoints();
 		BlackJack_End();
 	}
-
 	elsif ($BlackJack_DealerPoints == 21 || $BlackJack_PlayerPoints == 21) {
 		BlackJack_End();
 	}
@@ -610,6 +609,7 @@ sub BlackJack_End() {
 	}
 
 	quest::say("You had $BlackJack_PlayerPoints. The dealer had $BlackJack_DealerPoints.");
+	BlackJack_GameReset();
 }
 
 sub BlackJack_RecalculatePlayerPoints {
@@ -668,7 +668,7 @@ sub EVENT_SAY {
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
     }
 
-	if ($text=~/Black Jack/i){
+	if ($text=~/Blackjack/i){
 		BlackJack_Init();
 	}
 
