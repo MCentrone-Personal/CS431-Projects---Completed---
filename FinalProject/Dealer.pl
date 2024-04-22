@@ -526,6 +526,19 @@ return (1,$_[0], $_[1], $_[2], $_[3], $_[4], "High Card");
 
 sub CMPNUM
 {
+	my $intro = "Current Hand Power: ". $NewResults[0]. ". Hand Type: ". $NewResults[6];
+	 my $TextToCenter2 = plugin::PWAutoCenter("You Win!");
+	 my $TextToCenter3 = plugin::PWAutoCenter("You Lost");
+	 my $TextToCenter4 = plugin::PWAutoCenter("Its a tie!");
+	 #my $TextToCenter5 = plugin::PWAutoCenter($Card4F);
+	 #my $TextToCenter6 = plugin::PWAutoCenter($Card5F);
+
+	 my $Indent = plugin::PWIndent();
+	 my $Yel = plugin::PWColor("Yellow");
+	 my $Blu = plugin::PWColor("Light Blue");
+	 my $Red = plugin::PWColor("Red");
+	 my $grn = plugin::PWColor("Forest Green");
+	 
 	if($_[0] > $_[1])
 	{
 		quest::popup("Results", "$intro </c> <br><br> $Yel $Card1F , $Yel $Card2F , $Yel $Card3F , $Yel $Card4F , $Yel $Card5F</c> <br><br> $Yel Dealers Hand: </c> <br><br> $Yel $ , $Yel $Card2FD , $Yel $Card3FD , $Yel $Card4FD , $Yel $Card5FD </c> <br><br> $grn $TextToCenter2");
@@ -534,7 +547,7 @@ sub CMPNUM
 	}
 	if($_[0] < $_[1])
 	{
-		quest::popup("Results", "$intro </c> <br><br> $Yel $Card1F , $Yel $Card2F , $Yel $Card3F , $Yel $Card4F , $Yel $Card5F</c> <br><br> $Yel Dealers Hand: </c> <br><br> $Yel $ , $Yel $Card2FD , $Yel $Card3FD , $Yel $Card4FD , $Yel $Card5FD </c> <br><br> $Red $TextToCenter3");
+		quest::popup("Results", "$intro </c> <br><br> $Yel $Card1F , $Yel $Card2F , $Yel $Card3F , $Yel $Card4F , $Yel $Card5F</c> <br><br> $Yel Dealers Hand: </c> <br><br> $Yel $Card1FD , $Yel $Card2FD , $Yel $Card3FD , $Yel $Card4FD , $Yel $Card5FD </c> <br><br> $Red $TextToCenter3");
 		return("Dealer Wins by ");
 	}
 	if($_[0] == $_[1])
