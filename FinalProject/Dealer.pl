@@ -291,7 +291,7 @@ sub BlackJack_Init {
 		push(@BlackJack_PlayerCardsStr, $cardString);
 
 	}
-	print("Dealing dealer cards.");
+	print("Dealing dealer cards.")
 	for ($i = 0; $i < 2; $i++) {
 		TRYAGAIN2:
 		my $indexCardNumList = int(rand(51));
