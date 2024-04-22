@@ -616,29 +616,25 @@ sub BlackJack_Stand {
 }
 
 sub BlackJack_RecalculatePlayerPoints {
-	if ($BlackJack_PlayerPoints > 21) {
-		$BlackJack_PlayerPoints = 0;
-		for $i (@BlackJack_PlayerCardsNum) {
-			if ($i == 11 || $i == 12 || $i == 13) {
-				$BlackJack_DealerPoints += 10;
-			}
-			elsif ($i < 11 && $i >= 1) {
-				$BlackJack_DealerPoints += $i;
-			}
+	$BlackJack_PlayerPoints = 0;
+	for $i (@BlackJack_PlayerCardsNum) {
+		if ($i == 11 || $i == 12 || $i == 13) {
+			$BlackJack_DealerPoints += 10;
+		}
+		elsif ($i < 11 && $i >= 1) {
+			$BlackJack_DealerPoints += $i;
 		}
 	}
 }
 
 sub BlackJack_RecalculateDealerPoints {
-	if ($BlackJack_DealerPoints > 21) {
-		$BlackJack_DealerPoints = 0;
-		for $i (@BlackJack_DealerCardsNum) {
-			if ($i == 11 || $i == 12 || $i == 13) {
-				$BlackJack_DealerPoints += 10;
-			}
-			elsif ($i < 11 && $i >= 1) {
-				$BlackJack_DealerPoints += $i;
-			}
+	$BlackJack_DealerPoints = 0;
+	for $i (@BlackJack_DealerCardsNum) {
+		if ($i == 11 || $i == 12 || $i == 13) {
+			$BlackJack_DealerPoints += 10;
+		}
+		elsif ($i < 11 && $i >= 1) {
+			$BlackJack_DealerPoints += $i;
 		}
 	}
 }
