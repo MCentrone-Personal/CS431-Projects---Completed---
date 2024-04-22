@@ -349,12 +349,7 @@ sub BlackJack_Init {
 		}
 
 		if ($cardVal == 1) {
-			if ($BlackJack_PlayerPoints < 21) {
-				$BlackJack_DealerPoints += 11;
-			}
-			else {
-				$BlackJack_DealerPoints += 1;
-			}
+			$BlackJack_DealerPoints += 11;
 		}
 
 		push(@BlackJack_DealerCardsStr, $cardString);
@@ -498,6 +493,10 @@ sub BlackJack_Hit {
 		BlackJack_RecalculatePlayerPoints();
 		BlackJack_Stand();
 	}
+
+	if ($BlackJack_DealerPoints == 21 || $BlackJack_PlayerPoints == 21) {
+		BlackJack_Stand();
+	}
 	else {
 		quest::say("You have:");
 		for $i (@BlackJack_PlayerCardsStr) {
@@ -516,7 +515,7 @@ sub BlackJack_Stand {
 		BlackJack_RecalculateDealerPoints();
 		BlackJack_RecalculatePlayerPoints();
 	}
-	elsif ($BlackJack_DealerPoints <= 21) {
+	elsif ($BlackJack_DealerPoints < 21) {
 		while ($BlackJack_DealerPoints < 17) {
 			TRYAGAIN5:
 			my $indexCardNumList = int(rand(51));
@@ -620,11 +619,11 @@ sub BlackJack_RecalculatePlayerPoints {
 	if ($BlackJack_PlayerPoints > 21) {
 		$BlackJack_PlayerPoints = 0;
 		for $i (@BlackJack_PlayerCardsNum) {
-			if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+			if ($i == 11 || $i == 12 || $i == 13) {
 				$BlackJack_DealerPoints += 10;
 			}
-			elsif ($cardVal < 11 && $cardVal >= 1) {
-				$BlackJack_DealerPoints += $cardVal;
+			elsif ($i < 11 && $i >= 1) {
+				$BlackJack_DealerPoints += $i;
 			}
 		}
 	}
@@ -634,11 +633,11 @@ sub BlackJack_RecalculateDealerPoints {
 	if ($BlackJack_DealerPoints > 21) {
 		$BlackJack_DealerPoints = 0;
 		for $i (@BlackJack_DealerCardsNum) {
-			if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+			if ($i == 11 || $i == 12 || $i == 13) {
 				$BlackJack_DealerPoints += 10;
 			}
-			elsif ($cardVal < 11 && $cardVal >= 1) {
-				$BlackJack_DealerPoints += $cardVal;
+			elsif ($i < 11 && $i >= 1) {
+				$BlackJack_DealerPoints += $i;
 			}
 		}
 	}
