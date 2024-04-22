@@ -592,6 +592,10 @@ sub BlackJack_End() {
 		$BlackJack_GameCondition = 3; # Black jack condition
 		quest::say("You got blackjack! You win!");
 	}
+	elsif ($BlackJack_DealerPoints == 21 && $BlackJack_PlayerPoints < $BlackJack_DealerPoints) {
+		$BlackJack_GameCondition = 1; # Bust (lose condition)
+		quest::say("I got blackjack! You lose!")
+	}
 	else {
 		if ($BlackJack_PlayerPoints > $BlackJack_DealerPoints) {
 			$BlackJack_GameCondition = 2; # Win condition
