@@ -1,4 +1,3 @@
-
 our $BlackJack_Total;
 our @BlackJack_CardsNumList;
 our @BlackJack_PlayerCardsNum;
@@ -562,7 +561,10 @@ sub PopUpChange()
 	elsif($gameSelect==1)
 	{
 		$gameSelect++;
-		my $dialogMessage = "{title: POKER} {button_one: Change Game} {button_two: Poker} wintype:1 DANCE ON THEIR GRAVES";
+		my $Yel = plugin::PWColor("Yellow");
+	    my $Blu = plugin::PWColor("Light Blue");
+		my $Wht = plugin::PWColor("White");
+		my $dialogMessage = "{title: POKER} {button_one: Change Game} {button_two: Poker} wintype:1 You will be given 5 cards, you can either $Blu swap $Wht them and get new cards from the same deck or $Yel keep $Wht them if you are confident. Try and get better cards than the Dealer!";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 	elsif($gameSelect==2)
