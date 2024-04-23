@@ -202,7 +202,7 @@ return (@ReturnArray);
 }
 
 }
-
+our $BlackJack_Total
 our @BlackJack_CardsNumList;
 our @BlackJack_PlayerCardsNum;
 our @BlackJack_DealerCardsNum;
@@ -222,6 +222,16 @@ sub BlackJack_GameReset {
 	$BlackJack_DealerPoints = 0;
 	$BlackJack_GameCondition = 0;
 }
+
+sub BlackJack_Start{
+	if ($BlackJack_Total > 0) {
+		BlackJack_Init();
+	}
+	else {
+		quest::say("You need to place your bet before starting.");
+	}
+}
+
 
 sub BlackJack_Init {
 	BlackJack_GameReset();
