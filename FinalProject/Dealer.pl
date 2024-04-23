@@ -358,7 +358,7 @@ sub BlackJack_Init {
 		BlackJack_End();
 	}
 	else {
-		quest::say("You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. I have a $BlackJack_DealerCardsStr[0]. Do you want to [Hit] or [Stand]?");
+		quest::say("You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. You have $BlackJack_PlayerPoints points. I have a $BlackJack_DealerCardsStr[0]. Do you want to [Hit] or [Stand]?");
 	}
 }
 
@@ -501,6 +501,7 @@ sub BlackJack_Hit {
 		for $i (@BlackJack_PlayerCardsStr) {
 			quest::say("            $i");
 		}
+		quest::say("You have $BlackJack_PlayerPoints points.");
 		quest::say("I have: ");
 		quest::say("         $BlackJack_DealerCardsStr[0]");
 		quest::say("Do you want to [Hit] or [Stand]?");
