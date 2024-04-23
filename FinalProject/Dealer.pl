@@ -63,6 +63,7 @@ sub EVENT_POPUPRESPONSE {
 			elsif($layer==6){RouletteBet();	
 		 } 
 }
+}
 
 sub getChange()
 {
@@ -91,7 +92,10 @@ sub PopUpChange()
 	elsif($gameSelect==1)
 	{
 		$gameSelect++;
-		my $dialogMessage = "{title: POKER} {button_one: Change Game} {button_two: Poker} wintype:1 DANCE ON THEIR GRAVES";
+		my $Yel = plugin::PWColor("Yellow");
+	    my $Blu = plugin::PWColor("Light Blue");
+		my $Wht = plugin::PWColor("White");
+		my $dialogMessage = "{title: POKER} {button_one: Change Game} {button_two: Poker} wintype:1 You will be given 5 cards, you can either $Blu swap $Wht them and get new cards from the same deck or $Yel keep $Wht them if you are confident. Try and get better cards than the Dealer!";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 	elsif($gameSelect==2)
@@ -1320,10 +1324,7 @@ sub EVENT_SAY {
 	 my $Yel = plugin::PWColor("Yellow");
 	 my $Blu = plugin::PWColor("Light Blue");
 	 my $Red = plugin::PWColor("Red");
-	 my $grn = plugin::PWColor("Forest Green");
-	
-	 #quest::popup("Results", "$intro </c> <br><br> $Yel $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6");
-	 
+	 my $grn = plugin::PWColor("Forest Green"); 
 	
 	 
 	 $Card1FD = POKER_CARD_NAMES($DealerResults[1]);
@@ -1348,9 +1349,10 @@ sub EVENT_ITEM {
 
 	 $total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
    
-   	if($layer > 5){RouletteCheck();}
+   	if($layer > 5){RouletteCheck();
 	getChange();
   plugin::return_items(\%itemcount);
+	}
   
 	#return any unused money
  if($BeginPoker == 1)
