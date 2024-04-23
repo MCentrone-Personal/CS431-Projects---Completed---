@@ -698,7 +698,7 @@ sub EVENT_SAY {
 	
      if (($text=~/Play/i) and ($MoneyCheck == 1))
     {
-		
+		$BeginPoker = 0;
 		
 		
 	@Currenthand = (POKER_START(0,0,0,0,0,0));
