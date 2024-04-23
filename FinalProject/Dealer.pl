@@ -1,68 +1,64 @@
 sub CARD_GENERATOR {
   return int(rand(36));
-  # 		my $number = CARD_GENERATOR();
 }
 
 # Message event for NPC, right now responds to hail
 sub EVENT_SAY {
     #:: Match say message for "hail", /i for case insensitive
     if ($text=~/hail/i){
-     quest::say("Hello, $name!. Welcome to the [Golden Bull]");
+	$games = 2;$gameSelect = 0;$layer = 0;$RRP = 0;$boolean = 0;
+    my $dialogMessage = "{title: Welcome} wintype:0 Welcome to the <c \"#FFD700\"> Golden Bull </c>";
+    quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
     }
-	
-	if ($text=~/Golden Bull/i) {
-		$games = 2;
-		$gameSelect = 0;
-	    $layer = 0;
-		$RRP = 0;
-		$boolean = 0;
-		
-
-	
-		
-       my $dialogMessage = "{title: Welcome} wintype:0 Welcome to the <c \"#FFD700\"> Golden Bull </c>";
-      quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
-    }		
+	else
+	{
+		@bets = ();
+		my @items = split(/\s*,\s*/, $text);
+		foreach my $item (@items) {
+			$item =~ s/[^\d]//g;
+			if($item > -1 && $item < 37){push @bets, $item;}
+		}
+	}
 }
 
+our @bets;
 our $games = 2;
 our $gameSelect = 0;
 our $layer = 0;
 our $boolean = 0;
+our $String;
 
 sub EVENT_POPUPRESPONSE {
 		 if($popupid == 99999)
 		 {
 		    if($layer==0){PopUpChange();}
-		    elsif($layer==2){BlackJackRules();}
 			elsif($layer==3){Roulette();}
-			elsif($layer==4){PokerRules();}
 			elsif($layer==6 && $RRP > 3){RouletteBet();}
 		 }
-		 
 		 if($popupid == 100000){
-			
-				if($layer == 6){$boolean = 1;}
+			if($layer == 6){$boolean = 1;}
 			if($layer > 5){ $layer +=5;}
 			elsif($layer >2 && $layer < 5) {$layer += $games +1;} 
 			elsif($layer==0){$layer = $games + $gameSelect;}
 
-		       if($layer==2){BlackJackRules();}
-		    elsif($layer==3){Roulette();}
-			elsif($layer==4){PokerRules();}
-			elsif($layer==6){RouletteBet();}
-			
-		 }
-		 
+		    if($layer==3){Roulette();}
+			elsif($layer==6){RouletteBet();	
+		 } 
 }
 
 our $total;
-
 sub EVENT_ITEM {
 
 	$total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
 	
 	if($layer > 5){RouletteCheck();}
+	getChange();
+  plugin::return_items(\%itemcount);
+}
+
+
+sub getChange()
+{
 	#return any unused money
 	if($total > 0)
 	{
@@ -74,7 +70,6 @@ sub EVENT_ITEM {
 		$total = (($total - $gold_return)/10);
 		quest::givecash($copper_return,$silver_return,$gold_return,$total);
 	}
-  plugin::return_items(\%itemcount);
 }
 
 
@@ -86,18 +81,16 @@ sub PopUpChange()
 		my $dialogMessage = "{title: ROULETTE} {button_one: Change Game} {button_two: SELECT GAME} wintype:1 SPIN SPIN SPIN";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
-	
 	elsif($gameSelect==1)
 	{
 		$gameSelect++;
-		my $dialogMessage = "{title: POKER} {button_one: Change Game} {button_two: SELECT GAME} wintype:1 DANCE ON THEIR GRAVES";
+		my $dialogMessage = "{title: POKER} {button_one: Change Game} {button_two: Poker} wintype:1 DANCE ON THEIR GRAVES";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
-	
 	elsif($gameSelect==2)
 	{
 		$gameSelect=0;
-		my $dialogMessage = "{title: BLACKJACK} {button_one: Change Game} {button_two: SELECT GAME} wintype:1 ONLY THE CLUBS AND SPADES";
+		my $dialogMessage = "{title: BLACKJACK} {button_one: Change Game} {button_two: Black jack} wintype:1 ONLY THE CLUBS AND SPADES";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 }
@@ -157,16 +150,6 @@ sub Roulette()
 		my $dialogMessage = "{title: Numbers} {button_one: More Bets} {button_two: Bet Now} wintype:1 <br> $text <br> $payout <br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
-}
-
-sub PokerRules()
-{
-	
-}
-
-sub BlackJackRules()
-{
-	
 }
 
 sub RouletteBet()
@@ -234,7 +217,11 @@ sub RouletteCheck()
 	
 	if($RRP == 1)
 	{
-		my $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> Numbers </c> <br>";
+		my $numbers = "No Numbers Were bet on";
+		
+		
+		
+		my $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> $numbers </c> <br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 	elsif($RRP == 2 && $boolean ==0)
