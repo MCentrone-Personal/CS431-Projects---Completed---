@@ -232,6 +232,7 @@ sub POKER_LOGIC {
 #Sort from Lowest to Highest, Card 1 lowest ... Card 5 Highest
 
 @numeric = sort { $a <=> $b } ($_[0], $_[1], $_[2], $_[3], $_[4]);
+@Temp = sort { $a <=> $b } ($_[0] % 13, $_[1] % 13, $_[2] % 13, $_[3] % 13, $_[4] % 13);
 
 @CardCounter = (0,0,0,0,0,0,0,0,0,0,0,0,0);
 
@@ -244,11 +245,11 @@ $Card5 = int($numeric[4]);
 
 	if($_[5] == 0)
 	{
-		if(($Card1 % 13) == 1)
+		if(($Temp[0] % 13) == 1)
 		{
 			$PHigh = 14;
 		}
-		elsif(($Card5 % 13) == 0)
+		elsif(($Temp[4] % 13) == 0)
 		{
 		$PHigh = 13;
 		}
@@ -259,11 +260,11 @@ $Card5 = int($numeric[4]);
 	}
 	if($_[5] == 1)
 	{
-		if(($Card1 % 13) == 1)
+		if(($Temp[0] % 13) == 1)
 		{
 			$DHigh = 14;
 		}
-		elsif(($Card5 % 13) == 0)
+		elsif(($Temp[4] % 13) == 0)
 		{
 		$DHigh = 13;
 		}
