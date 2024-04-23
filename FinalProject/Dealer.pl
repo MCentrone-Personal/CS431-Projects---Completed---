@@ -350,10 +350,10 @@ sub BlackJack_Init {
 
 	}
 	quest::say("You are playing Blackjack.");
-	if ($BlackJack_PlayerPoints == 21 || $BlackJack_DealerPoints == 21) {
+	if ($BlackJack_PlayerPoints == 21) {
 		BlackJack_End();
 	}
-	elsif ($BlackJack_PlayerPoints > 21 || $BlackJack_DealerPoints > 21) {
+	elsif ($BlackJack_PlayerPoints > 21) {
 		BlackJack_RecalculateDealerPoints();
 		BlackJack_RecalculatePlayerPoints();
 		BlackJack_End();
