@@ -202,7 +202,7 @@ return (@ReturnArray);
 }
 
 }
-our $BlackJack_Total
+our $BlackJack_Total;
 our @BlackJack_CardsNumList;
 our @BlackJack_PlayerCardsNum;
 our @BlackJack_DealerCardsNum;
@@ -603,24 +603,28 @@ sub BlackJack_End() {
 	elsif ($BlackJack_PlayerPoints > 21) {
 		$BlackJack_GameCondition = 1; # Bust (lose condition)
 		quest::say("Busted! You lose!");
+		$BlackJack_Total = 0;
 	}
 	elsif ($BlackJack_PlayerPoints == 21) {
 		$BlackJack_GameCondition = 3; # Black jack condition
 		quest::say("You got blackjack! You win!");
+		$BlackJack_Total = $BlackJack_Total * 3;
 	}
 	elsif ($BlackJack_DealerPoints == 21 && $BlackJack_PlayerPoints < $BlackJack_DealerPoints) {
 		$BlackJack_GameCondition = 1; # Bust (lose condition)
-		quest::say("I got blackjack! You lose!")
+		quest::say("I got blackjack! You lose!");
+		$BlackJack_Total = 0;
 	}
 	elsif ($BlackJack_DealerPoints > 21) {
 		$BlackJack_GameCondition = 2; # Bust (lose condition)
-		quest::say("I busted! You win!")
+		quest::say("I busted! You win!");
+		$BlackJack_Total = 2 * $BlackJack_Total;
 	}
 	else {
 		if ($BlackJack_PlayerPoints > $BlackJack_DealerPoints) {
 			$BlackJack_GameCondition = 2; # Win condition
 			quest::say("You won! You got more points than me without going over 21.");
-
+			$BlackJack_Total = 2 * $BlackJack_Total;
 		}
 		elsif ($BlackJack_PlayerPoints == $BlackJack_DealerPoints) {
 			$BlackJack_GameCondition = 4; # Tie (push) condition;
@@ -629,9 +633,11 @@ sub BlackJack_End() {
 		elsif ($BlackJack_PlayerPoints < $BlackJack_DealerPoints) {
 			$BlackJack_GameCondition = 1; # lose condition (lost to dealer)
 			quest::say("You lost! You got less points than me.");
+			$BlackJack_Total = 0;
 		}
 	}
 
+	$total = $BlackJack_Total;
 	quest::say("You had $BlackJack_PlayerPoints points. I had $BlackJack_DealerPoints points.");
 	BlackJack_GameReset();
 }
@@ -661,7 +667,7 @@ sub BlackJack_RecalculateDealerPoints {
 		}
 	}
 }
-
+our $total;
 # Message event for NPC, right now responds to hail
 sub EVENT_SAY {
     #:: Match say message for "hail", /i for case insensitive
@@ -695,7 +701,9 @@ sub EVENT_SAY {
     }
 
 	if ($text=~/Black jack/i){
-		BlackJack_Init();
+		$BlackJack_Total = $total;
+		$total = 0;
+		BlackJack_Start();
 	}
 
 	if ($text=~/Poker/i){
@@ -745,7 +753,7 @@ sub EVENT_POPUPRESPONSE {
 
 sub EVENT_ITEM {
 
-	my $total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
+	$total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
 	#return any unused money
 	if($total > 0)
 	{
