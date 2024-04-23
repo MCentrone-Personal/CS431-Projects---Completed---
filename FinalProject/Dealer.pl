@@ -21,11 +21,13 @@ sub BlackJack_GameReset {
 }
 
 sub BlackJack_Start{
+	$BlackJack_Total = $total;
 	if ($BlackJack_Total > 0) {
 		BlackJack_Init();
 	}
 	else {
 		quest::say("You need to place your bet before starting.");
+		$BlackJack_BeginBool = 0;
 	}
 }
 
@@ -436,7 +438,9 @@ sub BlackJack_End() {
 
 	$total = $BlackJack_Total;
 	quest::say("You had $BlackJack_PlayerPoints points. I had $BlackJack_DealerPoints points.");
+	getChange();
 	BlackJack_GameReset();
+	$BlackJack_BeginBool = 0;
 }
 
 sub BlackJack_RecalculatePlayerPoints {
@@ -1462,13 +1466,14 @@ sub POKER_CARD_NAMES{
 	return($Names[$_[0] - 1]);
 
 }
+
+our $BlackJack_BeginBool = 0;
 # Message event for NPC, right now responds to hail
 sub EVENT_SAY {
     #:: Match say message for "hail", /i for case insensitive
 
 		if ($text=~/Black jack/i){
-			$BlackJack_Total = $total;
-			$total = 0;
+			$BlackJack_BeginBool = 1;
 			BlackJack_Start();
 		}
 		if ($text=~/Stand/i) {
@@ -1831,14 +1836,9 @@ sub EVENT_ITEM {
 
 	 $total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
 
-   	if($layer > 5){RouletteCheck();}
+   	if($layer > 5){RouletteCheck();
 	getChange();
-  plugin::return_items(\%itemcount);
-
-	if ($gameSelect == 2) {
-		$BlackJack_Total = $total;
-		$total = 0;
-	}
+  plugin::return_items(\%itemcount);}
 
 	#return any unused money
  if($BeginPoker == 1)
@@ -1867,4 +1867,5 @@ sub EVENT_ITEM {
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
  }
+}
 }
