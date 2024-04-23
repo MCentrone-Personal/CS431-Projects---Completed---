@@ -245,33 +245,34 @@ $Card5 = int($numeric[4]);
 
 	if($_[5] == 0)
 	{
-		if(($Temp[0] % 13) == 1)
+		if($Temp[0] == 1 or $Temp[1] == 1 or $Temp[2] == 1 or $Temp[3] == 1 or $Temp[4] == 1)
 		{
 			$PHigh = 14;
 		}
-		elsif(($Temp[4] % 13) == 0)
+		elsif($Temp[0]== 0)
 		{
 		$PHigh = 13;
 		}
 		else
 		{
-			$PHigh = ($Card5 % 13);
+			$PHigh = ($Temp[4]);
 		}
 	}
 	if($_[5] == 1)
 	{
-		if(($Temp[0] % 13) == 1)
+		if($Temp[0] == 1 or $Temp[1] == 1 or $Temp[2] == 1 or $Temp[3] == 1 or $Temp[4] == 1)
 		{
 			$DHigh = 14;
 		}
-		elsif(($Temp[4] % 13) == 0)
+		elsif($Temp[0]== 0)
 		{
 		$DHigh = 13;
 		}
 		else
 		{
-			$DHigh = ($Card5 % 13);
+			$DHigh = ($Temp[4]);
 		}
+	
 	}
 
 $RoyalFlush = 0;
