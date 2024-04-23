@@ -1,3 +1,473 @@
+our $BlackJack_Total;
+our @BlackJack_CardsNumList;
+our @BlackJack_PlayerCardsNum;
+our @BlackJack_DealerCardsNum;
+our @BlackJack_PlayerCardsStr;
+our @BlackJack_DealerCardsStr;
+our $BlackJack_PlayerPoints;
+our $BlackJack_DealerPoints;
+our $BlackJack_GameCondition;
+
+sub BlackJack_GameReset {
+	@BlackJack_CardsNumList = (1..52);
+	@BlackJack_PlayerCardsNum = ();
+	@BlackJack_DealerCardsNum = ();
+	@BlackJack_PlayerCardsStr = ();
+	@BlackJack_DealerCardsStr = ();
+	$BlackJack_PlayerPoints = 0;
+	$BlackJack_DealerPoints = 0;
+	$BlackJack_GameCondition = 0;
+}
+
+sub BlackJack_Start{
+	$BlackJack_Total = $total;
+	if ($BlackJack_Total > 0) {
+		BlackJack_Init();
+	}
+	else {
+		quest::say("You need to place your bet before starting.");
+		$BlackJack_BeginBool = 0;
+	}
+}
+
+
+sub BlackJack_Init {
+	BlackJack_GameReset();
+	for ($i = 0; $i < 2; $i++) {
+		TRYAGAIN1:
+		my $indexCardNumList = int(rand(51));
+		my $cardNum = $BlackJack_CardsNumList[$indexCardNumList];
+		if ($cardNum == 0) {
+			goto TRYAGAIN1;
+		}
+
+		my $cardString = "";
+		$BlackJack_CardsNumList[$indexCardNumList] = 0;
+		my $suitNum = $cardNum % 4;
+		my $cardVal = $cardNum % 13 + 1;
+
+		push(@BlackJack_PlayerCardsNum, $cardNum);
+
+		if ($cardVal == 1) {
+			$cardString = $cardString . "Ace of ";
+		}
+
+		elsif ($cardVal == 11) {
+			$cardString = $cardString . "Jack of ";
+		}
+
+		elsif ($cardVal == 12) {
+			$cardString = $cardString . "Queen of ";
+		}
+
+		elsif ($cardVal == 13) {
+			$cardString = $cardString . "King of ";
+		}
+		else {
+			$cardString = $cardString . $cardVal . " of ";
+		}
+
+
+		if ($suitNum == 0) {
+			$cardString = $cardString . "Spades";
+		}
+		elsif ($suitNum == 1) {
+			$cardString = $cardString . "Clubs";
+		}
+		elsif ($suitNum == 2) {
+			$cardString = $cardString . "Diamonds";
+		}
+		elsif ($suitNum == 3) {
+			$cardString = $cardString . "Hearts";
+		}
+
+		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+			$BlackJack_PlayerPoints += 10;
+		}
+		elsif ($cardVal < 11 && $cardVal > 1) {
+			$BlackJack_PlayerPoints += $cardVal;
+		}
+
+		if ($cardVal == 1) {
+			$BlackJack_PlayerPoints += 11;
+		}
+
+		push(@BlackJack_PlayerCardsStr, $cardString);
+
+	}
+	for ($i = 0; $i < 2; $i++) {
+		TRYAGAIN2:
+		my $indexCardNumList = int(rand(51));
+		my $cardNum = $BlackJack_CardsNumList[$indexCardNumList];
+		if ($cardNum == 0) {
+			goto TRYAGAIN2;
+		}
+
+		my $cardString = "";
+		$BlackJack_CardsNumList[$indexCardNumList] = 0;
+		my $suitNum = $cardNum % 4;
+		my $cardVal = $cardNum % 13 + 1;
+
+		push(@BlackJack_DealerCardsNum, $cardNum);
+
+		if ($cardVal == 1) {
+			$cardString = $cardString . "Ace of ";
+		}
+
+		elsif ($cardVal == 11) {
+			$cardString = $cardString . "Jack of ";
+		}
+
+		elsif ($cardVal == 12) {
+			$cardString = $cardString . "Queen of ";
+		}
+
+		elsif ($cardVal == 13) {
+			$cardString = $cardString . "King of ";
+		}
+		else {
+			$cardString = $cardString . $cardVal . " of ";
+		}
+
+
+		if ($suitNum == 0) {
+			$cardString = $cardString . "Spades";
+		}
+		elsif ($suitNum == 1) {
+			$cardString = $cardString . "Clubs";
+		}
+		elsif ($suitNum == 2) {
+			$cardString = $cardString . "Diamonds";
+		}
+		elsif ($suitNum == 3) {
+			$cardString = $cardString . "Hearts";
+		}
+
+		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+			$BlackJack_DealerPoints += 10;
+		}
+		elsif ($cardVal < 11 && $cardVal > 1) {
+			$BlackJack_DealerPoints += $cardVal;
+		}
+
+		if ($cardVal == 1) {
+			$BlackJack_DealerPoints += 11;
+		}
+
+		push(@BlackJack_DealerCardsStr, $cardString);
+
+	}
+	quest::say("You are playing Blackjack.");
+	if ($BlackJack_PlayerPoints == 21) {
+		BlackJack_End();
+	}
+	elsif ($BlackJack_PlayerPoints > 21) {
+		BlackJack_RecalculatePlayerPoints();
+		BlackJack_End();
+	}
+	else {
+		quest::say("You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. You have $BlackJack_PlayerPoints points. I have a $BlackJack_DealerCardsStr[0]. Do you want to [Hit] or [Stand]?");
+	}
+}
+
+sub BlackJack_Hit {
+	if ($BlackJack_PlayerPoints < 21) {
+		TRYAGAIN3:
+		my $indexCardNumList = int(rand(51));
+		my $cardNum = $BlackJack_CardsNumList[$indexCardNumList];
+		if ($cardNum == 0) {
+			goto TRYAGAIN3;
+		}
+
+		my $cardString = "";
+		$BlackJack_CardsNumList[$indexCardNumList] = 0;
+		my $suitNum = $cardNum % 4;
+		my $cardVal = $cardNum % 13 + 1;
+
+		push(@BlackJack_PlayerCardsNum, $cardNum);
+
+		if ($cardVal == 1) {
+			$cardString = $cardString . "Ace of ";
+		}
+
+		elsif ($cardVal == 11) {
+			$cardString = $cardString . "Jack of ";
+		}
+
+		elsif ($cardVal == 12) {
+			$cardString = $cardString . "Queen of ";
+		}
+
+		elsif ($cardVal == 13) {
+			$cardString = $cardString . "King of ";
+		}
+		else {
+			$cardString = $cardString . $cardVal . " of ";
+		}
+
+
+		if ($suitNum == 0) {
+			$cardString = $cardString . "Spades";
+		}
+		elsif ($suitNum == 1) {
+			$cardString = $cardString . "Clubs";
+		}
+		elsif ($suitNum == 2) {
+			$cardString = $cardString . "Diamonds";
+		}
+		elsif ($suitNum == 3) {
+			$cardString = $cardString . "Hearts";
+		}
+
+		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+			$BlackJack_PlayerPoints += 10;
+		}
+		elsif ($cardVal < 11 && $cardVal > 1) {
+			$BlackJack_PlayerPoints += $cardVal;
+		}
+
+		if ($cardVal == 1) {
+			$BlackJack_PlayerPoints += 11;
+		}
+
+		push(@BlackJack_PlayerCardsStr, $cardString);
+
+	}
+	if ($BlackJack_DealerPoints < 21) {
+		if ($BlackJack_DealerPoints < 17) {
+			TRYAGAIN4:
+			my $indexCardNumList = int(rand(51));
+			my $cardNum = $BlackJack_CardsNumList[$indexCardNumList];
+			if ($cardNum == 0) {
+				goto TRYAGAIN4;
+			}
+
+			my$cardString = "";
+			$BlackJack_CardsNumList[$indexCardNumList] = 0;
+			my $suitNum = $cardNum % 4;
+			my$cardVal = $cardNum % 13 + 1;
+
+			push(@BlackJack_DealerCardsNum, $cardNum);
+
+			if ($cardVal == 1) {
+				$cardString = $cardString . "Ace of ";
+			}
+
+			elsif ($cardVal == 11) {
+				$cardString = $cardString . "Jack of ";
+			}
+
+			elsif ($cardVal == 12) {
+				$cardString = $cardString . "Queen of ";
+			}
+
+			elsif ($cardVal == 13) {
+				$cardString = $cardString . "King of ";
+			}
+			else {
+				$cardString = $cardString . $cardVal . " of ";
+			}
+
+
+			if ($suitNum == 0) {
+				$cardString = $cardString . "Spades";
+			}
+			elsif ($suitNum == 1) {
+				$cardString = $cardString . "Clubs";
+			}
+			elsif ($suitNum == 2) {
+				$cardString = $cardString . "Diamonds";
+			}
+			elsif ($suitNum == 3) {
+				$cardString = $cardString . "Hearts";
+			}
+
+			if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+				$BlackJack_DealerPoints += 10;
+			}
+			elsif ($cardVal < 11 && $cardVal > 1) {
+				$BlackJack_DealerPoints += $cardVal;
+			}
+
+			if ($cardVal == 1) {
+				$BlackJack_DealerPoints += 11;
+			}
+
+			push(@BlackJack_DealerCardsStr, $cardString);
+
+		}
+	}
+	if ($BlackJack_PlayerPoints > 21) {
+		BlackJack_RecalculatePlayerPoints();
+		BlackJack_End();
+	}
+	elsif ($BlackJack_PlayerPoints == 21) {
+		BlackJack_End();
+	}
+	else {
+		quest::say("You have:");
+		for $i (@BlackJack_PlayerCardsStr) {
+			quest::say("            $i");
+		}
+		quest::say("You have $BlackJack_PlayerPoints points.");
+		quest::say("I have: ");
+		quest::say("         $BlackJack_DealerCardsStr[0]");
+		quest::say("Do you want to [Hit] or [Stand]?");
+	}
+}
+
+sub BlackJack_Stand {
+	if ($BlackJack_DealerPoints > 21 ) {
+		BlackJack_RecalculateDealerPoints();
+	}
+	elsif ($BlackJack_DealerPoints < 21) {
+		while ($BlackJack_DealerPoints < 17) {
+			TRYAGAIN5:
+			my $indexCardNumList = int(rand(51));
+			my $cardNum = $BlackJack_CardsNumList[$indexCardNumList];
+			if ($cardNum == 0) {
+				goto TRYAGAIN5;
+			}
+
+			my$cardString = "";
+			$BlackJack_CardsNumList[$indexCardNumList] = 0;
+			my $suitNum = $cardNum % 4;
+			my$cardVal = $carNum % 13 + 1;
+
+			push(@BlackJack_DealerCardsNum, $cardNum);
+
+			if ($cardVal == 1) {
+				$cardString = $cardString . "Ace of ";
+			}
+
+			elsif ($cardVal == 11) {
+				$cardString = $cardString . "Jack of ";
+			}
+
+			elsif ($cardVal == 12) {
+				$cardString = $cardString . "Queen of ";
+			}
+
+			elsif ($cardVal == 12) {
+				$cardString = $cardString . "King of ";
+			}
+			else {
+				$cardString = $cardString . $cardVal . " of ";
+			}
+
+
+			if ($suitNum == 0) {
+				$cardString = $cardString . "Spades";
+			}
+			elsif ($suitNum == 1) {
+				$cardString = $cardString . "Clubs";
+			}
+			elsif ($suitNum == 2) {
+				$cardString = $cardString . "Diamonds";
+			}
+			elsif ($suitNum == 3) {
+				$cardString = $cardString . "Hearts";
+			}
+
+			if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+				$BlackJack_DealerPoints += 10;
+			}
+			elsif ($cardVal < 11 && $cardVal > 1) {
+				$BlackJack_DealerPoints += $cardVal;
+			}
+
+			if ($cardVal == 1) {
+				$BlackJack_DealerPoints += 11;
+			}
+
+			push(@BlackJack_DealerCardsStr, $cardString);
+
+		}
+		if ($BlackJack_DealerPoints > 21) {
+			BlackJack_RecalculateDealerPoints();
+		}
+		if ($BlackJack_PlayerPoints > 21) {
+			BlackJack_RecalculatePlayerPoints();
+		}
+		BlackJack_End();
+	}
+}
+
+sub BlackJack_End() {
+	if ($BlackJack_PlayerPoints == $BlackJack_DealerPoints && $BlackJack_DealerPoints == 21) {
+		$BlackJack_GameCondition = 4;
+		quest::say("Pushed! We both got blackjack.");
+	}
+	elsif ($BlackJack_PlayerPoints > 21) {
+		$BlackJack_GameCondition = 1; # Bust (lose condition)
+		quest::say("Busted! You lose!");
+		$BlackJack_Total = 0;
+	}
+	elsif ($BlackJack_PlayerPoints == 21) {
+		$BlackJack_GameCondition = 3; # Black jack condition
+		quest::say("You got blackjack! You win!");
+		$BlackJack_Total = $BlackJack_Total * 3;
+	}
+	elsif ($BlackJack_DealerPoints == 21 && $BlackJack_PlayerPoints < $BlackJack_DealerPoints) {
+		$BlackJack_GameCondition = 1; # Bust (lose condition)
+		quest::say("I got blackjack! You lose!");
+		$BlackJack_Total = 0;
+	}
+	elsif ($BlackJack_DealerPoints > 21) {
+		$BlackJack_GameCondition = 2; # Bust (lose condition)
+		quest::say("I busted! You win!");
+		$BlackJack_Total = 2 * $BlackJack_Total;
+	}
+	else {
+		if ($BlackJack_PlayerPoints > $BlackJack_DealerPoints) {
+			$BlackJack_GameCondition = 2; # Win condition
+			quest::say("You won! You got more points than me without going over 21.");
+			$BlackJack_Total = 2 * $BlackJack_Total;
+		}
+		elsif ($BlackJack_PlayerPoints == $BlackJack_DealerPoints) {
+			$BlackJack_GameCondition = 4; # Tie (push) condition;
+			quest::say("Pushed! We got the same amount of points.");
+		}
+		elsif ($BlackJack_PlayerPoints < $BlackJack_DealerPoints) {
+			$BlackJack_GameCondition = 1; # lose condition (lost to dealer)
+			quest::say("You lost! You got less points than me.");
+			$BlackJack_Total = 0;
+		}
+	}
+
+	$total = $BlackJack_Total;
+	quest::say("You had $BlackJack_PlayerPoints points. I had $BlackJack_DealerPoints points.");
+	getChange();
+	BlackJack_GameReset();
+	$BlackJack_BeginBool = 0;
+}
+
+sub BlackJack_RecalculatePlayerPoints {
+	$BlackJack_PlayerPoints = 0;
+	for $i (@BlackJack_PlayerCardsNum) {
+		my $cardVal = $i % 13 + 1;
+		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+			$BlackJack_PlayerPoints += 10;
+		}
+		elsif ($cardVal < 11 && $cardVal >= 1) {
+			$BlackJack_PlayerPoints += $cardVal;
+		}
+	}
+}
+
+sub BlackJack_RecalculateDealerPoints {
+	$BlackJack_DealerPoints = 0;
+	for $i (@BlackJack_DealerCardsNum) {
+		my $cardVal = $i % 13 + 1;
+		if ($cardVal == 11 || $cardVal == 12 || $cardVal == 13) {
+			$BlackJack_DealerPoints += 10;
+		}
+		elsif ($cardVal < 11 && $cardVal >= 1) {
+			$BlackJack_DealerPoints += $cardVal;
+		}
+	}
+}
+
 our @bets;
 our $games = 2;
 our $gameSelect = 0;
@@ -56,13 +526,12 @@ sub EVENT_POPUPRESPONSE {
 		 if($popupid == 100000){
 			if($layer == 6){$boolean = 1;}
 			if($layer > 5){ $layer +=5;}
-			elsif($layer >2 && $layer < 5) {$layer += $games +1;} 
+			elsif($layer >2 && $layer < 5) {$layer += $games +1;}
 			elsif($layer==0){$layer = $games + $gameSelect;}
 
 		    if($layer==3){Roulette();}
-			elsif($layer==6){RouletteBet();	
-		 } 
-}
+			elsif($layer==6){RouletteBet();
+		 }
 }
 
 sub getChange()
@@ -108,7 +577,7 @@ sub PopUpChange()
 our $RRP = 0;
 our $tab = "------";
 sub Roulette()
-{	
+{
 	if($RRP ==0)
 	{
 		$RRP++;
@@ -166,7 +635,7 @@ sub Roulette()
 sub RouletteBet()
 {
 	my $Warning = "<br> Once You Place your bet, please give me the money you wish to bet to begin. <br><br><br><br> please restart the process if you have any problems. <br>";
-	
+
 	if($RRP == 1)
 	{
 		my $dialogMessage = "{title: Numbers} wintype:0 <br> Please enter the number you want to bet on. If you want to bet on multiple numbers, enter them and  seperated by a <c \"#00F0F0\"> , </c> . <br> an example would be 7,13,25,4  . <br><br>  $tab  <c \"#FF0000\"> Do not enter numbers outside the range of 0-36 </c> <br>  $tab  <c \"#FF0000\"> Do not enter any duplicate numbers </c>  <br><br>  Breaking any of these rules may result in you recieving less money than usual. Also if your payout has a porportion of a bronze coin it will round down. $warning";
@@ -225,13 +694,13 @@ sub RouletteCheck()
 			my $int = CARD_GENERATOR();
 			my $loss = "You Lose :c";
 			my $dialogMessage = "";
-	
+
 	if($RRP == 1)
 	{
 		my $numbers = "No Numbers Were bet on";
-		
-		
-		
+
+
+
 		my $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> $numbers </c> <br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
@@ -239,15 +708,15 @@ sub RouletteCheck()
 	{
 		if($int % 2 == 0)
 		{
-		$total = 0;	
+		$total = 0;
 		my $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> Odd </c>.<br>The number rolled is <c \"#00F0F0\"> $int </c> and it is <c \"#00F0F0\"> Even </c>. <br><br> $loss <br>";
 		}
 		elsif($int % 2 == 1)
 		{
 		$total *= 2;
-		my $win = "Congrats you win $total token";		
+		my $win = "Congrats you win $total token";
 		my $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> Odd </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c> and it is <c \"#00F0F0\"> Odd </c>. <br><br> $win <br>";
-		}		
+		}
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 	elsif($RRP == 2 && $boolean ==1)
@@ -297,7 +766,7 @@ sub RouletteCheck()
 	}
 	elsif($RRP == 4)
 	{
-		
+
 		if($int > 24)
 		{
 		$total *= 3;
@@ -387,7 +856,7 @@ sub RouletteCheck()
 		}
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
-	
+
 }
 
 
@@ -405,7 +874,7 @@ sub POKER_START {
 	{
 		POKERTRYAGAIN:
 		$TempCards[$i] = ((int rand(51)) + 1);
-		
+
 		if(($TempCards[$i] == $CurrentCards[0]) or ($TempCards[$i] == $CurrentCards[1]) or ($TempCards[$i] == $CurrentCards[2]) or ($TempCards[$i] == $CurrentCards[3]) or ($TempCards[$i] == $CurrentCards[4]))
 		{
 			goto POKERTRYAGAIN;
@@ -413,7 +882,7 @@ sub POKER_START {
 		$CurrentCards[$i] = $TempCards[$i];
 	}
 	}
-	
+
 	if($_[0] == 2)
 	{
 		if((int rand(5)) == 0)
@@ -478,7 +947,7 @@ sub POKER_START {
 	{
 		POKERTRYAGAIN1:
 		$TempCards[$i] = ((int rand(51)) + 1);
-		
+
 		if(($TempCards[$i] == $CurrentCards[0]) or ($TempCards[$i] == $CurrentCards[1]) or ($TempCards[$i] == $CurrentCards[2]) or ($TempCards[$i] == $CurrentCards[3]) or ($TempCards[$i] == $CurrentCards[4]))
 		{
 			goto POKERTRYAGAIN1;
@@ -487,14 +956,14 @@ sub POKER_START {
 	}
 	}
 	}
-	
+
 	if($_[0] == 1)
 	{
 		if($Flag1 == 1)
 		{
 			POKERTRYAGAIN2:
 		$TempCards[0] = ((int rand(51)) + 1);
-		
+
 		if(($TempCards[0] == $_[1]) or ($TempCards[0] == $_[2]) or ($TempCards[0] == $_[3]) or ($TempCards[0] == $_[4]) or ($TempCards[0] == $_[5]))
 		{
 			goto POKERTRYAGAIN2;
@@ -505,12 +974,12 @@ sub POKER_START {
 		{
 		$CurrentCards[0] = $_[1];
 		}
-		
+
 		if($Flag2 == 1)
 		{
 			POKERTRYAGAIN3:
 		$TempCards[1] = ((int rand(51)) + 1);
-		
+
 		if(($TempCards[1] == $_[1]) or ($TempCards[1] == $_[2]) or ($TempCards[1] == $_[3]) or ($TempCards[1] == $_[4]) or ($TempCards[1] == $_[5]))
 		{
 			goto POKERTRYAGAIN3;
@@ -521,12 +990,12 @@ sub POKER_START {
 		{
 		$CurrentCards[1] = $_[2];
 		}
-		
+
 		if($Flag3 == 1)
 		{
 			POKERTRYAGAIN4:
 		$TempCards[2] = ((int rand(51)) + 1);
-		
+
 		if(($TempCards[2] == $_[1]) or ($TempCards[2] == $_[2]) or ($TempCards[2] == $_[3]) or ($TempCards[2] == $_[4]) or ($TempCards[2] == $_[5]))
 		{
 			goto POKERTRYAGAIN4;
@@ -537,12 +1006,12 @@ sub POKER_START {
 		{
 		$CurrentCards[2] = $_[3];
 		}
-		
+
 		if($Flag4 == 1)
 		{
 			POKERTRYAGAIN5:
 		$TempCards[3] = ((int rand(51)) + 1);
-		
+
 		if(($TempCards[3] == $_[1]) or ($TempCards[3] == $_[2]) or ($TempCards[3] == $_[3]) or ($TempCards[3] == $_[4]) or ($TempCards[3] == $_[5]))
 		{
 			goto POKERTRYAGAIN5;
@@ -553,12 +1022,12 @@ sub POKER_START {
 		{
 		$CurrentCards[3] = $_[4];
 		}
-		
+
 		if($Flag5 == 1)
 		{
 			POKERTRYAGAIN6:
 		$TempCards[4] = ((int rand(51)) + 1);
-		
+
 		if(($TempCards[4] == $_[1]) or ($TempCards[4] == $_[2]) or ($TempCards[4] == $_[3]) or ($TempCards[4] == $_[4]) or ($TempCards[4] == $_[5]))
 		{
 			goto POKERTRYAGAIN6;
@@ -569,11 +1038,11 @@ sub POKER_START {
 		{
 		$CurrentCards[4] = $_[5];
 		}
-		
+
 	}
-	
+
   return ($CurrentCards[0],$CurrentCards[1],$CurrentCards[2],$CurrentCards[3],$CurrentCards[4]);
-  
+
 }
 
 sub POKER_LOGIC {
@@ -626,7 +1095,7 @@ $Card5 = int($numeric[4]);
 		{
 			$DHigh = ($Temp[4]);
 		}
-	
+
 	}
 
 $RoyalFlush = 0;
@@ -730,7 +1199,7 @@ for($q = 0; $q <13; $q++)
 	if($CardCounter[$q] == 3)
 	{
 	$ThreeKind = 1;
-	
+
 	if($_[5] == 0)
 	{
 		if($q == 1)
@@ -752,15 +1221,15 @@ for($q = 0; $q <13; $q++)
 		{
 		$DThree = $q;
 		}
-	
+
 	}
 	}
-	
+
 #Checking for pairs
 	if($CardCounter[$q] == 2)
 	{
 	$OnePair = 1;
-	
+
 	if($_[5] == 0)
 	{
 		if($PairsCounted == 0)
@@ -787,13 +1256,13 @@ for($q = 0; $q <13; $q++)
 			}
 		}
 		}
-		
-	
+
+
 	if($_[5] == 1)
 	{
 		if($PairsCounted == 0)
 		{
-		
+
 			if($q == 1)
 			{
 			$DOne = 14;
@@ -814,11 +1283,11 @@ for($q = 0; $q <13; $q++)
 			$DTwo = $q;
 			}
 		}
-		
+
 	}
 	$PairsCounted++;
 	}
-	
+
 	}
 
 
@@ -894,7 +1363,7 @@ sub CMPNUM
 	 my $Blu = plugin::PWColor("Light Blue");
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
-	 
+
 	if($_[0] > $_[1])
 	{
 		quest::popup("Results", "$intro </c> <br><br> $Yel $Card1F , $Yel $Card2F , $Yel $Card3F , $Yel $Card4F , $Yel $Card5F</c> <br><br> $Yel Dealers Hand: </c> <br><br> $Yel $ , $Yel $Card2FD , $Yel $Card3FD , $Yel $Card4FD , $Yel $Card5FD </c> <br><br> $grn $TextToCenter2");
@@ -916,7 +1385,7 @@ sub CMPNUM
 }
 
 sub POKER_DEALER_V_PLAYER{
-	
+
 		my $intro = "Current Hand Power: ". $NewResults[0]. ". Hand Type: ". $NewResults[6];
 	 my $TextToCenter2 = plugin::PWAutoCenter("You Win!");
 	 my $TextToCenter3 = plugin::PWAutoCenter("You Lost");
@@ -929,9 +1398,9 @@ sub POKER_DEALER_V_PLAYER{
 	 my $Blu = plugin::PWColor("Light Blue");
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
-	
-	
-	
+
+
+
 	if($_[0] > $_[1])
 	{
 		quest::popup("Results", "$intro </c> <br><br> $Yel $Card1F , $Yel $Card2F , $Yel $Card3F , $Yel $Card4F , $Yel $Card5F</c> <br><br> $Yel Dealers Hand: </c> <br><br> $Yel $ , $Yel $Card2FD , $Yel $Card3FD , $Yel $Card4FD , $Yel $Card5FD </c> <br><br> $grn $TextToCenter2");
@@ -946,7 +1415,7 @@ sub POKER_DEALER_V_PLAYER{
 	}
 	elsif($_[0] == $_[1])
 	{
-		
+
 		if($_[0] == 10)
 		{
 		return(CMPNUM($PHigh, $DHigh) . "Equal Cards");
@@ -988,21 +1457,38 @@ sub POKER_DEALER_V_PLAYER{
 		return(CMPNUM($PHigh,$DHigh) . "Higher Cards");
 		}
 	}
-	
-	
+
+
 }
 
 sub POKER_CARD_NAMES{
-	
+
 	@Names = ('Ace of Hearts', 'Two of Hearts', 'Three of Hearts', 'Four of Hearts', 'Five of Hearts', 'Six of Hearts', 'Seven of Hearts', 'Eight of Hearts', 'Nine of Hearts', 'Ten of Hearts', 'Jack of Hearts', 'Queen of Hearts', 'King of Hearts','Ace of Clubs', 'Two of Clubs', 'Three of Clubs', 'Four of Clubs', 'Five of Clubs', 'Six of Clubs', 'Seven of Clubs', 'Eight of Clubs', 'Nine of Clubs', 'Ten of Clubs', 'Jack of Clubs', 'Queen of Clubs', 'King of Clubs', 'Ace of Diamonds', 'Two of Diamonds', 'Three of Diamonds', 'Four of Diamonds', 'Five of Diamonds', 'Six of Diamondss', 'Seven of Diamonds', 'Eight of Diamonds', 'Nine of Diamonds', 'Ten of Diamonds', 'Jack of Diamonds', 'Queen of Diamonds', 'King of Diamonds','Ace of Spades', 'Two of Spades', 'Three of Spades', 'Four of Spades', 'Five of Spades', 'Six of Spades', 'Seven of Spades', 'Eight of Spades', 'Nine of Spades', 'Ten of Spades', 'Jack of Spades', 'Queen of Spades', 'King of Spades');
-	
+
 	return($Names[$_[0] - 1]);
-	
+
 }
+
+our $BlackJack_BeginBool = 0;
 # Message event for NPC, right now responds to hail
 sub EVENT_SAY {
     #:: Match say message for "hail", /i for case insensitive
-    
+
+		if ($text=~/Black jack/i){
+			$BlackJack_BeginBool = 1;
+			BlackJack_Start();
+		}
+		if ($text=~/Stand/i) {
+			quest::say("You chose to stand.");
+			BlackJack_Stand();
+		}
+
+		if ($text=~/Hit/i) {
+			quest::say("You chose to hit.");
+			BlackJack_Hit();
+		}
+
+
      if ($text=~/hail/i){
 	$games = 2;$gameSelect = 0;$layer = 0;$RRP = 0;$boolean = 0;
     my $dialogMessage = "{title: Welcome} wintype:0 Welcome to the <c \"#FFD700\"> Golden Bull </c>";
@@ -1017,30 +1503,30 @@ sub EVENT_SAY {
 			if($item > -1 && $item < 37){push @bets, $item;}
 		}
 	}
-    
-	
+
+
     if ($text=~/Poker/i)
     {
 	 @Currenthand = (0,0,0,0,0);
-	 $Count = 0; 
+	 $Count = 0;
 	 $UIProgression = 0;
   	$BeginPoker = 1;
-	 
+
 	  my $intro = "You need to pay to start playing!";
-	
+
 
 	 my $Indent = plugin::PWIndent();
 	 my $Yel = plugin::PWColor("Yellow");
 	 my $Blu = plugin::PWColor("Light Blue");
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
-	 
-	 
+
+
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Cancel} {button_two: Play} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
-	 
+
     }
-	
+
 	if($text=~/Stop/i)
 	{
 		quest::givecash($copper_return,$silver_return,$gold_return,$total);
@@ -1055,15 +1541,15 @@ sub EVENT_SAY {
   if (($text=~/Play/i) and ($MoneyCheck != 1))
     {
      my $intro = "You need to pay to start playing!";
-	
+
 
 	 my $Indent = plugin::PWIndent();
 	 my $Yel = plugin::PWColor("Yellow");
 	 my $Blu = plugin::PWColor("Light Blue");
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
-	 
-	 
+
+
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Cancel} {button_two: Play} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
     }
@@ -1071,22 +1557,22 @@ sub EVENT_SAY {
     {
      $BeginPoker = 0;
     }
-	
+
      if (($text=~/Play/i) and ($MoneyCheck == 1))
     {
 		$BeginPoker = 0;
-		
-		
+
+
 	@Currenthand = (POKER_START(0,0,0,0,0,0));
-	
+
 	@Results = (POKER_LOGIC($Currenthand[0],$Currenthand[1],$Currenthand[2],$Currenthand[3],$Currenthand[4]));
-	
+
 	$Card1F = POKER_CARD_NAMES($Results[1]);
 	$Card2F = POKER_CARD_NAMES($Results[2]);
 	$Card3F = POKER_CARD_NAMES($Results[3]);
 	$Card4F = POKER_CARD_NAMES($Results[4]);
 	$Card5F = POKER_CARD_NAMES($Results[5]);
-	
+
 	 my $intro = "Current Hand Power: ". $Results[0]. ". Hand Type: ". $Results[6];
 	 my $TextToCenter2 = plugin::PWAutoCenter($Card1F);
 	 my $TextToCenter3 = plugin::PWAutoCenter($Card2F);
@@ -1099,13 +1585,13 @@ sub EVENT_SAY {
 	 my $Blu = plugin::PWColor("Light Blue");
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
-	 
+
 	 $UICard1 = $Yel . $TextToCenter2;
 	 $UICard2 = $Yel . $TextToCenter3;
 	 $UICard3 = $Yel . $TextToCenter4;
 	 $UICard4 = $Yel . $TextToCenter5;
 	 $UICard5 = $Yel . $TextToCenter6;
-	 
+
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Confirm Hand} {button_two: Start Swapping} wintype:1 $intro </c> <br><br> $Yel $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6 </c> <br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 		$Count = 0;
@@ -1114,11 +1600,11 @@ sub EVENT_SAY {
 		$Flag3 = 0;
 		$Flag4 = 0;
 		$Flag5 = 0;
-		
+
 		$UIProgression = 1;
-	
+
     }
-	
+
 	if (($text=~/Start Swapping/i) and ($UIProgression == 1))
 	{
 		$MoneyCheck = 0;
@@ -1128,13 +1614,13 @@ sub EVENT_SAY {
 		$Flag3 = 0;
 		$Flag4 = 0;
 		$Flag5 = 0;
-		
+
 		my $dialogMessage = "{title: $Card1F} {button_one: Keep Card} {button_two: Swap} wintype:1 $intro </c> <br><br> $Red $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6 </c> <br>";
 		quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
-		
+
 		$UIProgression = 2;
 	}
-	
+
 	if (($text=~/Swap/i) and ($UIProgression == 2))
 	{
 		my $intro = "Current Hand Power: ". $Results[0]. ". Hand Type: ". $Results[6];
@@ -1149,8 +1635,8 @@ sub EVENT_SAY {
 	 my $Blu = plugin::PWColor("Light Blue");
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
-	 
-		
+
+
 		if($Count == 0)
 		{
 			my $dialogMessage = "{title: $Card1F} {button_one: Keep Card} {button_two: Swap} wintype:1 $intro </c> <br><br> $Red $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6 </c> <br>";
@@ -1161,7 +1647,7 @@ sub EVENT_SAY {
 		{
 			$Flag1 = 1;
 			$UICard1 = $Blu . $TextToCenter2;
-			
+
 			my $dialogMessage = "{title: $Card2F} {button_one: Keep Card} {button_two: Swap} wintype:1 $intro </c> <br><br> $UICard1 </c><br><br> $Red $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6 </c> <br>";
 		quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 		$Count++;
@@ -1170,7 +1656,7 @@ sub EVENT_SAY {
 		{
 			$Flag2 = 1;
 			$UICard2 = $Blu . $TextToCenter3;
-			
+
 			my $dialogMessage = "{title: $Card3F} {button_one: Keep Card} {button_two: Swap} wintype:1 $intro </c> <br><br> $UICard1 </c><br><br> $UICard2 </c><br><br> $Red $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6 </c> <br>";
 		quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 		$Count++;
@@ -1197,10 +1683,10 @@ sub EVENT_SAY {
 			$UICard5 = $Blu . $TextToCenter6;
 			my $dialogMessage = "{title: Final Hand} {button_one: Restart} {button_two: Confirm Hand} wintype:1 $intro </c> <br><br> $UICard1 </c><br><br> $UICard2 </c><br><br> $UICard3 </c><br><br> $UICard4 </c> <br><br> $UICard5 </c> <br>";
 		quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
-		
+
 		}
 	}
-	
+
 	if (($text=~/Restart/i)and ($UIProgression == 2))
 	{
 		$Count = 0;
@@ -1209,7 +1695,7 @@ sub EVENT_SAY {
 		$Flag3 =0;
 		$Flag4 =0;
 		$Flag5 =0;
-		
+
 		 my $intro = "Current Hand Power: ". $Results[0]. ". Hand Type: ". $Results[6];
 	 my $TextToCenter2 = plugin::PWAutoCenter($Card1F);
 	 my $TextToCenter3 = plugin::PWAutoCenter($Card2F);
@@ -1222,21 +1708,21 @@ sub EVENT_SAY {
 	 my $Blu = plugin::PWColor("Light Blue");
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
-	 
+
 	 $UICard1 = $Yel . $TextToCenter2;
 	 $UICard2 = $Yel . $TextToCenter3;
 	 $UICard3 = $Yel . $TextToCenter4;
 	 $UICard4 = $Yel . $TextToCenter5;
 	 $UICard5 = $Yel . $TextToCenter6;
-	 
+
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Confirm Hand} {button_two: Start Swapping} wintype:1 $intro </c> <br><br> $Yel $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6 </c> <br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
-		
+
 	}
-	
+
 	if (($text=~/Keep Card/i)and ($UIProgression == 2))
 	{
-		
+
 		my $intro = "Current Hand Power: ". $Results[0]. ". Hand Type: ". $Results[6];
 	 my $TextToCenter2 = plugin::PWAutoCenter($Card1F);
 	 my $TextToCenter3 = plugin::PWAutoCenter($Card2F);
@@ -1249,11 +1735,11 @@ sub EVENT_SAY {
 	 my $Blu = plugin::PWColor("Light Blue");
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
-	 
+
 		if($Count == 0)
 		{
 			$Flag1 = 0;
-			
+
 			my $dialogMessage = "{title: $Card1F} {button_one: Keep Card} {button_two: Swap} wintype:1 $intro </c> <br><br> $Yel $TextToCenter2 </c><br><br> $Red $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6 </c> <br>";
 		quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 		$Count++;
@@ -1293,26 +1779,26 @@ sub EVENT_SAY {
 		quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 		}
 	}
-	
-	
+
+
 	if (($text=~/Confirm Hand/i) and ($UIProgression != 0))
      {
-		 
+
     @Newhand = (POKER_START(1,$Currenthand[0],$Currenthand[1],$Currenthand[2],$Currenthand[3],$Currenthand[4]));
-	
+
 	@NewResults = (POKER_LOGIC($Newhand[0],$Newhand[1],$Newhand[2],$Newhand[3],$Newhand[4],0));
-	
+
 	$Card1F = POKER_CARD_NAMES($NewResults[1]);
 	$Card2F = POKER_CARD_NAMES($NewResults[2]);
 	$Card3F = POKER_CARD_NAMES($NewResults[3]);
 	$Card4F = POKER_CARD_NAMES($NewResults[4]);
 	$Card5F = POKER_CARD_NAMES($NewResults[5]);
-	
-	
+
+
 	 @DealerHand = (POKER_START(2,0,0,0,0,0));
-	 
+
 	 @DealerResults = (POKER_LOGIC($DealerHand[0],$DealerHand[1],$DealerHand[2],$DealerHand[3],$DealerHand[4],1));
-	 
+
 	my $intro = "Current Hand Power: ". $NewResults[0]. ". Hand Type: ". $NewResults[6];
 	 my $TextToCenter2 = plugin::PWAutoCenter($Card1F);
 	 my $TextToCenter3 = plugin::PWAutoCenter($Card2F);
@@ -1324,22 +1810,25 @@ sub EVENT_SAY {
 	 my $Yel = plugin::PWColor("Yellow");
 	 my $Blu = plugin::PWColor("Light Blue");
 	 my $Red = plugin::PWColor("Red");
-	 my $grn = plugin::PWColor("Forest Green"); 
-	
-	 
+	 my $grn = plugin::PWColor("Forest Green");
+
+	 #quest::popup("Results", "$intro </c> <br><br> $Yel $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6");
+
+
+
 	 $Card1FD = POKER_CARD_NAMES($DealerResults[1]);
 	$Card2FD = POKER_CARD_NAMES($DealerResults[2]);
 	$Card3FD = POKER_CARD_NAMES($DealerResults[3]);
 	$Card4FD = POKER_CARD_NAMES($DealerResults[4]);
 	$Card5FD = POKER_CARD_NAMES($DealerResults[5]);
-	
+
 	 $Outcome = POKER_DEALER_V_PLAYER($NewResults[0], $DealerResults[0],$NewResults[6],$DealerResults[6]);
-	
+
 	quest::say($NewResults[0].', '."[$Card1F]".', '."[$Card2F]".', '."[$Card3F]".', '."[$Card4F]".', '."[$Card5F]");
 	quest::say($DealerResults[0].', '."[$Card1FD]".', '."[$Card2FD]".', '."[$Card3FD]".', '."[$Card4FD]".', '."[$Card5FD]");
 	quest::say($Outcome);
-	
-	
+
+
 	$UIProgression = 0;
 	$MoneyCheck = 0;
       }
@@ -1348,12 +1837,11 @@ sub EVENT_SAY {
 sub EVENT_ITEM {
 
 	 $total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
-   
+
    	if($layer > 5){RouletteCheck();
 	getChange();
-  plugin::return_items(\%itemcount);
-	}
-  
+  plugin::return_items(\%itemcount);}
+
 	#return any unused money
  if($BeginPoker == 1)
  {
@@ -1366,19 +1854,20 @@ sub EVENT_ITEM {
 		$total = (($total - $silver_return)/10);
 		$gold_return = $total % 10;
 		$total = (($total - $gold_return)/10);
-		
+
 		 my $intro = "Thank you for your bet, you can start playing!";
-	
+
 
 	 my $Indent = plugin::PWIndent();
 	 my $Yel = plugin::PWColor("Yellow");
 	 my $Blu = plugin::PWColor("Light Blue");
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
-	 
-	 
+
+
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Stop} {button_two: Play} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
  }
+}
 }
