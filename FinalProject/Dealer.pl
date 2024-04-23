@@ -501,11 +501,11 @@ sub BlackJack_Hit {
 	else {
 		quest::say("You have:");
 		for $i (@BlackJack_PlayerCardsStr) {
-			quest::say("$i");
+			quest::say("            $i");
 		}
 		quest::say("The dealer has: ");
 		for $i (@BlackJack_DealerCardsStr) {
-			quest::say("$i");
+			quest::say("         $i");
 		}
 		quest::say("Do you want to [Hit] or [Stand]?");
 	}
@@ -682,7 +682,7 @@ sub EVENT_SAY {
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
     }
 
-	if ($text=~/Blackjack/i){
+	if ($text=~/Black jack/i){
 		BlackJack_Init();
 	}
 
