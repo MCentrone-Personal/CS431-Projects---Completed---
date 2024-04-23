@@ -49,12 +49,12 @@ sub POKER_START {
 	{
 	for($i = 0; $i<5; $i++)
 	{
-		TRYAGAIN:
+		POKERTRYAGAIN:
 		$TempCards[$i] = ((int rand(51)) + 1);
 		
 		if(($TempCards[$i] == $CurrentCards[0]) or ($TempCards[$i] == $CurrentCards[1]) or ($TempCards[$i] == $CurrentCards[2]) or ($TempCards[$i] == $CurrentCards[3]) or ($TempCards[$i] == $CurrentCards[4]))
 		{
-			goto TRYAGAIN;
+			goto POKERTRYAGAIN;
 		}
 		$CurrentCards[$i] = $TempCards[$i];
 	}
@@ -122,12 +122,12 @@ sub POKER_START {
 		else{
 	for($i = 0; $i<5; $i++)
 	{
-		TRYAGAIN:
+		POKERTRYAGAIN1:
 		$TempCards[$i] = ((int rand(51)) + 1);
 		
 		if(($TempCards[$i] == $CurrentCards[0]) or ($TempCards[$i] == $CurrentCards[1]) or ($TempCards[$i] == $CurrentCards[2]) or ($TempCards[$i] == $CurrentCards[3]) or ($TempCards[$i] == $CurrentCards[4]))
 		{
-			goto TRYAGAIN;
+			goto POKERTRYAGAIN1;
 		}
 		$CurrentCards[$i] = $TempCards[$i];
 	}
@@ -138,12 +138,12 @@ sub POKER_START {
 	{
 		if($Flag1 == 1)
 		{
-			TRYAGAIN1:
+			POKERTRYAGAIN2:
 		$TempCards[0] = ((int rand(51)) + 1);
 		
 		if(($TempCards[0] == $_[1]) or ($TempCards[0] == $_[2]) or ($TempCards[0] == $_[3]) or ($TempCards[0] == $_[4]) or ($TempCards[0] == $_[5]))
 		{
-			goto TRYAGAIN1;
+			goto POKERTRYAGAIN2;
 		}
 		$CurrentCards[0] = $TempCards[0];
 		}
@@ -154,12 +154,12 @@ sub POKER_START {
 		
 		if($Flag2 == 1)
 		{
-			TRYAGAIN2:
+			POKERTRYAGAIN3:
 		$TempCards[1] = ((int rand(51)) + 1);
 		
 		if(($TempCards[1] == $_[1]) or ($TempCards[1] == $_[2]) or ($TempCards[1] == $_[3]) or ($TempCards[1] == $_[4]) or ($TempCards[1] == $_[5]))
 		{
-			goto TRYAGAIN2;
+			goto POKERTRYAGAIN3;
 		}
 		$CurrentCards[1] = $TempCards[1];
 		}
@@ -170,12 +170,12 @@ sub POKER_START {
 		
 		if($Flag3 == 1)
 		{
-			TRYAGAIN3:
+			POKERTRYAGAIN4:
 		$TempCards[2] = ((int rand(51)) + 1);
 		
 		if(($TempCards[2] == $_[1]) or ($TempCards[2] == $_[2]) or ($TempCards[2] == $_[3]) or ($TempCards[2] == $_[4]) or ($TempCards[2] == $_[5]))
 		{
-			goto TRYAGAIN3;
+			goto POKERTRYAGAIN4;
 		}
 		$CurrentCards[2] = $TempCards[2];
 		}
@@ -186,12 +186,12 @@ sub POKER_START {
 		
 		if($Flag4 == 1)
 		{
-			TRYAGAIN4:
+			POKERTRYAGAIN5:
 		$TempCards[3] = ((int rand(51)) + 1);
 		
 		if(($TempCards[3] == $_[1]) or ($TempCards[3] == $_[2]) or ($TempCards[3] == $_[3]) or ($TempCards[3] == $_[4]) or ($TempCards[3] == $_[5]))
 		{
-			goto TRYAGAIN4;
+			goto POKERTRYAGAIN5;
 		}
 		$CurrentCards[3] = $TempCards[3];
 		}
@@ -202,12 +202,12 @@ sub POKER_START {
 		
 		if($Flag5 == 1)
 		{
-			TRYAGAIN5:
+			POKERTRYAGAIN6:
 		$TempCards[4] = ((int rand(51)) + 1);
 		
 		if(($TempCards[4] == $_[1]) or ($TempCards[4] == $_[2]) or ($TempCards[4] == $_[3]) or ($TempCards[4] == $_[4]) or ($TempCards[4] == $_[5]))
 		{
-			goto TRYAGAIN5;
+			goto POKERTRYAGAIN6;
 		}
 		$CurrentCards[4] = $TempCards[4];
 		}
