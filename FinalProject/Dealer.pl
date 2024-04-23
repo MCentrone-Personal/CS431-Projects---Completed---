@@ -695,6 +695,10 @@ sub EVENT_SAY {
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Cancel} {button_two: Play} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
     }
+	if (($text=~/Cancel/i) and ($MoneyCheck != 1))
+    {
+     $BeginPoker = 0;
+    }
 	
      if (($text=~/Play/i) and ($MoneyCheck == 1))
     {
