@@ -35,7 +35,7 @@ our $DOne = 0;
 our $PTwo = 0;
 our $DTwo = 0;
 our $MoneyCheck = 0;
-our $MoneyCalc = 0;
+our $BeginPoker = 0;
 our $total = 0;
 our $copper_return = 0;
 our $silver_return = 0;
@@ -647,13 +647,12 @@ sub POKER_CARD_NAMES{
 sub EVENT_SAY {
     #:: Match say message for "hail", /i for case insensitive
 	
-    if ($text=~/hail/i)
+    if ($text=~/Poker/i)
     {
-     quest::say("Hello, $name!. Give me your [money]");
 	 @Currenthand = (0,0,0,0,0);
-	 $Count = 0;
-	 
+	 $Count = 0; 
 	 $UIProgression = 0;
+  	$BeginPoker = 1;
 	 
 	  my $intro = "You need to pay to start playing!";
 	
@@ -678,7 +677,24 @@ sub EVENT_SAY {
 		$copper_return = 0;
 		$silver_return = 0;
 		$gold_return = 0;
+  		$BeginPoker = 0;
 	}
+
+  if (($text=~/Play/i) and ($MoneyCheck != 1))
+    {
+     my $intro = "You need to pay to start playing!";
+	
+
+	 my $Indent = plugin::PWIndent();
+	 my $Yel = plugin::PWColor("Yellow");
+	 my $Blu = plugin::PWColor("Light Blue");
+	 my $Red = plugin::PWColor("Red");
+	 my $grn = plugin::PWColor("Forest Green");
+	 
+	 
+	  my $dialogMessage = "{title: Curernt Hand} {button_one: Cancel} {button_two: Play} wintype:1 $intro </c> <br><br>";
+        quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
+    }
 	
      if (($text=~/Play/i) and ($MoneyCheck == 1))
     {
@@ -960,6 +976,8 @@ sub EVENT_ITEM {
 
 	 $total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
 	#return any unused money
+ if($BeginPoker == 1)
+ {
 	if($total > 0)
 	{
 		$MoneyCheck = 1;
@@ -983,4 +1001,5 @@ sub EVENT_ITEM {
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Stop} {button_two: Play} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
+ }
 }
