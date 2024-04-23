@@ -695,13 +695,32 @@ sub RouletteCheck()
 			my $loss = "You Lose :c";
 			my $dialogMessage = "";
 
-	if($RRP == 1)
+if($RRP == 1)
 	{
-		my $numbers = "No Numbers Were bet on";
+		my $numbers = join(',', @bets);
+		my $payout = 36/@bets;
+		my $found = 0;
+		
+		
+		foreach my $num (@bets)
+		{if ($num == $int) {
+				   $total *= $payout;
+				   $found = 1;
+		 my $win = "Congrats you win $total token";		
+		 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> $numbers </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> $win <br>";	
+        last; }}
 
+			if($found == 0)
+			{
+		 $total = 0;		
+		 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> $numbers </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> $loss<br>";
+			}
 
-
-		my $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> $numbers </c> <br>";
+		if($numbers == "")
+		{
+				 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> NOTHING </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> Why did you pick this and not bet. YOU LOSE<br>";	
+		}
+			
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 	elsif($RRP == 2 && $boolean ==0)
