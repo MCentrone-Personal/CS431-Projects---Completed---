@@ -354,12 +354,11 @@ sub BlackJack_Init {
 		BlackJack_End();
 	}
 	elsif ($BlackJack_PlayerPoints > 21) {
-		BlackJack_RecalculateDealerPoints();
 		BlackJack_RecalculatePlayerPoints();
 		BlackJack_End();
 	}
 	else {
-		quest::say("You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. The dealer has a $BlackJack_DealerCardsStr[0] and a $BlackJack_DealerCardsStr[1]. Do you want to [Hit] or [Stand]?");
+		quest::say("You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. I have a $BlackJack_DealerCardsStr[0]. Do you want to [Hit] or [Stand]?");
 	}
 }
 
@@ -491,7 +490,6 @@ sub BlackJack_Hit {
 		}
 	}
 	if ($BlackJack_PlayerPoints > 21) {
-		BlackJack_RecalculateDealerPoints();
 		BlackJack_RecalculatePlayerPoints();
 		BlackJack_End();
 	}
@@ -503,18 +501,15 @@ sub BlackJack_Hit {
 		for $i (@BlackJack_PlayerCardsStr) {
 			quest::say("            $i");
 		}
-		quest::say("The dealer has: ");
-		for $i (@BlackJack_DealerCardsStr) {
-			quest::say("         $i");
-		}
+		quest::say("I have: ");
+		quest::say("         $BlackJack_DealerCardsStr[0]");
 		quest::say("Do you want to [Hit] or [Stand]?");
 	}
 }
 
 sub BlackJack_Stand {
-	if ($BlackJack_DealerPoints > 21 || $BlackJack_PlayerPoints > 21) {
+	if ($BlackJack_DealerPoints > 21 ) {
 		BlackJack_RecalculateDealerPoints();
-		BlackJack_RecalculatePlayerPoints();
 	}
 	elsif ($BlackJack_DealerPoints < 21) {
 		while ($BlackJack_DealerPoints < 17) {
@@ -579,8 +574,10 @@ sub BlackJack_Stand {
 			push(@BlackJack_DealerCardsStr, $cardString);
 
 		}
-		if ($BlackJack_DealerPoints > 21 || $BlackJack_PlayerPoints > 21) {
+		if ($BlackJack_DealerPoints > 21) {
 			BlackJack_RecalculateDealerPoints();
+		}
+		if ($BlackJack_PlayerPoints > 21) {
 			BlackJack_RecalculatePlayerPoints();
 		}
 		BlackJack_End();
@@ -603,6 +600,10 @@ sub BlackJack_End() {
 	elsif ($BlackJack_DealerPoints == 21 && $BlackJack_PlayerPoints < $BlackJack_DealerPoints) {
 		$BlackJack_GameCondition = 1; # Bust (lose condition)
 		quest::say("I got blackjack! You lose!")
+	}
+	elsif ($BlackJack_DealerPoints > 21) {
+		$BlackJack_GameCondition = 2; # Bust (lose condition)
+		quest::say("I busted! You win!")
 	}
 	else {
 		if ($BlackJack_PlayerPoints > $BlackJack_DealerPoints) {
