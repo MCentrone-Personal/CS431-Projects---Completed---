@@ -1,0 +1,55 @@
+token: MTIyNzI2NjEzMTI1NDA1NDk3Mg.GpXX6W.huWSkKbqBUq_yP_J5uxxmYbWPv1obngnNE1dB8 # This is the token you got when following the instructions to setup discord your bot.
+user_ids:
+  - 432586775366467599
+  - 225768317028270080
+  - 396421089430863886  # These are the user IDs that are allowed to send messages to your bot. Right click on your name in the Discord member's list and select "Copy ID" to get this.
+characters:
+  CS431_admintoon: # This is the character you want the settings to be loaded on in the format of servername_Charactername.  Discord will tell you if it can't find your character and this is what it's talking about.
+    - name: GrunglesMcHealer # This is the name of the configuration, most people are only going to have one, but you can have as many as you'd like.
+      id: 1227260419698331723 # This is the channel ID you want messages to go to, you can get this by right clicking on the channel in Discord and doing "Copy ID"
+      allowed: # Allowed tells you what you want to see, though you don't need something in both Allowed AND Notice
+        - "#*# auctions, #*#"
+      blocked: # Blocked tells you what to skip if it matches an allowed or notify and also matches the block.  These won't be shown.
+        - "Thatjerk auctions, #*#"
+      notify: # Notify tags @everyone in the channel when this matches.  Good for getting notices on things you really want to know about without having notices turned on for everything in the channel.
+        - "#*#WTS My Soul#*#"
+      prefix: "" # If you want to prefix the message in Discord with anything.  Like putting your character name in front of it if you share channels between characters.
+      send_connected: false # Should Discord tell you when you connect.  If you're troubleshooting turn this on, but I usually leave it off.
+      allow_commands: true # Whether you can receive commands through this channel (commands will still only be accepted by the above user_ids).  For most this is probably true
+      show_command_response: 2000 # After you send a command from Discord to EQ, MQ2Discord automatically sends all chat messages back to Discord.  This is how long in milliseconds you want it to do that.  Longer is great for viewing chat, horrible for combat spam.  Default is 2 seconds and of course you can always keep it going with /echo hi repeatedly
+servers:
+  {}
+classes:
+  {}
+groups:
+  - name: YourGroup
+    characters:
+      - CS431_admintoon
+      - server_OtherCharInGroup
+      - server_OneMore
+    channels:
+      - name: bot
+        id: 1227260419698331723
+        allowed:
+          - You have been slain by
+        blocked:
+          []
+        notify:
+          []
+        prefix: "[${Me.Name}]"
+        send_connected: true
+        allow_commands: true
+        show_command_response: 0
+all:
+  - name: bot
+    id: 1227260419698331723
+    allowed:
+      - tells you
+    blocked:
+      - "|${Me.Pet.DisplayName}| tells you#*#"
+    notify:
+      []
+    prefix: "[${EverQuest.Server}_${Me.Name}]"
+    send_connected: true
+    allow_commands: true
+    show_command_response: 0
