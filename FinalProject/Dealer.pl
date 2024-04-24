@@ -525,6 +525,7 @@ sub EVENT_POPUPRESPONSE {
 			elsif($layer == 3) {$layer += $games +1;}
 			elsif($layer==0){$layer = $games + $gameSelect;}
 
+			if($layer == 2){quest::say("you are beginning blackjack");}
 		    if($layer==3){Roulette();}
 			elsif($layer==6){RouletteBet();}
 		}
@@ -1882,9 +1883,15 @@ sub EVENT_ITEM {
 
 	$total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
 
-	if($layer == 0 || $layer == 3 || ($layer == 6 && $size < 1) || ($layer == 4 && $BeginPoker == 0)){
+	if($layer == 3 || ($layer == 6 && $size < 1) || ($layer == 4 && $BeginPoker == 0)){
 	getChange();
     plugin::return_items(\%itemcount);}
+
+	elsif($layer == 0)
+	{
+	    my $dialogMessage = "{title: GO PLAY BLACKJACK} wintype:0 <br> GO PLAY BLACKJACK OR LOSE YOUR MONEY!!!! <br>";
+        quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
+	}
 
    	elsif($layer > 10 || ($layer == 6 && $size > 0)){RouletteCheck();
 	getChange();
