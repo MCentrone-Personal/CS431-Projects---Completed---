@@ -25,6 +25,8 @@ sub BlackJack_Start{
 		BlackJack_Init();
 	}
 	else {
+		my $dialogMessage = "{title: Blackjack} wintype:0 You need to place your bet before starting.";
+		quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 		quest::say("You need to place your bet before starting.");
 		$BlackJack_BeginBool = 0;
 	}
@@ -167,7 +169,7 @@ sub BlackJack_Init {
 	}
 	else {
 		quest::say("You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. You have $BlackJack_PlayerPoints points. I have a $BlackJack_DealerCardsStr[0]. Do you want to [Hit] or [Stand]?");
-		my $dialogMessage = "{title: Blackjack} {button_one: Hit} {button_two: Stand} wintype:1 You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. You have $BlackJack_PlayerPoints points. I have a $BlackJack_DealerCardsStr[0]. Do you want to [Hit] or [Stand]?";
+		my $dialogMessage = "{title: Blackjack} {button_one: Hit} {button_two: Stand} wintype:1 You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. You have $BlackJack_PlayerPoints points. I have a $BlackJack_DealerCardsStr[0]. What do you want to do?";
 				quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 }
@@ -307,15 +309,18 @@ sub BlackJack_Hit {
 		BlackJack_End();
 	}
 	else {
+		my $dialogMessage = "{title: Blackjack} {button_one: Hit} {button_two: Stand} wintype:1 You have: ";
 		quest::say("You have:");
 		for $i (@BlackJack_PlayerCardsStr) {
 			quest::say("            $i");
+			$dialogMessage = $dialogMessage . " " .  $i;
 		}
+		$dialogMessage = $dialogMessage . ". You have $BlackJack_PlayerPoints points.";
 		quest::say("You have $BlackJack_PlayerPoints points.");
 		quest::say("I have: ");
 		quest::say("         $BlackJack_DealerCardsStr[0]");
+		$dialogMessage = $dialogMessage . "I have $BlackJack_DealerCardsStr[0]. What do you want to do?";
 		quest::say("Do you want to [Hit] or [Stand]?");
-		my $dialogMessage = "{title: Blackjack} {button_one: Hit} {button_two: Stand} wintype:1 You have: @BlackJack_PlayerCardsStr. You have $BlackJack_PlayerPoints. I have $BlackJack_DealerCardsStr[0]. Do you want to [Hit] or [Stand]?";
 		quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 }
@@ -324,7 +329,7 @@ sub BlackJack_Stand {
 	if ($BlackJack_DealerPoints > 21 ) {
 		BlackJack_RecalculateDealerPoints();
 	}
-	elsif ($BlackJack_DealerPoints < 21) {
+	elsif ($BlackJack_DealerPoints <= 21) {
 		while ($BlackJack_DealerPoints < 17) {
 			TRYAGAIN5:
 			my $indexCardNumList = int(rand(51));
@@ -398,7 +403,7 @@ sub BlackJack_Stand {
 }
 
 sub BlackJack_End() {
-	my $dialogMessage = "{title: Blackjack} {button_one: Hit} {button_two: Stand} wintype:1 ";
+	my $dialogMessage = "{title: Blackjack} wintype:0 ";
 	if ($BlackJack_PlayerPoints == $BlackJack_DealerPoints && $BlackJack_DealerPoints == 21) {
 		$BlackJack_GameCondition = 4;
 		$dialogMessage = $dialogMessage . "Pushed! We both got blackjack.";
