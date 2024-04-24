@@ -167,6 +167,8 @@ sub BlackJack_Init {
 	}
 	else {
 		quest::say("You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. You have $BlackJack_PlayerPoints points. I have a $BlackJack_DealerCardsStr[0]. Do you want to [Hit] or [Stand]?");
+		my $dialogMessage = "{title: Blackjack} {button_one: Hit} {button_two: Stand} wintype:1 You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. You have $BlackJack_PlayerPoints points. I have a $BlackJack_DealerCardsStr[0]. Do you want to [Hit] or [Stand]?";
+				quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 }
 
@@ -313,6 +315,8 @@ sub BlackJack_Hit {
 		quest::say("I have: ");
 		quest::say("         $BlackJack_DealerCardsStr[0]");
 		quest::say("Do you want to [Hit] or [Stand]?");
+		my $dialogMessage = "{title: Blackjack} {button_one: Hit} {button_two: Stand} wintype:1 You have: @BlackJack_PlayerCardsStr. You have $BlackJack_PlayerPoints. I have $BlackJack_DealerCardsStr[0]. Do you want to [Hit] or [Stand]?";
+		quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 }
 
@@ -394,50 +398,61 @@ sub BlackJack_Stand {
 }
 
 sub BlackJack_End() {
+	my $dialogMessage = "{title: Blackjack} {button_one: Hit} {button_two: Stand} wintype:1 ";
 	if ($BlackJack_PlayerPoints == $BlackJack_DealerPoints && $BlackJack_DealerPoints == 21) {
 		$BlackJack_GameCondition = 4;
+		$dialogMessage = $dialogMessage . "Pushed! We both got blackjack.";
 		quest::say("Pushed! We both got blackjack.");
 	}
 	elsif ($BlackJack_PlayerPoints > 21) {
 		$BlackJack_GameCondition = 1; # Bust (lose condition)
 		quest::say("Busted! You lose!");
+		$dialogMessage = $dialogMessage . "Busted! You lose!";
 		$BlackJack_Total = 0;
 	}
 	elsif ($BlackJack_PlayerPoints == 21) {
 		$BlackJack_GameCondition = 3; # Black jack condition
 		quest::say("You got blackjack! You win!");
+		$dialogMessage = $dialogMessage . "You got blackjack! You win!";
 		$BlackJack_Total = $BlackJack_Total * 3;
 	}
 	elsif ($BlackJack_DealerPoints == 21 && $BlackJack_PlayerPoints < $BlackJack_DealerPoints) {
 		$BlackJack_GameCondition = 1; # Bust (lose condition)
 		quest::say("I got blackjack! You lose!");
+		$dialogMessage = $dialogMessage . "I got blackjack! You lose!";
 		$BlackJack_Total = 0;
 	}
 	elsif ($BlackJack_DealerPoints > 21) {
 		$BlackJack_GameCondition = 2; # Bust (lose condition)
 		quest::say("I busted! You win!");
+		$dialogMessage = $dialogMessage . "I busted! You win!";
 		$BlackJack_Total = 2 * $BlackJack_Total;
 	}
 	else {
 		if ($BlackJack_PlayerPoints > $BlackJack_DealerPoints) {
 			$BlackJack_GameCondition = 2; # Win condition
 			quest::say("You won! You got more points than me without going over 21.");
+			$dialogMessage = $dialogMessage . "You won! You got more points than me without going over 21.";
 			$BlackJack_Total = 2 * $BlackJack_Total;
 		}
 		elsif ($BlackJack_PlayerPoints == $BlackJack_DealerPoints) {
 			$BlackJack_GameCondition = 4; # Tie (push) condition;
 			quest::say("Pushed! We got the same amount of points.");
+			$dialogMessage = $dialogMessage . "Pushed! We got the same amount of points.";
 		}
 		elsif ($BlackJack_PlayerPoints < $BlackJack_DealerPoints) {
 			$BlackJack_GameCondition = 1; # lose condition (lost to dealer)
 			quest::say("You lost! You got less points than me.");
+			$dialogMessage = $dialogMessage . "You lost! You got less points than me.";
 			$BlackJack_Total = 0;
 		}
 	}
 
 	$total = $BlackJack_Total;
 	quest::say("You had $BlackJack_PlayerPoints points. I had $BlackJack_DealerPoints points.");
+	$dialogMessage = $dialogMessage . "You had $BlackJack_PlayerPoints points. I had $BlackJack_DealerPoints points.";
 	getChange();
+	quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	BlackJack_GameReset();
 	$BlackJack_BeginBool = 0;
 }
@@ -700,27 +715,27 @@ if($RRP == 1)
 		my $numbers = join(',', @bets);
 		my $payout = 36/@bets;
 		my $found = 0;
-		
-		
+
+
 		foreach my $num (@bets)
 		{if ($num == $int) {
 				   $total *= $payout;
 				   $found = 1;
-		 my $win = "Congrats you win $total token";		
-		 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> $numbers </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> $win <br>";	
+		 my $win = "Congrats you win $total token";
+		 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> $numbers </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> $win <br>";
         last; }}
 
 			if($found == 0)
 			{
-		 $total = 0;		
+		 $total = 0;
 		 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> $numbers </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> $loss<br>";
 			}
 
 		if($numbers == "")
 		{
-				 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> NOTHING </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> Why did you pick this and not bet. YOU LOSE<br>";	
+				 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> NOTHING </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> Why did you pick this and not bet. YOU LOSE<br>";
 		}
-			
+
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 	elsif($RRP == 2 && $boolean ==0)
