@@ -509,9 +509,6 @@ our $total = 0;
 
 sub EVENT_POPUPRESPONSE {
 
-		quest::say("The layer is $layer");
-
-
 		 if($popupid == 99999)
 		 {
 		    if($layer==0){PopUpChange();}
@@ -523,13 +520,12 @@ sub EVENT_POPUPRESPONSE {
 
 			if($layer > 5){ $layer +=5;}
 			elsif($layer == 3) {$layer += $games +1;}
-			elsif($layer==0){$layer = $games + $gameSelect;}
+			elsif($layer==0 && $gameSelect != 0 ){$layer = $games + $gameSelect;}
 
 			if($layer == 2){quest::say("you are beginning blackjack");}
 		    if($layer==3){Roulette();}
 			elsif($layer==6){RouletteBet();}
 		}
-			quest::say("The layer is now  $layer");
 }
 
 sub getChange()
@@ -1576,7 +1572,7 @@ sub EVENT_SAY {
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
 
-
+	quest::say("asdf2");
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Cancel} {button_two: Play} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 
@@ -1593,7 +1589,7 @@ sub EVENT_SAY {
   		$BeginPoker = 0;
 	}
 
-  if (($text=~/Play/i) and ($MoneyCheck != 1))
+  if (($text=~/Play/i) and ($MoneyCheck != 1) and ($BeginPoker != 0))
     {
      my $intro = "You need to pay to start playing!";
 
@@ -1604,7 +1600,7 @@ sub EVENT_SAY {
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
 
-
+	quest::say("asdf3");
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Cancel} {button_two: Play} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
     }
@@ -1647,6 +1643,7 @@ sub EVENT_SAY {
 	 $UICard4 = $Yel . $TextToCenter5;
 	 $UICard5 = $Yel . $TextToCenter6;
 
+	quest::say("asdf4");
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Confirm Hand} {button_two: Start Swapping} wintype:1 $intro </c> <br><br> $Yel $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6 </c> <br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 		$Count = 0;
@@ -1770,6 +1767,7 @@ sub EVENT_SAY {
 	 $UICard4 = $Yel . $TextToCenter5;
 	 $UICard5 = $Yel . $TextToCenter6;
 
+	quest::say("asdf5");
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Confirm Hand} {button_two: Start Swapping} wintype:1 $intro </c> <br><br> $Yel $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6 </c> <br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 
@@ -1967,13 +1965,15 @@ if ($text=~/Death Roulette/i)
 
 sub EVENT_ITEM {
 
+	quest::say("Layer is $layer , game is $gameSelect , DeathR is $DeathR");
+
 	$total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
 
 	if($layer == 3 || ($layer == 6 && $size < 1) || ($layer == 4 && $BeginPoker == 0)){
 	getChange();
     plugin::return_items(\%itemcount);}
 
-	elsif($layer == 0)
+	elsif($layer == 0 && $gameSelect != 0)
 	{
 	    my $dialogMessage = "{title: GO PLAY BLACKJACK} wintype:0 <br> GO PLAY BLACKJACK OR LOSE YOUR MONEY!!!! <br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
@@ -2003,7 +2003,7 @@ sub EVENT_ITEM {
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
 
-
+	quest::say("asdf1");
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Stop} {button_two: Play} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
