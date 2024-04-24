@@ -1,5 +1,5 @@
 # Written by:
-# Joshua Bump 
+# Joshua Bump
 # Michael Centrone
 # Trevor Radez
 
@@ -28,12 +28,14 @@ sub BlackJack_GameReset {
 	$BlackJack_GameCondition = 0;
 }
 
-sub BlackJack_Start{
+sub BlackJack_Start {
 	$BlackJack_Total = $total;
 	if ($BlackJack_Total > 0) {
 		BlackJack_Init();
 	}
 	else {
+		my $dialogMessage = "{title: Blackjack} wintype:0 You need to place your bet before starting.";
+		quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 		quest::say("You need to place your bet before starting.");
 		$BlackJack_BeginBool = 0;
 	}
@@ -176,6 +178,8 @@ sub BlackJack_Init {
 	}
 	else {
 		quest::say("You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. You have $BlackJack_PlayerPoints points. I have a $BlackJack_DealerCardsStr[0]. Do you want to [Hit] or [Stand]?");
+		my $dialogMessage = "{title: Blackjack} {button_one: Hit} {button_two: Stand} wintype:1 You have a $BlackJack_PlayerCardsStr[0] and a $BlackJack_PlayerCardsStr[1]. You have $BlackJack_PlayerPoints points. I have a $BlackJack_DealerCardsStr[0]. What do you want to do?";
+				quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 }
 
@@ -314,14 +318,19 @@ sub BlackJack_Hit {
 		BlackJack_End();
 	}
 	else {
+		my $dialogMessage = "{title: Blackjack} {button_one: Hit} {button_two: Stand} wintype:1 You have: ";
 		quest::say("You have:");
 		for $i (@BlackJack_PlayerCardsStr) {
 			quest::say("            $i");
+			$dialogMessage = $dialogMessage . " " .  $i;
 		}
+		$dialogMessage = $dialogMessage . ". You have $BlackJack_PlayerPoints points.";
 		quest::say("You have $BlackJack_PlayerPoints points.");
 		quest::say("I have: ");
 		quest::say("         $BlackJack_DealerCardsStr[0]");
+		$dialogMessage = $dialogMessage . "I have $BlackJack_DealerCardsStr[0]. What do you want to do?";
 		quest::say("Do you want to [Hit] or [Stand]?");
+		quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 }
 
@@ -329,7 +338,7 @@ sub BlackJack_Stand {
 	if ($BlackJack_DealerPoints > 21 ) {
 		BlackJack_RecalculateDealerPoints();
 	}
-	elsif ($BlackJack_DealerPoints < 21) {
+	elsif ($BlackJack_DealerPoints <= 21) {
 		while ($BlackJack_DealerPoints < 17) {
 			TRYAGAIN5:
 			my $indexCardNumList = int(rand(51));
@@ -403,50 +412,61 @@ sub BlackJack_Stand {
 }
 
 sub BlackJack_End() {
+	my $dialogMessage = "{title: Blackjack} wintype:0 ";
 	if ($BlackJack_PlayerPoints == $BlackJack_DealerPoints && $BlackJack_DealerPoints == 21) {
 		$BlackJack_GameCondition = 4;
+		$dialogMessage = $dialogMessage . "Pushed! We both got blackjack.";
 		quest::say("Pushed! We both got blackjack.");
 	}
 	elsif ($BlackJack_PlayerPoints > 21) {
 		$BlackJack_GameCondition = 1; # Bust (lose condition)
 		quest::say("Busted! You lose!");
+		$dialogMessage = $dialogMessage . "Busted! You lose!";
 		$BlackJack_Total = 0;
 	}
 	elsif ($BlackJack_PlayerPoints == 21) {
 		$BlackJack_GameCondition = 3; # Black jack condition
 		quest::say("You got blackjack! You win!");
+		$dialogMessage = $dialogMessage . "You got blackjack! You win!";
 		$BlackJack_Total = $BlackJack_Total * 3;
 	}
 	elsif ($BlackJack_DealerPoints == 21 && $BlackJack_PlayerPoints < $BlackJack_DealerPoints) {
 		$BlackJack_GameCondition = 1; # Bust (lose condition)
 		quest::say("I got blackjack! You lose!");
+		$dialogMessage = $dialogMessage . "I got blackjack! You lose!";
 		$BlackJack_Total = 0;
 	}
 	elsif ($BlackJack_DealerPoints > 21) {
 		$BlackJack_GameCondition = 2; # Bust (lose condition)
 		quest::say("I busted! You win!");
+		$dialogMessage = $dialogMessage . "I busted! You win!";
 		$BlackJack_Total = 2 * $BlackJack_Total;
 	}
 	else {
 		if ($BlackJack_PlayerPoints > $BlackJack_DealerPoints) {
 			$BlackJack_GameCondition = 2; # Win condition
 			quest::say("You won! You got more points than me without going over 21.");
+			$dialogMessage = $dialogMessage . "You won! You got more points than me without going over 21.";
 			$BlackJack_Total = 2 * $BlackJack_Total;
 		}
 		elsif ($BlackJack_PlayerPoints == $BlackJack_DealerPoints) {
 			$BlackJack_GameCondition = 4; # Tie (push) condition;
 			quest::say("Pushed! We got the same amount of points.");
+			$dialogMessage = $dialogMessage . "Pushed! We got the same amount of points.";
 		}
 		elsif ($BlackJack_PlayerPoints < $BlackJack_DealerPoints) {
 			$BlackJack_GameCondition = 1; # lose condition (lost to dealer)
 			quest::say("You lost! You got less points than me.");
+			$dialogMessage = $dialogMessage . "You lost! You got less points than me.";
 			$BlackJack_Total = 0;
 		}
 	}
 
 	$total = $BlackJack_Total;
 	quest::say("You had $BlackJack_PlayerPoints points. I had $BlackJack_DealerPoints points.");
+	$dialogMessage = $dialogMessage . "You had $BlackJack_PlayerPoints points. I had $BlackJack_DealerPoints points.";
 	getChange();
+	quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	BlackJack_GameReset();
 	$BlackJack_BeginBool = 0;
 }
@@ -488,10 +508,10 @@ our $String;
 our $total = 0;
 
 sub EVENT_POPUPRESPONSE {
-	
+
 		quest::say("The layer is $layer");
-	
-	
+
+
 		 if($popupid == 99999)
 		 {
 		    if($layer==0){PopUpChange();}
@@ -500,14 +520,14 @@ sub EVENT_POPUPRESPONSE {
 		 }
 		 if($popupid == 100000){
 			if($layer == 6){$boolean = 1;}
-			
+
 			if($layer > 5){ $layer +=5;}
-			elsif($layer == 3) {$layer += $games +1;} 
+			elsif($layer == 3) {$layer += $games +1;}
 			elsif($layer==0){$layer = $games + $gameSelect;}
-			
+
 		    if($layer==3){Roulette();}
-			elsif($layer==6){RouletteBet();}	
-		} 
+			elsif($layer==6){RouletteBet();}
+		}
 			quest::say("The layer is now  $layer");
 }
 
@@ -663,47 +683,46 @@ sub RouletteCheck()
 			my $int = CARD_GENERATOR();
 			my $loss = "You Lose :c";
 			my $dialogMessage = "";
-	
+
 	if($RRP == 1)
 	{
 		my $numbers = join(',', @bets);
 		my $payout = 36/$size;
 		my $found = 0;
-		
 		foreach my $num (@bets)
 		{if ($num == $int) {
 				   $total *= $payout;
 				   $found = 1;
-		 my $win = "Congrats you win $total token";		
-		 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> $numbers </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> $win <br>";	
+		 my $win = "Congrats you win $total token";
+		 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> $numbers </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> $win <br>";
         last; }}
 
 			if($found == 0)
 			{
-		 $total = 0;		
+		 $total = 0;
 		 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> $numbers </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> $loss<br>";
 			}
 
 		if($numbers == "")
 		{
-				 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> NOTHING </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> Why did you pick this and not bet any <c \"#00F0F0\"> NUMBERS </c>. YOU LOSE<br>";	
+				 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> NOTHING </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> Why did you pick this and not bet any <c \"#00F0F0\"> NUMBERS </c>. YOU LOSE<br>";
 		}
-			
+
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 	elsif($RRP == 2 && $boolean ==0)
 	{
 		if($int % 2 == 0)
 		{
-		$total = 0;	
+		$total = 0;
 		my $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> Odd </c>.<br>The number rolled is <c \"#00F0F0\"> $int </c> and it is <c \"#00F0F0\"> Even </c>. <br><br> $loss <br>";
 		}
 		elsif($int % 2 == 1)
 		{
 		$total *= 2;
-		my $win = "Congrats you win $total token";		
+		my $win = "Congrats you win $total token";
 		my $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> Odd </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c> and it is <c \"#00F0F0\"> Odd </c>. <br><br> $win <br>";
-		}		
+		}
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 	elsif($RRP == 2 && $boolean ==1)
@@ -844,7 +863,7 @@ sub RouletteCheck()
 	}
 }
 
-sub CARD_GENERATOR { 
+sub CARD_GENERATOR {
 return int(rand(36)); }
 
 # Roulette end --------------
@@ -1529,7 +1548,7 @@ sub EVENT_SAY {
 		}
 		$size = scalar @bets;
 		}
-	
+
 	}
 
 # Continue Poker ------------------
