@@ -550,7 +550,12 @@ sub getChange()
 
 sub PopUpChange()
 {
-    if($gameSelect == 0)
+    if($gameSelect == -1)
+	{       $gameSelect++;
+		my $dialogMessage = "{title: DEATH ROULETTE} {button_one: Change Game} {button_two: Death Roulette} wintype:1 FIGHT TO THE DEATH";
+        quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
+	}
+    elsif($gameSelect == 0)
 	{       $gameSelect++;
 		my $dialogMessage = "{title: ROULETTE} {button_one: Change Game} {button_two: SELECT GAME} wintype:1 SPIN SPIN SPIN";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
@@ -565,7 +570,7 @@ sub PopUpChange()
 	}
 	elsif($gameSelect==2)
 	{
-		$gameSelect=0;
+		$gameSelect=-1;
 		my $dialogMessage = "{title: BLACKJACK} {button_one: Change Game} {button_two: Black jack} wintype:1 You get one deck. Try to get as close to 21 as you can without busting or underestimating the dealer.";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
