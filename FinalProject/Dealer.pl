@@ -590,7 +590,7 @@ sub PopUpChange()
 	elsif($gameSelect==2)
 	{
 		$gameSelect=0;
-		my $dialogMessage = "{title: BLACKJACK} {button_one: Change Game} {button_two: Black jack} wintype:1 ONLY THE CLUBS AND SPADES";
+		my $dialogMessage = "{title: BLACKJACK} {button_one: Change Game} {button_two: Black jack} wintype:1 You get one deck. Try to get as close to 21 as you can without busting or underestimating the dealer.";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 }
