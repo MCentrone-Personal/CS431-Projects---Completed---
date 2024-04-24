@@ -1876,6 +1876,86 @@ sub EVENT_SAY {
 	$UIProgression = 0;
 	$MoneyCheck = 0;
       }
+      
+if ($text=~/Death Roulette/i)
+    {
+	$DeathR = 1;
+
+	  my $intro = "You need to pay to start playing!";
+
+
+	 my $Indent = plugin::PWIndent();
+	 my $Yel = plugin::PWColor("Yellow");
+	 my $Blu = plugin::PWColor("Light Blue");
+	 my $Red = plugin::PWColor("Red");
+	 my $grn = plugin::PWColor("Forest Green");
+
+
+	  my $dialogMessage = "{title: Seal your fate!} {button_one: Cancel} {button_two: Play} wintype:1 $intro </c> <br><br>";
+        quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
+
+    }
+	
+	if (($text=~/Play/i) and ($PayedR != 1) and ($DeathR == 1))
+    {
+     my $intro = "You need to pay to start playing!";
+
+
+	 my $Indent = plugin::PWIndent();
+	 my $Yel = plugin::PWColor("Yellow");
+	 my $Blu = plugin::PWColor("Light Blue");
+	 my $Red = plugin::PWColor("Red");
+	 my $grn = plugin::PWColor("Forest Green");
+
+
+	  my $dialogMessage = "{title: Death Roulette} {button_one: Cancel} {button_two: Play} wintype:1 $intro </c> <br><br>";
+        quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
+    }
+	if (($text=~/Cancel/i) and ($PayedR != 1) and ($DeathR == 1))
+    {
+     $DeathR = 0;
+    }
+	
+	 if (($text=~/Play/i) and ($PayedR == 1) and ($DeathR >= 1))
+    {
+		if($DeathR == 1)
+		{
+		my $RandR = int(rand(5));
+		$DeathR = 2;
+		$d = $RandR;
+		}
+
+
+	 my $Indent = plugin::PWIndent();
+	 my $Yel = plugin::PWColor("Yellow");
+	 my $Blu = plugin::PWColor("Light Blue");
+	 my $Red = plugin::PWColor("Red");
+	 my $grn = plugin::PWColor("Forest Green");
+	 
+	if($d == 0)
+	{
+ my $intro = "You Died!";
+	quest::popup("Results", " $Red $intro ");
+		quest::level($ulevel-1);
+	}
+	else
+	{
+					$copper_return = $copper_return * 2;
+					$silver_return = $silver_return * 2;
+					$gold_return = $gold_return * 2;
+					$total = $total * 2;
+		
+		 my $intro = "You Survived!";
+		  my $dialogMessage = "{title: Results} {button_one: Leave} {button_two: Play} wintype:1 $grn $intro </c> <br><br>";
+        quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
+		$d--;
+	}
+		
+	}
+	if (($text=~/Leave/i))
+    {
+		quest::givecash($copper_return,$silver_return,$gold_return,$total);
+	}      
 }
 
 # End of poker again ---------
@@ -1922,5 +2002,24 @@ sub EVENT_ITEM {
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Stop} {button_two: Play} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
+ #DeathRoulette
+	if($DeathR == 1)
+	{
+		$total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
+		 $copper_return = $total % 10;
+		$total = (($total - $copper_return)/10);
+		$silver_return= $total % 10;
+		$total = (($total - $silver_return)/10);
+		$gold_return = $total % 10;
+		$total = (($total - $gold_return)/10);
+		$PayedR = 1;
+	}
  }
+ 
+#Start of Death Roulette
+our $DeathR = 0;
+our $PayedR = 0;
+
+
+ 
 }
