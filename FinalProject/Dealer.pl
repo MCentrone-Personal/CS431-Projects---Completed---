@@ -4,8 +4,8 @@
 # Trevor Radez
 
 # BlackJack 10 - 480
-# Roulette 480 - 845
-# Poker  845 - 1490 , 1525 - 1855
+# Roulette 480 - 850
+# Poker  850 - 1495 , 1535 - 1860
 
 our $BlackJack_Total;
 our @BlackJack_CardsNumList;
@@ -488,6 +488,10 @@ our $String;
 our $total = 0;
 
 sub EVENT_POPUPRESPONSE {
+	
+		quest::say("The layer is $layer");
+	
+	
 		 if($popupid == 99999)
 		 {
 		    if($layer==0){PopUpChange();}
@@ -496,13 +500,15 @@ sub EVENT_POPUPRESPONSE {
 		 }
 		 if($popupid == 100000){
 			if($layer == 6){$boolean = 1;}
+			
 			if($layer > 5){ $layer +=5;}
-			elsif($layer >2 && $layer < 5) {$layer += $games +1;} 
+			elsif($layer == 3) {$layer += $games +1;} 
 			elsif($layer==0){$layer = $games + $gameSelect;}
-
+			
 		    if($layer==3){Roulette();}
 			elsif($layer==6){RouletteBet();}	
-		 } 
+		} 
+			quest::say("The layer is now  $layer");
 }
 
 sub getChange()
@@ -651,6 +657,7 @@ sub RouletteBet()
 	}
 }
 
+our $size;
 sub RouletteCheck()
 {
 			my $int = CARD_GENERATOR();
@@ -660,9 +667,8 @@ sub RouletteCheck()
 	if($RRP == 1)
 	{
 		my $numbers = join(',', @bets);
-		my $payout = 36/@bets;
+		my $payout = 36/$size;
 		my $found = 0;
-		
 		
 		foreach my $num (@bets)
 		{if ($num == $int) {
@@ -680,7 +686,7 @@ sub RouletteCheck()
 
 		if($numbers == "")
 		{
-				 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> NOTHING </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> Why did you pick this and not bet. YOU LOSE<br>";	
+				 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> NOTHING </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> Why did you pick this and not bet any <c \"#00F0F0\"> NUMBERS </c>. YOU LOSE<br>";	
 		}
 			
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
@@ -747,7 +753,6 @@ sub RouletteCheck()
 	}
 	elsif($RRP == 4)
 	{
-		
 		if($int > 24)
 		{
 		$total *= 3;
@@ -1508,18 +1513,23 @@ sub EVENT_SAY {
 		}
 
     if ($text=~/hail/i){
-	$games = 2;$gameSelect = 0;$layer = 0;$RRP = 0;$boolean = 0;
+	$games = 2;$gameSelect = 0;$layer = 0;$RRP = 0;$boolean = 0;@bets = ();
     my $dialogMessage = "{title: Welcome} wintype:0 Welcome to the <c \"#FFD700\"> Golden Bull </c>";
     quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
     }
 	else
 	{
+		if($layer == 6){
 		@bets = ();
 		my @items = split(/\s*,\s*/, $text);
 		foreach my $item (@items) {
 			$item =~ s/[^\d]//g;
-			if($item > -1 && $item < 37){push @bets, $item;}
+			if($item > -1 && $item < 37)
+			{push @bets, $item;}
 		}
+		$size = scalar @bets;
+		}
+	
 	}
 
 # Continue Poker ------------------
@@ -1815,16 +1825,14 @@ sub EVENT_SAY {
 
 
 	 @DealerHand = (POKER_START(2,0,0,0,0,0));
-
 	 @DealerResults = (POKER_LOGIC($DealerHand[0],$DealerHand[1],$DealerHand[2],$DealerHand[3],$DealerHand[4],1));
 
-	my $intro = "Current Hand Power: ". $NewResults[0]. ". Hand Type: ". $NewResults[6];
+	 my $intro = "Current Hand Power: ". $NewResults[0]. ". Hand Type: ". $NewResults[6];
 	 my $TextToCenter2 = plugin::PWAutoCenter($Card1F);
 	 my $TextToCenter3 = plugin::PWAutoCenter($Card2F);
 	 my $TextToCenter4 = plugin::PWAutoCenter($Card3F);
 	 my $TextToCenter5 = plugin::PWAutoCenter($Card4F);
 	 my $TextToCenter6 = plugin::PWAutoCenter($Card5F);
-
 	 my $Indent = plugin::PWIndent();
 	 my $Yel = plugin::PWColor("Yellow");
 	 my $Blu = plugin::PWColor("Light Blue");
@@ -1833,15 +1841,12 @@ sub EVENT_SAY {
 
 	 #quest::popup("Results", "$intro </c> <br><br> $Yel $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6");
 
-
-
-	 $Card1FD = POKER_CARD_NAMES($DealerResults[1]);
+	$Card1FD = POKER_CARD_NAMES($DealerResults[1]);
 	$Card2FD = POKER_CARD_NAMES($DealerResults[2]);
 	$Card3FD = POKER_CARD_NAMES($DealerResults[3]);
 	$Card4FD = POKER_CARD_NAMES($DealerResults[4]);
 	$Card5FD = POKER_CARD_NAMES($DealerResults[5]);
-
-	 $Outcome = POKER_DEALER_V_PLAYER($NewResults[0], $DealerResults[0],$NewResults[6],$DealerResults[6]);
+	$Outcome = POKER_DEALER_V_PLAYER($NewResults[0], $DealerResults[0],$NewResults[6],$DealerResults[6]);
 
 	quest::say($NewResults[0].', '."[$Card1F]".', '."[$Card2F]".', '."[$Card3F]".', '."[$Card4F]".', '."[$Card5F]");
 	quest::say($DealerResults[0].', '."[$Card1FD]".', '."[$Card2FD]".', '."[$Card3FD]".', '."[$Card4FD]".', '."[$Card5FD]");
@@ -1856,9 +1861,13 @@ sub EVENT_SAY {
 
 sub EVENT_ITEM {
 
-	 $total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
+	$total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
 
-   	if($layer > 5 || $layer == 0 ){RouletteCheck();
+	if($layer == 0 || $layer == 3 || ($layer == 6 && $size < 1) || ($layer == 4 && $BeginPoker == 0)){
+	getChange();
+    plugin::return_items(\%itemcount);}
+
+   	elsif($layer > 10 || ($layer == 6 && $size > 0)){RouletteCheck();
 	getChange();
   plugin::return_items(\%itemcount);}
 
@@ -1875,9 +1884,7 @@ sub EVENT_ITEM {
 		$gold_return = $total % 10;
 		$total = (($total - $gold_return)/10);
 
-		 my $intro = "Thank you for your bet, you can start playing!";
-
-
+	 my $intro = "Thank you for your bet, you can start playing!";
 	 my $Indent = plugin::PWIndent();
 	 my $Yel = plugin::PWColor("Yellow");
 	 my $Blu = plugin::PWColor("Light Blue");
@@ -1889,5 +1896,4 @@ sub EVENT_ITEM {
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
  }
-}
 }
