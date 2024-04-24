@@ -19,7 +19,7 @@ sub BlackJack_GameReset {
 	$BlackJack_GameCondition = 0;
 }
 
-sub BlackJack_Start{
+sub BlackJack_Start {
 	$BlackJack_Total = $total;
 	if ($BlackJack_Total > 0) {
 		BlackJack_Init();
