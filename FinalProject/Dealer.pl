@@ -4,8 +4,8 @@
 # Trevor Radez
 
 # BlackJack 10 - 480
-# Roulette 480 - 840
-# Poker  840 - 1495 , 1530 - 1860
+# Roulette 480 - 845
+# Poker  845 - 1490 , 1525 - 1855
 
 our $BlackJack_Total;
 our @BlackJack_CardsNumList;
@@ -479,6 +479,14 @@ sub BlackJack_RecalculateDealerPoints {
 
 #End To Black Jack -------------------------------------------------------------
 
+our @bets;
+our $games = 2;
+our $gameSelect = 0;
+our $layer = 0;
+our $boolean = 0;
+our $String;
+our $total = 0;
+
 sub EVENT_POPUPRESPONSE {
 		 if($popupid == 99999)
 		 {
@@ -489,12 +497,12 @@ sub EVENT_POPUPRESPONSE {
 		 if($popupid == 100000){
 			if($layer == 6){$boolean = 1;}
 			if($layer > 5){ $layer +=5;}
-			elsif($layer >2 && $layer < 5) {$layer += $games +1;}
+			elsif($layer >2 && $layer < 5) {$layer += $games +1;} 
 			elsif($layer==0){$layer = $games + $gameSelect;}
 
 		    if($layer==3){Roulette();}
-			elsif($layer==6){RouletteBet();
-		 }
+			elsif($layer==6){RouletteBet();}	
+		 } 
 }
 
 sub getChange()
@@ -516,23 +524,20 @@ sub getChange()
 sub PopUpChange()
 {
     if($gameSelect == 0)
-	{
-		$gameSelect++;
+	{       $gameSelect++;
 		my $dialogMessage = "{title: ROULETTE} {button_one: Change Game} {button_two: SELECT GAME} wintype:1 SPIN SPIN SPIN";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 	elsif($gameSelect==1)
-	{
-		$gameSelect++;
+	{       $gameSelect++;
 		my $Yel = plugin::PWColor("Yellow");
-	    my $Blu = plugin::PWColor("Light Blue");
+	        my $Blu = plugin::PWColor("Light Blue");
 		my $Wht = plugin::PWColor("White");
 		my $dialogMessage = "{title: POKER} {button_one: Change Game} {button_two: Poker} wintype:1 You will be given 5 cards, you can either $Blu swap $Wht them and get new cards from the same deck or $Yel keep $Wht them if you are confident. Try and get better cards than the Dealer!";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 	elsif($gameSelect==2)
-	{
-		$gameSelect=0;
+	{       $gameSelect=0;
 		my $dialogMessage = "{title: BLACKJACK} {button_one: Change Game} {button_two: Black jack} wintype:1 ONLY THE CLUBS AND SPADES";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
@@ -651,8 +656,8 @@ sub RouletteCheck()
 			my $int = CARD_GENERATOR();
 			my $loss = "You Lose :c";
 			my $dialogMessage = "";
-
-if($RRP == 1)
+	
+	if($RRP == 1)
 	{
 		my $numbers = join(',', @bets);
 		my $payout = 36/@bets;
@@ -667,15 +672,15 @@ if($RRP == 1)
 		 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> $numbers </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> $win <br>";	
         last; }}
 
-		if($found == 0)
-		{
+			if($found == 0)
+			{
 		 $total = 0;		
 		 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> $numbers </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> $loss<br>";
-		}
+			}
 
 		if($numbers == "")
 		{
-		  $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> NOTHING </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> Why did you pick this and not bet. YOU LOSE<br>";	
+				 $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> NOTHING </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c>. <br><br> Why did you pick this and not bet. YOU LOSE<br>";	
 		}
 			
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
@@ -684,15 +689,15 @@ if($RRP == 1)
 	{
 		if($int % 2 == 0)
 		{
-		$total = 0;
+		$total = 0;	
 		my $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> Odd </c>.<br>The number rolled is <c \"#00F0F0\"> $int </c> and it is <c \"#00F0F0\"> Even </c>. <br><br> $loss <br>";
 		}
 		elsif($int % 2 == 1)
 		{
 		$total *= 2;
-		my $win = "Congrats you win $total token";
+		my $win = "Congrats you win $total token";		
 		my $dialogMessage = "{title: Results} wintype:0 <br> You bet on <c \"#00F0F0\"> Odd </c>.<br> The number rolled is <c \"#00F0F0\"> $int </c> and it is <c \"#00F0F0\"> Odd </c>. <br><br> $win <br>";
-		}
+		}		
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
 	elsif($RRP == 2 && $boolean ==1)
@@ -742,7 +747,7 @@ if($RRP == 1)
 	}
 	elsif($RRP == 4)
 	{
-
+		
 		if($int > 24)
 		{
 		$total *= 3;
@@ -839,12 +844,6 @@ return int(rand(36)); }
 
 # Roulette end --------------
 
-our @bets;
-our $games = 2;
-our $gameSelect = 0;
-our $layer = 0;
-our $boolean = 0;
-our $String;
 our @Results = ();
 our @Currenthand = ();
 our @Newhand = ();
@@ -882,7 +881,6 @@ our $PTwo = 0;
 our $DTwo = 0;
 our $MoneyCheck = 0;
 our $BeginPoker = 0;
-our $total = 0;
 our $copper_return = 0;
 our $silver_return = 0;
 our $gold_return = 0;
@@ -1438,7 +1436,6 @@ sub POKER_DEALER_V_PLAYER{
 	}
 	elsif($_[0] == $_[1])
 	{
-
 		if($_[0] == 10)
 		{
 		return(CMPNUM($PHigh, $DHigh) . "Equal Cards");
@@ -1480,14 +1477,12 @@ sub POKER_DEALER_V_PLAYER{
 		return(CMPNUM($PHigh,$DHigh) . "Higher Cards");
 		}
 	}
-
 }
 
 sub POKER_CARD_NAMES{
 
 	@Names = ('Ace of Hearts', 'Two of Hearts', 'Three of Hearts', 'Four of Hearts', 'Five of Hearts', 'Six of Hearts', 'Seven of Hearts', 'Eight of Hearts', 'Nine of Hearts', 'Ten of Hearts', 'Jack of Hearts', 'Queen of Hearts', 'King of Hearts','Ace of Clubs', 'Two of Clubs', 'Three of Clubs', 'Four of Clubs', 'Five of Clubs', 'Six of Clubs', 'Seven of Clubs', 'Eight of Clubs', 'Nine of Clubs', 'Ten of Clubs', 'Jack of Clubs', 'Queen of Clubs', 'King of Clubs', 'Ace of Diamonds', 'Two of Diamonds', 'Three of Diamonds', 'Four of Diamonds', 'Five of Diamonds', 'Six of Diamondss', 'Seven of Diamonds', 'Eight of Diamonds', 'Nine of Diamonds', 'Ten of Diamonds', 'Jack of Diamonds', 'Queen of Diamonds', 'King of Diamonds','Ace of Spades', 'Two of Spades', 'Three of Spades', 'Four of Spades', 'Five of Spades', 'Six of Spades', 'Seven of Spades', 'Eight of Spades', 'Nine of Spades', 'Ten of Spades', 'Jack of Spades', 'Queen of Spades', 'King of Spades');
 	return($Names[$_[0] - 1]);
-
 }
 
 our $BlackJack_BeginBool = 0;
@@ -1512,7 +1507,7 @@ sub EVENT_SAY {
 			BlackJack_Hit();
 		}
 
-     if ($text=~/hail/i){
+    if ($text=~/hail/i){
 	$games = 2;$gameSelect = 0;$layer = 0;$RRP = 0;$boolean = 0;
     my $dialogMessage = "{title: Welcome} wintype:0 Welcome to the <c \"#FFD700\"> Golden Bull </c>";
     quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
@@ -1527,7 +1522,7 @@ sub EVENT_SAY {
 		}
 	}
 
-	# Continue Poker
+# Continue Poker ------------------
 
     if ($text=~/Poker/i)
     {
