@@ -1901,7 +1901,7 @@ if ($text=~/Death Roulette/i)
     }
 	
 	
-	if (($text=~/Start/i) and ($PayedR != 1))
+	if (($text=~/Start/i) and ($PayedR != 1) and ($DeathR == 0))
     {
      my $intro = "You need to pay to start playing!";
 
@@ -1921,7 +1921,7 @@ if ($text=~/Death Roulette/i)
      $DeathR = 1;
     }
 	
-	 if (($text=~/Start/i) and ($PayedR == 1))
+	 if (($text=~/Start/i) and ($PayedR == 1) and ($DeathR == 0))
     {
 		if($DeathR == 0)
 		{
