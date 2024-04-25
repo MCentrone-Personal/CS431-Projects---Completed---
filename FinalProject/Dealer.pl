@@ -548,7 +548,7 @@ sub PopUpChange()
 {
     if($gameSelect == -1)
 	{       $gameSelect++;
-		my $dialogMessage = "{title: DEATH ROULETTE} {button_one: Change Game} {button_two: Death Roulette} wintype:1 FIGHT TO THE DEATH";
+		my $dialogMessage = "{title: DEATH ROULETTE} {button_one: Change Game} {button_two: Death Roulette} wintype:1 A random number will be chosen between 1 and 6. Everytime you choose to stay the counter will tick down, for every time you stay your inital bet will double. If you reach 1 you will lose your money and a level.";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
     elsif($gameSelect == 0)
@@ -1572,7 +1572,6 @@ sub EVENT_SAY {
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
 
-	quest::say("asdf2");
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Cancel} {button_two: Play} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 
@@ -1600,7 +1599,7 @@ sub EVENT_SAY {
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
 
-	quest::say("asdf3");
+
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Cancel} {button_two: Play} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
     }
@@ -1609,9 +1608,8 @@ sub EVENT_SAY {
      $BeginPoker = 0;
     }
 
-     if (($text=~/Play/i) and ($MoneyCheck == 1))
+     if (($text=~/Play/i) and ($MoneyCheck == 1) and ($BeginPoker == 1))
     {
-		$BeginPoker = 0;
 
 
 	@Currenthand = (POKER_START(0,0,0,0,0,0));
@@ -1643,7 +1641,7 @@ sub EVENT_SAY {
 	 $UICard4 = $Yel . $TextToCenter5;
 	 $UICard5 = $Yel . $TextToCenter6;
 
-	quest::say("asdf4");
+
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Confirm Hand} {button_two: Start Swapping} wintype:1 $intro </c> <br><br> $Yel $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6 </c> <br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 		$Count = 0;
@@ -1767,7 +1765,7 @@ sub EVENT_SAY {
 	 $UICard4 = $Yel . $TextToCenter5;
 	 $UICard5 = $Yel . $TextToCenter6;
 
-	quest::say("asdf5");
+
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Confirm Hand} {button_two: Start Swapping} wintype:1 $intro </c> <br><br> $Yel $TextToCenter2 </c><br><br> $Yel $TextToCenter3 </c><br><br> $Yel $TextToCenter4 </c><br><br> $Yel $TextToCenter5 </c> <br><br> $Yel $TextToCenter6 </c> <br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 
@@ -1878,11 +1876,14 @@ sub EVENT_SAY {
 
 	$UIProgression = 0;
 	$MoneyCheck = 0;
+	$BeginPoker = 0;
       }
+	  
       
 if ($text=~/Death Roulette/i)
     {
-	$DeathR = 1;
+		
+	$DeathR = 0;
 
 	  my $intro = "You need to pay to start playing!";
 
@@ -1894,12 +1895,13 @@ if ($text=~/Death Roulette/i)
 	 my $grn = plugin::PWColor("Forest Green");
 
 
-	  my $dialogMessage = "{title: Seal your fate!} {button_one: Cancel} {button_two: Play} wintype:1 $intro </c> <br><br>";
+	  my $dialogMessage = "{title: Seal your fate!} {button_one: Cancel} {button_two: Start} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 
     }
 	
-	if (($text=~/Play/i) and ($PayedR != 1) and ($DeathR == 1))
+	
+	if (($text=~/Start/i) and ($PayedR != 1))
     {
      my $intro = "You need to pay to start playing!";
 
@@ -1911,20 +1913,20 @@ if ($text=~/Death Roulette/i)
 	 my $grn = plugin::PWColor("Forest Green");
 
 
-	  my $dialogMessage = "{title: Death Roulette} {button_one: Cancel} {button_two: Play} wintype:1 $intro </c> <br><br>";
+	  my $dialogMessage = "{title: Death Roulette} {button_one: Cancel} {button_two: Start} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
     }
-	if (($text=~/Cancel/i) and ($PayedR != 1) and ($DeathR == 1))
+	if (($text=~/Cancel/i) and ($PayedR == 0) and ($DeathR == 0))
     {
-     $DeathR = 0;
+     $DeathR = 1;
     }
 	
-	 if (($text=~/Play/i) and ($PayedR == 1) and ($DeathR >= 1))
+	 if (($text=~/Start/i) and ($PayedR == 1))
     {
-		if($DeathR == 1)
+		if($DeathR == 0)
 		{
 		my $RandR = int(rand(5));
-		$DeathR = 2;
+		$DeathR = -1;
 		$d = $RandR;
 		}
 
@@ -1940,6 +1942,8 @@ if ($text=~/Death Roulette/i)
  my $intro = "You Died!";
 	quest::popup("Results", " $Red $intro ");
 		quest::level($ulevel-1);
+		$PayedR = 0;
+		$DeathR = 1;
 	}
 	else
 	{
@@ -1949,7 +1953,8 @@ if ($text=~/Death Roulette/i)
 					$total = $total * 2;
 		
 		 my $intro = "You Survived!";
-		  my $dialogMessage = "{title: Results} {button_one: Leave} {button_two: Play} wintype:1 $grn $intro </c> <br><br>";
+		 quest::ding();
+		  my $dialogMessage = "{title: Results} {button_one: Leave} {button_two: Start} wintype:1 $grn $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 		$d--;
 	}
@@ -1958,14 +1963,13 @@ if ($text=~/Death Roulette/i)
 	if (($text=~/Leave/i))
     {
 		quest::givecash($copper_return,$silver_return,$gold_return,$total);
+		$PayedR = 0;
 	}      
 }
 
 # End of poker again ---------
 
 sub EVENT_ITEM {
-
-	quest::say("Layer is $layer , game is $gameSelect , DeathR is $DeathR");
 
 	$total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
 
@@ -1984,7 +1988,7 @@ sub EVENT_ITEM {
   plugin::return_items(\%itemcount);}
 
 	#return any unused money
- if($BeginPoker == 1)
+ elsif($BeginPoker == 1)
  {
 	if($total > 0)
 	{
@@ -2003,13 +2007,17 @@ sub EVENT_ITEM {
 	 my $Red = plugin::PWColor("Red");
 	 my $grn = plugin::PWColor("Forest Green");
 
-	quest::say("asdf1");
 	  my $dialogMessage = "{title: Curernt Hand} {button_one: Stop} {button_two: Play} wintype:1 $intro </c> <br><br>";
         quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
+ 
+ 
+
+ }
  #DeathRoulette
-	if($DeathR == 1)
+	if($DeathR == 0)
 	{
+		
 		$total = ($platinum * 1000) + ($gold * 100) + ($silver * 10) + $copper;
 		 $copper_return = $total % 10;
 		$total = (($total - $copper_return)/10);
@@ -2017,14 +2025,21 @@ sub EVENT_ITEM {
 		$total = (($total - $silver_return)/10);
 		$gold_return = $total % 10;
 		$total = (($total - $gold_return)/10);
+		
 		$PayedR = 1;
+
+		
+		 my $intro = "Thank you for your bet, you can start playing!";
+	 my $Indent = plugin::PWIndent();
+	 my $Yel = plugin::PWColor("Yellow");
+	 my $Blu = plugin::PWColor("Light Blue");
+	 my $Red = plugin::PWColor("Red");
+	 my $grn = plugin::PWColor("Forest Green");
+
+	  my $dialogMessage = "{title: Curernt Hand} {button_one: Stop} {button_two: Start} wintype:1 $intro </c> <br><br>";
+        quest::crosszonedialoguewindowbycharid($client->CharacterID(), $dialogMessage);
 	}
- }
- 
-#Start of Death Roulette
-our $DeathR = 0;
-our $PayedR = 0;
-
-
- 
 }
+#Start of Death Roulette
+our $DeathR = 1;
+our $PayedR = 0;
